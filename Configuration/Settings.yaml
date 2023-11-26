@@ -1,0 +1,10 @@
+Neos:
+  Neos:
+    Ui:
+      resources:
+        javascript:
+          Beromir.ToogleEditor:
+            resource: resource://Beromir.ToggleEditor/Public/Plugin.js
+        stylesheets:
+          Beromir.ToogleEditor:
+            resource: resource://Beromir.ToggleEditor/Public/Plugin.css
