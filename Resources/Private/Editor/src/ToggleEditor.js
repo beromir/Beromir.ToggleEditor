@@ -9,6 +9,7 @@ export default class ToggleEditor extends PureComponent {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
+            layout: PropTypes.string,
             values: PropTypes.objectOf(
                 PropTypes.shape({
                     label: PropTypes.string,
@@ -19,11 +20,16 @@ export default class ToggleEditor extends PureComponent {
         }).isRequired,
     };
 
+    static defaultOptions = {
+        layout: 'grid',
+    };
+
     render() {
         const {commit, value} = this.props;
         const options = Object.assign(
             {},
-            this.props.options
+            this.constructor.defaultOptions,
+            this.props.options,
         );
         const values = options.values;
 
@@ -48,7 +54,8 @@ export default class ToggleEditor extends PureComponent {
         }
 
         return (
-            <div className={style.divide}>
+            <div className={[style.wrapper, style[options.layout]].join(' ')}
+                 style={options.layout === 'grid' ? {'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)'} : null}>
                 {valueArray.map((item) => {
                     return (
                         <Button onClick={() => commit(item.key)} isActive={value === item.key} title={item.description}

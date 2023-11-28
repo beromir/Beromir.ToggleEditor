@@ -1,9 +1,23 @@
-.divide > * + * {
-    border-left: 1px solid #525252;
+.wrapper {
+    & > * + * {
+        border-left: 1px solid #525252;
+    }
+}
+
+.flex {
+    display: flex;
+
+    & > * {
+        flex: auto;
+    }
+}
+
+.grid {
+    display: grid;
 }
 
 .button {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 12px;

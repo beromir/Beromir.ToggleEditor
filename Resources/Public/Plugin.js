@@ -961,7 +961,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-module.exports = {"divide":"ToggleEditor__divide___3mFKw","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
+module.exports = {"wrapper":"ToggleEditor__wrapper___207hC","flex":"ToggleEditor__flex___2iYJQ","grid":"ToggleEditor__grid___2c-oB","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
 
 /***/ }),
 
@@ -1022,7 +1022,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
                 commit = _props.commit,
                 value = _props.value;
 
-            var options = Object.assign({}, this.props.options);
+            var options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
             var values = options.values;
 
             if (!values) {
@@ -1047,7 +1047,8 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
 
             return _react2.default.createElement(
                 'div',
-                { className: _ToggleEditor2.default.divide },
+                { className: [_ToggleEditor2.default.wrapper, _ToggleEditor2.default[options.layout]].join(' '),
+                    style: options.layout === 'grid' ? { 'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)' } : null },
                 valueArray.map(function (item) {
                     return _react2.default.createElement(
                         _reactUiComponents.Button,
@@ -1072,12 +1073,15 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     value: _propTypes2.default.string,
     commit: _propTypes2.default.func.isRequired,
     options: _propTypes2.default.shape({
+        layout: _propTypes2.default.string,
         values: _propTypes2.default.objectOf(_propTypes2.default.shape({
             label: _propTypes2.default.string,
             icon: _propTypes2.default.string,
             description: _propTypes2.default.string
         }))
     }).isRequired
+}, _class.defaultOptions = {
+    layout: 'grid'
 }, _temp);
 exports.default = ToggleEditor;
 

@@ -1,9 +1,21 @@
-.ToggleEditor__divide___3mFKw > * + * {
-    border-left: 1px solid #525252;
+.ToggleEditor__wrapper___207hC > * + * {
+        border-left: 1px solid #525252;
+    }
+
+.ToggleEditor__flex___2iYJQ {
+    display: flex;
+}
+
+.ToggleEditor__flex___2iYJQ > * {
+        flex: auto;
+    }
+
+.ToggleEditor__grid___2c-oB {
+    display: grid;
 }
 
 .ToggleEditor__button___3t2C2 {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 12px;
