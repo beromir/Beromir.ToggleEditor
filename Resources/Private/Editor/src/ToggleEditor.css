@@ -1,25 +1,25 @@
 .divide > * + * {
-  border-left: 1px solid #525252;
+    border-left: 1px solid #525252;
 }
 
 .button {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  height: auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    height: auto;
 
-  & > * + * {
-    margin-top: 6px;
-  }
+    & > * + * {
+        margin-top: 6px;
+    }
 }
 
 .label {
-  font-size: 0.75rem;
+    font-size: 0.75rem;
 }
 
 .textError {
-  font-size: 0.8rem;
-  color: #ef4444;
+    font-size: 0.8rem;
+    color: #ef4444;
 }

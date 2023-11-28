@@ -1,27 +1,27 @@
 .ToggleEditor__divide___3mFKw > * + * {
-  border-left: 1px solid #525252;
+    border-left: 1px solid #525252;
 }
 
 .ToggleEditor__button___3t2C2 {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  height: auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    height: auto;
 }
 
 .ToggleEditor__button___3t2C2 > * + * {
-    margin-top: 6px;
-  }
+        margin-top: 6px;
+    }
 
 .ToggleEditor__label___2AZh1 {
-  font-size: 0.75rem;
+    font-size: 0.75rem;
 }
 
 .ToggleEditor__textError___1iX7b {
-  font-size: 0.8rem;
-  color: #ef4444;
+    font-size: 0.8rem;
+    color: #ef4444;
 }
 
 

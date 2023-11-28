@@ -976,7 +976,7 @@ module.exports = {"divide":"ToggleEditor__divide___3mFKw","button":"ToggleEditor
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 exports.default = undefined;
 
@@ -1006,80 +1006,80 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ColorPickerEditor = (_temp = _class = function (_PureComponent) {
-	_inherits(ColorPickerEditor, _PureComponent);
+var ToggleEditor = (_temp = _class = function (_PureComponent) {
+    _inherits(ToggleEditor, _PureComponent);
 
-	function ColorPickerEditor() {
-		_classCallCheck(this, ColorPickerEditor);
+    function ToggleEditor() {
+        _classCallCheck(this, ToggleEditor);
 
-		return _possibleConstructorReturn(this, (ColorPickerEditor.__proto__ || Object.getPrototypeOf(ColorPickerEditor)).apply(this, arguments));
-	}
+        return _possibleConstructorReturn(this, (ToggleEditor.__proto__ || Object.getPrototypeOf(ToggleEditor)).apply(this, arguments));
+    }
 
-	_createClass(ColorPickerEditor, [{
-		key: 'render',
-		value: function render() {
-			var _props = this.props,
-			    commit = _props.commit,
-			    value = _props.value;
+    _createClass(ToggleEditor, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                commit = _props.commit,
+                value = _props.value;
 
-			var options = Object.assign({}, this.props.options);
-			var values = options.values;
+            var options = Object.assign({}, this.props.options);
+            var values = options.values;
 
-			if (!values) {
-				return _react2.default.createElement(
-					'div',
-					{ className: _ToggleEditor2.default.textError },
-					'No options defined, add some to the NodeType definition.'
-				);
-			}
+            if (!values) {
+                return _react2.default.createElement(
+                    'div',
+                    { className: _ToggleEditor2.default.textError },
+                    'No options defined, add some to the NodeType definition.'
+                );
+            }
 
-			var valueArray = [];
+            var valueArray = [];
 
-			for (var key in values) {
-				var item = values[key];
-				valueArray.push({
-					label: item.label,
-					icon: item.icon,
-					description: item.description,
-					key: key
-				});
-			}
+            for (var key in values) {
+                var item = values[key];
+                valueArray.push({
+                    label: item.label,
+                    icon: item.icon,
+                    description: item.description,
+                    key: key
+                });
+            }
 
-			return _react2.default.createElement(
-				'div',
-				{ className: _ToggleEditor2.default.divide },
-				valueArray.map(function (item) {
-					return _react2.default.createElement(
-						_reactUiComponents.Button,
-						{ onClick: function onClick() {
-								return commit(item.key);
-							}, isActive: value === item.key, title: item.description,
-							className: _ToggleEditor2.default.button },
-						item.icon && _react2.default.createElement(_reactUiComponents.Icon, { icon: item.icon }),
-						item.label && _react2.default.createElement(
-							'span',
-							{ className: item.icon ? _ToggleEditor2.default.label : '' },
-							item.label
-						)
-					);
-				})
-			);
-		}
-	}]);
+            return _react2.default.createElement(
+                'div',
+                { className: _ToggleEditor2.default.divide },
+                valueArray.map(function (item) {
+                    return _react2.default.createElement(
+                        _reactUiComponents.Button,
+                        { onClick: function onClick() {
+                                return commit(item.key);
+                            }, isActive: value === item.key, title: item.description,
+                            className: _ToggleEditor2.default.button },
+                        item.icon && _react2.default.createElement(_reactUiComponents.Icon, { icon: item.icon }),
+                        item.label && _react2.default.createElement(
+                            'span',
+                            { className: item.icon ? _ToggleEditor2.default.label : '' },
+                            item.label
+                        )
+                    );
+                })
+            );
+        }
+    }]);
 
-	return ColorPickerEditor;
+    return ToggleEditor;
 }(_react.PureComponent), _class.propTypes = {
-	value: _propTypes2.default.string,
-	commit: _propTypes2.default.func.isRequired,
-	options: _propTypes2.default.shape({
-		values: _propTypes2.default.objectOf(_propTypes2.default.shape({
-			label: _propTypes2.default.string,
-			icon: _propTypes2.default.string,
-			description: _propTypes2.default.string
-		}))
-	}).isRequired
+    value: _propTypes2.default.string,
+    commit: _propTypes2.default.func.isRequired,
+    options: _propTypes2.default.shape({
+        values: _propTypes2.default.objectOf(_propTypes2.default.shape({
+            label: _propTypes2.default.string,
+            icon: _propTypes2.default.string,
+            description: _propTypes2.default.string
+        }))
+    }).isRequired
 }, _temp);
-exports.default = ColorPickerEditor;
+exports.default = ToggleEditor;
 
 /***/ }),
 
@@ -1117,12 +1117,12 @@ var _ToggleEditor2 = _interopRequireDefault(_ToggleEditor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _neosUiExtensibility2.default)('Neos.Neos.Ui.ExtensibilityExamples:ColorPickerEditor', {}, function (globalRegistry) {
-	var editorsRegistry = globalRegistry.get('inspector').get('editors');
+(0, _neosUiExtensibility2.default)('Beromir.ToggleEditor:Editor', {}, function (globalRegistry) {
+    var editorsRegistry = globalRegistry.get('inspector').get('editors');
 
-	editorsRegistry.set('Beromir.ToggleEditor/Editor', {
-		component: _ToggleEditor2.default
-	});
+    editorsRegistry.set('Beromir.ToggleEditor/Editor', {
+        component: _ToggleEditor2.default
+    });
 });
 
 /***/ })
