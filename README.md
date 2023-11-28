@@ -29,6 +29,8 @@ properties:
       inspector:
         editor: 'Beromir.ToggleEditor/Editor'
         editorOptions:
+          # Optional, make layout flexible. Use this option if you need more space. Default: 'grid'
+          layout: 'flex'
           values:
             left:
               # You can use either a label, an icon or both
