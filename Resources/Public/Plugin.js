@@ -961,7 +961,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-module.exports = {"wrapper":"ToggleEditor__wrapper___207hC","flex":"ToggleEditor__flex___2iYJQ","grid":"ToggleEditor__grid___2c-oB","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
+module.exports = {"wrapper":"ToggleEditor__wrapper___207hC","flex":"ToggleEditor__flex___2iYJQ","flexWrap":"ToggleEditor__flexWrap___25c50","grid":"ToggleEditor__grid___2c-oB","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
 
 /***/ }),
 
@@ -1049,7 +1049,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
 
             return _react2.default.createElement(
                 'div',
-                { className: [_ToggleEditor2.default.wrapper, _ToggleEditor2.default[options.layout]].join(' '),
+                { className: [_ToggleEditor2.default.wrapper, _ToggleEditor2.default[options.layout], options.flexWrap ? _ToggleEditor2.default.flexWrap : ''].join(' '),
                     style: options.layout === 'grid' ? { 'grid-template-columns': 'repeat(' + columns + ', 1fr)' } : null },
                 valueArray.map(function (item) {
                     return _react2.default.createElement(
@@ -1077,6 +1077,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     options: _propTypes2.default.shape({
         layout: _propTypes2.default.string,
         columns: _propTypes2.default.string,
+        flexWrap: _propTypes2.default.bool,
         values: _propTypes2.default.objectOf(_propTypes2.default.shape({
             label: _propTypes2.default.string,
             icon: _propTypes2.default.string,
@@ -1085,7 +1086,8 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     }).isRequired
 }, _class.defaultOptions = {
     layout: 'grid',
-    columns: null
+    columns: null,
+    flexWrap: false
 }, _temp);
 exports.default = ToggleEditor;
 

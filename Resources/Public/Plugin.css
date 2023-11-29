@@ -11,6 +11,10 @@
         flex: auto;
     }
 
+.ToggleEditor__flexWrap___25c50 {
+    flex-wrap: wrap;
+}
+
 .ToggleEditor__grid___2c-oB {
     display: grid;
 }
