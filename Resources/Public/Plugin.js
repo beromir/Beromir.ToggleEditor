@@ -1025,6 +1025,8 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
             var options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
             var values = options.values;
 
+            var columns = options.columns === null ? Object.keys(options.values).length : options.columns;
+
             if (!values) {
                 return _react2.default.createElement(
                     'div',
@@ -1048,7 +1050,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
             return _react2.default.createElement(
                 'div',
                 { className: [_ToggleEditor2.default.wrapper, _ToggleEditor2.default[options.layout]].join(' '),
-                    style: options.layout === 'grid' ? { 'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)' } : null },
+                    style: options.layout === 'grid' ? { 'grid-template-columns': 'repeat(' + columns + ', 1fr)' } : null },
                 valueArray.map(function (item) {
                     return _react2.default.createElement(
                         _reactUiComponents.Button,
@@ -1074,6 +1076,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     commit: _propTypes2.default.func.isRequired,
     options: _propTypes2.default.shape({
         layout: _propTypes2.default.string,
+        columns: _propTypes2.default.string,
         values: _propTypes2.default.objectOf(_propTypes2.default.shape({
             label: _propTypes2.default.string,
             icon: _propTypes2.default.string,
@@ -1081,7 +1084,8 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
         }))
     }).isRequired
 }, _class.defaultOptions = {
-    layout: 'grid'
+    layout: 'grid',
+    columns: null
 }, _temp);
 exports.default = ToggleEditor;
 
