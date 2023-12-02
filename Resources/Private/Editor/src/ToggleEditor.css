@@ -8,10 +8,6 @@
     }
 }
 
-.flexWrap {
-    flex-wrap: wrap;
-}
-
 .grid {
     display: grid;
     gap: 1px;

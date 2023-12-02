@@ -961,7 +961,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-module.exports = {"flex":"ToggleEditor__flex___2iYJQ","flexWrap":"ToggleEditor__flexWrap___25c50","grid":"ToggleEditor__grid___2c-oB","color":"ToggleEditor__color___-gymi","colorBox":"ToggleEditor__colorBox___2LQlG","colorButton":"ToggleEditor__colorButton___28s45","selected":"ToggleEditor__selected___7KwJL","transparent":"ToggleEditor__transparent___3AwAf","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
+module.exports = {"flex":"ToggleEditor__flex___2iYJQ","grid":"ToggleEditor__grid___2c-oB","color":"ToggleEditor__color___-gymi","colorBox":"ToggleEditor__colorBox___2LQlG","colorButton":"ToggleEditor__colorButton___28s45","selected":"ToggleEditor__selected___7KwJL","transparent":"ToggleEditor__transparent___3AwAf","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
 
 /***/ }),
 
@@ -1050,7 +1050,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
 
             return _react2.default.createElement(
                 'div',
-                { className: [_ToggleEditor2.default[options.layout], options.flexWrap ? _ToggleEditor2.default.flexWrap : ''].join(' '),
+                { className: [_ToggleEditor2.default[options.layout]].join(' '),
                     style: options.layout !== 'flex' ? { 'grid-template-columns': 'repeat(' + columns + ', 1fr)' } : null },
                 valueArray.map(function (item) {
                     if (options.layout !== 'color') {
@@ -1097,7 +1097,6 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     options: _propTypes2.default.shape({
         layout: _propTypes2.default.string,
         columns: _propTypes2.default.string,
-        flexWrap: _propTypes2.default.bool,
         values: _propTypes2.default.objectOf(_propTypes2.default.shape({
             label: _propTypes2.default.string,
             icon: _propTypes2.default.string,
@@ -1107,8 +1106,7 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
     }).isRequired
 }, _class.defaultOptions = {
     layout: 'grid',
-    columns: null,
-    flexWrap: false
+    columns: null
 }, _temp);
 exports.default = ToggleEditor;
 

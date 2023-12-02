@@ -11,7 +11,6 @@ export default class ToggleEditor extends PureComponent {
         options: PropTypes.shape({
             layout: PropTypes.string,
             columns: PropTypes.string,
-            flexWrap: PropTypes.bool,
             values: PropTypes.objectOf(
                 PropTypes.shape({
                     label: PropTypes.string,
@@ -26,7 +25,6 @@ export default class ToggleEditor extends PureComponent {
     static defaultOptions = {
         layout: 'grid',
         columns: null,
-        flexWrap: false,
     };
 
     render() {
@@ -62,7 +60,7 @@ export default class ToggleEditor extends PureComponent {
         }
 
         return (
-            <div className={[style[options.layout], options.flexWrap ? style.flexWrap : ''].join(' ')}
+            <div className={[style[options.layout]].join(' ')}
                  style={options.layout !== 'flex' ? {'grid-template-columns': 'repeat(' + columns + ', 1fr)'} : null}>
                 {valueArray.map((item) => {
                     if (options.layout !== 'color') {
