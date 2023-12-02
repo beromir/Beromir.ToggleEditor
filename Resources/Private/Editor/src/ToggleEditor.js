@@ -17,6 +17,7 @@ export default class ToggleEditor extends PureComponent {
                     label: PropTypes.string,
                     icon: PropTypes.string,
                     description: PropTypes.string,
+                    color: PropTypes.string,
                 })
             ),
         }).isRequired,
@@ -55,21 +56,36 @@ export default class ToggleEditor extends PureComponent {
                 label: item.label,
                 icon: item.icon,
                 description: item.description,
+                color: item.color,
                 key,
             });
         }
 
         return (
-            <div className={[style.wrapper, style[options.layout], options.flexWrap ? style.flexWrap : ''].join(' ')}
-                 style={options.layout === 'grid' ? {'grid-template-columns': 'repeat(' + columns + ', 1fr)'} : null}>
+            <div className={[style[options.layout], options.flexWrap ? style.flexWrap : ''].join(' ')}
+                 style={options.layout !== 'flex' ? {'grid-template-columns': 'repeat(' + columns + ', 1fr)'} : null}>
                 {valueArray.map((item) => {
-                    return (
-                        <Button onClick={() => commit(item.key)} isActive={value === item.key} title={item.description}
-                                className={style.button}>
-                            {item.icon && <Icon icon={item.icon}/>}
-                            {item.label && <span className={item.icon ? style.label : ''}>{item.label}</span>}
-                        </Button>
-                    );
+                    if (options.layout !== 'color') {
+                        return (
+                            <Button onClick={() => commit(item.key)} isActive={value === item.key}
+                                    title={item.description} className={style.button}>
+                                {item.icon && !item.color && <Icon icon={item.icon}/>}
+                                {item.color &&
+                                    <span className={style.color} style={{'background-color': item.color}}></span>}
+                                {item.label && <span className={item.icon ? style.label : ''}>{item.label}</span>}
+                            </Button>
+                        );
+                    } else {
+                        return (
+                            <div className={style.colorBox}>
+                                <button onClick={() => commit(item.key)} type="button"
+                                        title={item.description}
+                                        className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.transparent : ''].join(' ')}
+                                        style={{'background-color': item.color}}></button>
+                                {item.label && <span className={style.label}>{item.label}</span>}
+                            </div>
+                        );
+                    }
                 })}
             </div>
         );

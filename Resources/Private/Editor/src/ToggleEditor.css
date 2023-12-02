@@ -1,10 +1,7 @@
-.wrapper {
-    gap: 1px;
-    background-color: #525252;
-}
-
 .flex {
     display: flex;
+    gap: 1px;
+    background-color: #525252;
 
     & > * {
         flex: auto;
@@ -17,6 +14,46 @@
 
 .grid {
     display: grid;
+    gap: 1px;
+    background-color: #525252;
+}
+
+.color {
+    display: grid;
+    row-gap: 14px;
+    column-gap: 8px;
+    padding-top: 4px;
+
+    & .colorBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 4px;
+    }
+
+    & .colorButton {
+        width: 100%;
+        height: 40px;
+        max-width: 60px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &.selected,
+        &:focus {
+            outline: #00adee solid 2px;
+            outline-offset: 2px;
+        }
+
+        &.transparent {
+            background-size: 14px;
+            background-image: url('data:image/svg+xml, <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F5F5F5"/><rect width="50" height="50" fill="%23d4d4d4"/><rect x="50" y="50" width="50" height="50" fill="%23d4d4d4"/></svg>');
+        }
+    }
 }
 
 .button {
