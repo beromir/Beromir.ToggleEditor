@@ -78,8 +78,10 @@ export default class ToggleEditor extends PureComponent {
                             <div className={style.colorBox}>
                                 <button onClick={() => commit(item.key)} type="button"
                                         title={item.description}
-                                        className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.transparent : ''].join(' ')}
-                                        style={{'background-color': item.color}}></button>
+                                        className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
+                                        style={{'background-color': item.color}}>
+                                    <Icon icon="times-circle"/>
+                                </button>
                                 {item.label && <span className={style.label}>{item.label}</span>}
                             </div>
                         );

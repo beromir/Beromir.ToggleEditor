@@ -48,10 +48,26 @@
             outline-offset: 2px;
         }
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__transparent___3AwAf {
+.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45 svg {
+            display: none;
+        }
+
+.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorTransparent___1iYdv {
             background-size: 14px;
             background-image: url('data:image/svg+xml, <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F5F5F5"/><rect width="50" height="50" fill="%23d4d4d4"/><rect x="50" y="50" width="50" height="50" fill="%23d4d4d4"/></svg>');
         }
+
+.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorNone___tB3ik {
+            background-color: #3f3f3f !important;
+        }
+
+.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorNone___tB3ik svg {
+                display: block;
+                margin: 0 auto;
+                width: 20px;
+                height: 20px;
+                color: #d4d4d4;
+            }
 
 .ToggleEditor__button___3t2C2 {
     display: flex;
