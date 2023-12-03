@@ -14,6 +14,52 @@
     background-color: #525252;
 }
 
+.ToggleEditor__list___2HR4X {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.ToggleEditor__list___2HR4X button {
+        display: flex;
+        align-items: center;
+        width: -moz-fit-content;
+        width: fit-content;
+        color: #ffffff;
+        background-color: inherit;
+        border: none;
+        border-radius: 0;
+    }
+
+.ToggleEditor__list___2HR4X button.ToggleEditor__selected___7KwJL .ToggleEditor__radio___2Ij4y,
+        .ToggleEditor__list___2HR4X button:hover .ToggleEditor__radio___2Ij4y {
+            background-color: #00adee;
+        }
+
+.ToggleEditor__list___2HR4X button svg {
+            margin-right: 8px;
+        }
+
+.ToggleEditor__list___2HR4X .ToggleEditor__radio___2Ij4y {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 12px;
+        width: 22px;
+        height: 22px;
+        border-radius: 9999px;
+        border: none;
+        background-color: #525252;
+        cursor: pointer;
+    }
+
+.ToggleEditor__list___2HR4X .ToggleEditor__radio___2Ij4y span {
+            width: 6px;
+            height: 6px;
+            background-color: #fafafa;
+            border-radius: 9999px;
+        }
+
 .ToggleEditor__color___-gymi {
     display: grid;
     row-gap: 14px;

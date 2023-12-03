@@ -36,8 +36,6 @@ export default class ToggleEditor extends PureComponent {
         );
         const values = options.values;
 
-        const columns = options.columns === null ? Object.keys(options.values).length : options.columns;
-
         if (!values) {
             return (
                 <div className={style.textError}>
@@ -59,32 +57,55 @@ export default class ToggleEditor extends PureComponent {
             });
         }
 
+        function getColumnsClassNames() {
+            if (options.layout === 'list') {
+                return null;
+            } else if (options.layout === 'flex') {
+                return null;
+            } else if (options.columns === null) {
+                return {'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)'};
+            }
+
+            return {'grid-template-columns': 'repeat(' + options.columns + ', 1fr)'};
+        }
+
         return (
-            <div className={[style[options.layout]].join(' ')}
-                 style={options.layout !== 'flex' ? {'grid-template-columns': 'repeat(' + columns + ', 1fr)'} : null}>
+            <div className={style[options.layout]} style={getColumnsClassNames()}>
                 {valueArray.map((item) => {
-                    if (options.layout !== 'color') {
-                        return (
-                            <Button onClick={() => commit(item.key)} isActive={value === item.key}
-                                    title={item.description} className={style.button}>
-                                {item.icon && !item.color && <Icon icon={item.icon}/>}
-                                {item.color &&
-                                    <span className={style.color} style={{'background-color': item.color}}></span>}
-                                {item.label && <span className={item.icon ? style.label : ''}>{item.label}</span>}
-                            </Button>
-                        );
-                    } else {
-                        return (
-                            <div className={style.colorBox}>
-                                <button onClick={() => commit(item.key)} type="button"
-                                        title={item.description}
-                                        className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
-                                        style={{'background-color': item.color}}>
-                                    <Icon icon="times-circle"/>
+                    switch (options.layout) {
+                        case 'list':
+                            return (
+                                <button onClick={() => commit(item.key)} type="button" title={item.description}
+                                        className={value === item.key ? style.selected : ''}>
+                                    <span className={style.radio}><span></span></span>
+                                    {item.icon && <Icon icon={item.icon}/>}
+                                    {item.label && <span>{item.label}</span>}
                                 </button>
-                                {item.label && <span className={style.label}>{item.label}</span>}
-                            </div>
-                        );
+                            );
+
+                        case 'color':
+                            return (
+                                <div className={style.colorBox}>
+                                    <button onClick={() => commit(item.key)} type="button"
+                                            title={item.description}
+                                            className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
+                                            style={{'background-color': item.color}}>
+                                        <Icon icon="times-circle"/>
+                                    </button>
+                                    {item.label && <span className={style.label}>{item.label}</span>}
+                                </div>
+                            );
+
+                        default:
+                            return (
+                                <Button onClick={() => commit(item.key)} isActive={value === item.key}
+                                        title={item.description} className={style.button}>
+                                    {item.icon && !item.color && <Icon icon={item.icon}/>}
+                                    {item.color &&
+                                        <span className={style.color} style={{'background-color': item.color}}></span>}
+                                    {item.label && <span className={item.icon ? style.label : ''}>{item.label}</span>}
+                                </Button>
+                            );
                     }
                 })}
             </div>

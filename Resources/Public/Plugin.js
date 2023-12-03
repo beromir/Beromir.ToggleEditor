@@ -961,7 +961,7 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-module.exports = {"flex":"ToggleEditor__flex___2iYJQ","grid":"ToggleEditor__grid___2c-oB","color":"ToggleEditor__color___-gymi","colorBox":"ToggleEditor__colorBox___2LQlG","colorButton":"ToggleEditor__colorButton___28s45","selected":"ToggleEditor__selected___7KwJL","colorTransparent":"ToggleEditor__colorTransparent___1iYdv","colorNone":"ToggleEditor__colorNone___tB3ik","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
+module.exports = {"flex":"ToggleEditor__flex___2iYJQ","grid":"ToggleEditor__grid___2c-oB","list":"ToggleEditor__list___2HR4X","selected":"ToggleEditor__selected___7KwJL","radio":"ToggleEditor__radio___2Ij4y","color":"ToggleEditor__color___-gymi","colorBox":"ToggleEditor__colorBox___2LQlG","colorButton":"ToggleEditor__colorButton___28s45","colorTransparent":"ToggleEditor__colorTransparent___1iYdv","colorNone":"ToggleEditor__colorNone___tB3ik","button":"ToggleEditor__button___3t2C2","label":"ToggleEditor__label___2AZh1","textError":"ToggleEditor__textError___1iX7b"};
 
 /***/ }),
 
@@ -1025,8 +1025,6 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
             var options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
             var values = options.values;
 
-            var columns = options.columns === null ? Object.keys(options.values).length : options.columns;
-
             if (!values) {
                 return _react2.default.createElement(
                     'div',
@@ -1048,46 +1046,79 @@ var ToggleEditor = (_temp = _class = function (_PureComponent) {
                 });
             }
 
+            function getColumnsClassNames() {
+                if (options.layout === 'list') {
+                    return null;
+                } else if (options.layout === 'flex') {
+                    return null;
+                } else if (options.columns === null) {
+                    return { 'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)' };
+                }
+
+                return { 'grid-template-columns': 'repeat(' + options.columns + ', 1fr)' };
+            }
+
             return _react2.default.createElement(
                 'div',
-                { className: [_ToggleEditor2.default[options.layout]].join(' '),
-                    style: options.layout !== 'flex' ? { 'grid-template-columns': 'repeat(' + columns + ', 1fr)' } : null },
+                { className: _ToggleEditor2.default[options.layout], style: getColumnsClassNames() },
                 valueArray.map(function (item) {
-                    if (options.layout !== 'color') {
-                        return _react2.default.createElement(
-                            _reactUiComponents.Button,
-                            { onClick: function onClick() {
-                                    return commit(item.key);
-                                }, isActive: value === item.key,
-                                title: item.description, className: _ToggleEditor2.default.button },
-                            item.icon && !item.color && _react2.default.createElement(_reactUiComponents.Icon, { icon: item.icon }),
-                            item.color && _react2.default.createElement('span', { className: _ToggleEditor2.default.color, style: { 'background-color': item.color } }),
-                            item.label && _react2.default.createElement(
-                                'span',
-                                { className: item.icon ? _ToggleEditor2.default.label : '' },
-                                item.label
-                            )
-                        );
-                    } else {
-                        return _react2.default.createElement(
-                            'div',
-                            { className: _ToggleEditor2.default.colorBox },
-                            _react2.default.createElement(
+                    switch (options.layout) {
+                        case 'list':
+                            return _react2.default.createElement(
                                 'button',
                                 { onClick: function onClick() {
                                         return commit(item.key);
-                                    }, type: 'button',
-                                    title: item.description,
-                                    className: [_ToggleEditor2.default.colorButton, value === item.key ? _ToggleEditor2.default.selected : '', item.color === 'transparent' ? _ToggleEditor2.default.colorTransparent : '', item.color === 'none' ? _ToggleEditor2.default.colorNone : ''].join(' '),
-                                    style: { 'background-color': item.color } },
-                                _react2.default.createElement(_reactUiComponents.Icon, { icon: 'times-circle' })
-                            ),
-                            item.label && _react2.default.createElement(
-                                'span',
-                                { className: _ToggleEditor2.default.label },
-                                item.label
-                            )
-                        );
+                                    }, type: 'button', title: item.description,
+                                    className: value === item.key ? _ToggleEditor2.default.selected : '' },
+                                _react2.default.createElement(
+                                    'span',
+                                    { className: _ToggleEditor2.default.radio },
+                                    _react2.default.createElement('span', null)
+                                ),
+                                item.icon && _react2.default.createElement(_reactUiComponents.Icon, { icon: item.icon }),
+                                item.label && _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    item.label
+                                )
+                            );
+
+                        case 'color':
+                            return _react2.default.createElement(
+                                'div',
+                                { className: _ToggleEditor2.default.colorBox },
+                                _react2.default.createElement(
+                                    'button',
+                                    { onClick: function onClick() {
+                                            return commit(item.key);
+                                        }, type: 'button',
+                                        title: item.description,
+                                        className: [_ToggleEditor2.default.colorButton, value === item.key ? _ToggleEditor2.default.selected : '', item.color === 'transparent' ? _ToggleEditor2.default.colorTransparent : '', item.color === 'none' ? _ToggleEditor2.default.colorNone : ''].join(' '),
+                                        style: { 'background-color': item.color } },
+                                    _react2.default.createElement(_reactUiComponents.Icon, { icon: 'times-circle' })
+                                ),
+                                item.label && _react2.default.createElement(
+                                    'span',
+                                    { className: _ToggleEditor2.default.label },
+                                    item.label
+                                )
+                            );
+
+                        default:
+                            return _react2.default.createElement(
+                                _reactUiComponents.Button,
+                                { onClick: function onClick() {
+                                        return commit(item.key);
+                                    }, isActive: value === item.key,
+                                    title: item.description, className: _ToggleEditor2.default.button },
+                                item.icon && !item.color && _react2.default.createElement(_reactUiComponents.Icon, { icon: item.icon }),
+                                item.color && _react2.default.createElement('span', { className: _ToggleEditor2.default.color, style: { 'background-color': item.color } }),
+                                item.label && _react2.default.createElement(
+                                    'span',
+                                    { className: item.icon ? _ToggleEditor2.default.label : '' },
+                                    item.label
+                                )
+                            );
                     }
                 })
             );
