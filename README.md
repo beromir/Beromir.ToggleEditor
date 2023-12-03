@@ -45,3 +45,10 @@ properties:
               label: 'Right'
               icon: 'align-right'
 ```
+
+## Credits
+
+This package is inspired by:
+
+- [Carbon.ColorValues](https://github.com/CarbonPackages/Carbon.ColorValues)
+- [Shel.Neos.ColorPicker](https://github.com/Sebobo/Shel.Neos.ColorPicker)
