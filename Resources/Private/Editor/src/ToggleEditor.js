@@ -88,7 +88,7 @@ export default class ToggleEditor extends PureComponent {
                                             title={item.description}
                                             className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
                                             style={{'background-color': item.color}}>
-                                        <Icon icon="times-circle"/>
+                                        {item.color == 'none' && <Icon icon="times-circle"/>}
                                     </button>
                                     {item.label && <span className={style.label}>{item.label}</span>}
                                 </div>
