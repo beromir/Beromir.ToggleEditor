@@ -93,10 +93,6 @@
         opacity: 0.9;
     }
 
-    & svg {
-        display: none;
-    }
-
     &:where(.selected) {
         outline: #00adee solid 2px;
         outline-offset: 2px;
