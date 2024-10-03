@@ -8,6 +8,7 @@ export default class ToggleEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         options: PropTypes.shape({
             layout: PropTypes.string,
             columns: PropTypes.string,
@@ -28,7 +29,7 @@ export default class ToggleEditor extends PureComponent {
     };
 
     render() {
-        const {commit, value} = this.props;
+        const {commit, value, i18nRegistry} = this.props;
         const options = Object.assign(
             {},
             this.constructor.defaultOptions,
@@ -49,9 +50,9 @@ export default class ToggleEditor extends PureComponent {
         for (const key in values) {
             const item = values[key];
             valueArray.push({
-                label: item.label,
+                label: i18nRegistry.translate(item.label),
                 icon: item.icon,
-                description: item.description,
+                description: i18nRegistry.translate(item.description),
                 color: item.color,
                 key,
             });
