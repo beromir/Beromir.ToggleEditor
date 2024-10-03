@@ -59,15 +59,12 @@ export default class ToggleEditor extends PureComponent {
         }
 
         function getColumnsClassNames() {
-            if (options.layout === 'list') {
+            if (options.layout === 'list' || options.layout === 'flex') {
                 return null;
-            } else if (options.layout === 'flex') {
-                return null;
-            } else if (options.columns === null) {
-                return {'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)'};
             }
 
-            return {'grid-template-columns': 'repeat(' + options.columns + ', 1fr)'};
+            const columns = options.columns || Object.keys(options.values).length;
+            return {'grid-template-columns': `repeat(${columns}, 1fr)`};
         }
 
         return (
