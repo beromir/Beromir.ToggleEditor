@@ -1,7 +1,7 @@
 .highlight {
     outline: #ff8700 solid 2px;
     outline-offset: 2px;
-    z-index: 1;
+    z-index: 2;
     border-radius: 2px;
 }
 
@@ -36,8 +36,15 @@
         border-radius: 0;
         cursor: pointer;
 
-        &.selected .radio,
-        &:hover .radio {
+        &:focus {
+            outline: none;
+
+            & .radio {
+                outline: #00adee solid 1px;
+            }
+        }
+
+        &:where(.selected,:hover) .radio {
             background-color: #00adee;
         }
 
@@ -93,7 +100,12 @@
         opacity: 0.9;
     }
 
-    &:where(.selected) {
+    &:focus {
+        outline: #00adee solid 1px;
+        outline-offset: 1px;
+    }
+
+    &.selected {
         outline: #00adee solid 2px;
         outline-offset: 2px;
     }
@@ -127,6 +139,12 @@
 
     & > * + * {
         margin-top: 6px;
+    }
+
+    &:focus {
+        outline: #00adee solid 1px;
+        z-index: 1;
+        border-radius: 2px;
     }
 }
 

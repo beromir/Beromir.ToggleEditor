@@ -1,7 +1,7 @@
 .ToggleEditor__highlight___16C4N {
     outline: #ff8700 solid 2px;
     outline-offset: 2px;
-    z-index: 1;
+    z-index: 2;
     border-radius: 2px;
 }
 
@@ -39,8 +39,15 @@
         cursor: pointer;
     }
 
-.ToggleEditor__list___2HR4X button.ToggleEditor__selected___7KwJL .ToggleEditor__radio___2Ij4y,
-        .ToggleEditor__list___2HR4X button:hover .ToggleEditor__radio___2Ij4y {
+.ToggleEditor__list___2HR4X button:focus {
+            outline: none;
+        }
+
+.ToggleEditor__list___2HR4X button:focus .ToggleEditor__radio___2Ij4y {
+                outline: #00adee solid 1px;
+            }
+
+.ToggleEditor__list___2HR4X button:where(.ToggleEditor__selected___7KwJL,:hover) .ToggleEditor__radio___2Ij4y {
             background-color: #00adee;
         }
 
@@ -96,7 +103,12 @@
         opacity: 0.9;
     }
 
-.ToggleEditor__colorButton___28s45:where(.ToggleEditor__selected___7KwJL) {
+.ToggleEditor__colorButton___28s45:focus {
+        outline: #00adee solid 1px;
+        outline-offset: 1px;
+    }
+
+.ToggleEditor__colorButton___28s45.ToggleEditor__selected___7KwJL {
         outline: #00adee solid 2px;
         outline-offset: 2px;
     }
@@ -130,6 +142,12 @@
 
 .ToggleEditor__button___3t2C2 > * + * {
         margin-top: 6px;
+    }
+
+.ToggleEditor__button___3t2C2:focus {
+        outline: #00adee solid 1px;
+        z-index: 1;
+        border-radius: 2px;
     }
 
 .ToggleEditor__label___2AZh1 {

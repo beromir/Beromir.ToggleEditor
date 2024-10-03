@@ -67,13 +67,20 @@ export default class ToggleEditor extends PureComponent {
             return {'grid-template-columns': `repeat(${columns}, 1fr)`};
         }
 
+        function onChange(item, node) {
+            if (node) {
+                node.blur();
+            }
+            commit(item.key);
+        }
+
         return (
             <div className={style[options.layout]} style={getColumnsClassNames()}>
                 {valueArray.map((item) => {
                     switch (options.layout) {
                         case 'list':
                             return (
-                                <button onClick={() => commit(item.key)} type="button" title={item.description}
+                                <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button" title={item.description}
                                         className={value === item.key ? style.selected : ''}>
                                     <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
                                     {item.icon && <Icon icon={item.icon}/>}
@@ -84,7 +91,7 @@ export default class ToggleEditor extends PureComponent {
                         case 'color':
                             return (
                                 <div className={style.colorBox}>
-                                    <button onClick={() => commit(item.key)} type="button"
+                                    <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button"
                                             title={item.description}
                                             className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
                                             style={{'background-color': item.color}}>
@@ -96,7 +103,7 @@ export default class ToggleEditor extends PureComponent {
 
                         default:
                             return (
-                                <Button onClick={() => commit(item.key)} isActive={value === item.key}
+                                <Button onClick={() => onChange(item)} isActive={value === item.key}
                                         title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon && !item.color && <Icon icon={item.icon}/>}
                                     {item.color &&
