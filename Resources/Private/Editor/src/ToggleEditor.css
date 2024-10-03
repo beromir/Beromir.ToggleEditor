@@ -109,7 +109,7 @@
 }
 
 .colorNone {
-    background-color: #3f3f3f !important;
+    background-color: #3f3f3f;
 
     & svg {
         display: block;
