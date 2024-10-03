@@ -18,6 +18,7 @@ export default class ToggleEditor extends PureComponent {
                     icon: PropTypes.string,
                     description: PropTypes.string,
                     color: PropTypes.string,
+                    hidden: PropTypes.bool,
                 })
             ),
         }).isRequired,
@@ -49,11 +50,13 @@ export default class ToggleEditor extends PureComponent {
 
         for (const key in values) {
             const item = values[key];
+            if (item.hidden) {
+                continue;
+            }
             valueArray.push({
+                ...item,
                 label: i18nRegistry.translate(item.label),
-                icon: item.icon,
                 description: i18nRegistry.translate(item.description),
-                color: item.color,
                 key,
             });
         }
@@ -63,7 +66,7 @@ export default class ToggleEditor extends PureComponent {
                 return null;
             }
 
-            const columns = options.columns || Object.keys(options.values).length;
+            const columns = options.columns || valueArray.length;
             return {'grid-template-columns': `repeat(${columns}, 1fr)`};
         }
 
