@@ -60,6 +60,12 @@
     }
 }
 
+.highlight {
+    outline: #ff8700 solid 2px;
+    outline-offset: 2px;
+    z-index: 1;
+}
+
 .color {
     display: grid;
     row-gap: 14px;

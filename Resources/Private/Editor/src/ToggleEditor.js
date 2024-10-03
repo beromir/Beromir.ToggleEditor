@@ -29,7 +29,7 @@ export default class ToggleEditor extends PureComponent {
     };
 
     render() {
-        const {commit, value, i18nRegistry} = this.props;
+        const {commit, value, highlight, i18nRegistry} = this.props;
         const options = Object.assign(
             {},
             this.constructor.defaultOptions,
@@ -78,7 +78,7 @@ export default class ToggleEditor extends PureComponent {
                             return (
                                 <button onClick={() => commit(item.key)} type="button" title={item.description}
                                         className={value === item.key ? style.selected : ''}>
-                                    <span className={style.radio}><span></span></span>
+                                    <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
                                     {item.icon && <Icon icon={item.icon}/>}
                                     {item.label && <span>{item.label}</span>}
                                 </button>
@@ -89,7 +89,7 @@ export default class ToggleEditor extends PureComponent {
                                 <div className={style.colorBox}>
                                     <button onClick={() => commit(item.key)} type="button"
                                             title={item.description}
-                                            className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
+                                            className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
                                             style={{'background-color': item.color}}>
                                         <Icon icon="times-circle"/>
                                     </button>
@@ -100,7 +100,7 @@ export default class ToggleEditor extends PureComponent {
                         default:
                             return (
                                 <Button onClick={() => commit(item.key)} isActive={value === item.key}
-                                        title={item.description} className={style.button}>
+                                        title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon && !item.color && <Icon icon={item.icon}/>}
                                     {item.color &&
                                         <span className={style.color} style={{'background-color': item.color}}></span>}
