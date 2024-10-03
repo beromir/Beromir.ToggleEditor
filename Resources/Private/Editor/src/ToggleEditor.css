@@ -27,6 +27,7 @@
         background-color: inherit;
         border: none;
         border-radius: 0;
+        cursor: pointer;
 
         &.selected .radio,
         &:hover .radio {
