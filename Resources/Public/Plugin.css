@@ -29,6 +29,7 @@
         background-color: inherit;
         border: none;
         border-radius: 0;
+        cursor: pointer;
     }
 
 .ToggleEditor__list___2HR4X button.ToggleEditor__selected___7KwJL .ToggleEditor__radio___2Ij4y,
@@ -59,6 +60,12 @@
             background-color: #fafafa;
             border-radius: 9999px;
         }
+
+.ToggleEditor__highlight___16C4N {
+    outline: #ff8700 solid 2px;
+    outline-offset: 2px;
+    z-index: 1;
+}
 
 .ToggleEditor__color___-gymi {
     display: grid;
