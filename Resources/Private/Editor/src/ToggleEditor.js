@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Icon} from "@neos-project/react-ui-components";
+import {Button, Icon} from '@neos-project/react-ui-components';
 import style from './ToggleEditor.css';
 
 export default class ToggleEditor extends PureComponent {
@@ -19,6 +19,7 @@ export default class ToggleEditor extends PureComponent {
                     description: PropTypes.string,
                     color: PropTypes.string,
                     hidden: PropTypes.bool,
+                    preview: PropTypes.string,
                 })
             ),
         }).isRequired,
@@ -77,6 +78,17 @@ export default class ToggleEditor extends PureComponent {
             commit(item.key);
         }
 
+        function getPreview(item) {
+            if (!item || !item.preview) {
+                return null;
+            }
+            const preview = item.preview;
+            const src = preview.startsWith('resource://') ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
+            return (
+                <img src={src} className={style.image} alt={item.description || item.label} />
+            )
+        }
+
         return (
             <div className={style[options.layout]} style={getColumnsClassNames()}>
                 {valueArray.map((item) => {
@@ -87,6 +99,7 @@ export default class ToggleEditor extends PureComponent {
                                         className={value === item.key ? style.selected : ''}>
                                     <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
                                     {item.icon && <Icon icon={item.icon}/>}
+                                    {getPreview(item)}
                                     {item.label && <span>{item.label}</span>}
                                 </button>
                             );
@@ -109,6 +122,7 @@ export default class ToggleEditor extends PureComponent {
                                 <Button onClick={() => onChange(item)} isActive={value === item.key}
                                         title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon <Icon icon={item.icon}/>}
+                                    {getPreview(item)}
                                     {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
                                 </Button>
                             );

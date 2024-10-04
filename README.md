@@ -141,7 +141,7 @@ properties:
 
 Run the following command in your site package:
 
-```
+```bash
 composer require --no-update beromir/neos-toggle-editor
 ```
 
@@ -188,6 +188,10 @@ properties:
               description: 'Align left'
               # Specify the color to display in the editor. Does only work with the color layout
               color: '#ffffff'
+              # Hide the value. Great if you work with ClientEval
+              hidden: 'ClientEval: !!node.property.anotherProperty'
+              # Add a preview image. Does not work with the color layout
+              preview: 'resource://Vendor.Package/filenameInPublicFolder.png'
             center:
               label: 'Center'
               icon: 'align-center'
