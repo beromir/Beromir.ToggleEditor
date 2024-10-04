@@ -5,10 +5,16 @@
     border-radius: 2px;
 }
 
-.ToggleEditor__image___3sEPg,
-.ToggleEditor__imageFull___2jv4y {
+.ToggleEditor__image___3sEPg {
     width: 100%;
     height: auto;
+}
+
+.ToggleEditor__imageSVG___LVMPs {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
 }
 
 .ToggleEditor__radio___2Ij4y {

@@ -84,9 +84,18 @@ export default class ToggleEditor extends PureComponent {
                 return null;
             }
             const preview = item.preview;
+            const fullClass = item.previewFull ? style.imageFull : '';
+            const label = item.description || item.label;
+
+            if (preview.startsWith('<svg ')) {
+                return (
+                    <div className={`${style.imageSVG} ${fullClass}`} aria-label={label} dangerouslySetInnerHTML={{__html: preview}}/>
+                )
+            }
+
             const src = preview.startsWith('resource://') ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
             return (
-                <img src={src} className={[item.previewFull ? style.imageFull : style.image]} alt={item.description || item.label} />
+                <img src={src} className={`${style.image} ${fullClass}`} alt={label} />
             )
         }
 

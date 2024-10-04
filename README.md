@@ -190,7 +190,7 @@ properties:
               color: '#ffffff'
               # Hide the value. Great if you work with ClientEval
               hidden: 'ClientEval: !!node.property.anotherProperty'
-              # Add a preview image. Does not work with the color layout
+              # Add a preview image. Does not work with the color layout. Can be also a string with svg markup
               preview: 'resource://Vendor.Package/filenameInPublicFolder.png'
               # If true and no label is defined, the margin from the button get's removed. Defaults to false
               previewFull: true

@@ -5,10 +5,16 @@
     border-radius: 2px;
 }
 
-.image,
-.imageFull {
+.image {
     width: 100%;
     height: auto;
+}
+
+.imageSVG {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
 }
 
 .radio {
