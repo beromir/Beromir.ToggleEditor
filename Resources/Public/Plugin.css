@@ -90,45 +90,73 @@
     row-gap: 4px;
 }
 
-.ToggleEditor__colorButton___28s45 {
+.ToggleEditor__colorButtonWrapper___3GiQ0 {
+    position: relative;
     width: 100%;
     height: 40px;
     max-width: 60px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
-.ToggleEditor__colorButton___28s45:hover {
-        opacity: 0.9;
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__colorButton___28s45 {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
     }
 
-.ToggleEditor__colorButton___28s45:focus {
-        outline: #00adee solid 1px;
-        outline-offset: 1px;
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__colorButton___28s45:hover {
+            opacity: 0.9;
+        }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__colorButton___28s45:focus {
+            outline: #00adee solid 1px;
+            outline-offset: 1px;
+        }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__colorButton___28s45.ToggleEditor__selected___7KwJL {
+            outline: #00adee solid 2px;
+            outline-offset: 2px;
+        }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__emptyButton___1hOku {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        background-color: #525252;
+        border: none;
+        border-radius: 50%;
+        transform: translate(50%, -50%);
+        cursor: pointer;
     }
 
-.ToggleEditor__colorButton___28s45.ToggleEditor__selected___7KwJL {
-        outline: #00adee solid 2px;
-        outline-offset: 2px;
-    }
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__emptyButton___1hOku:hover {
+            background-color: #fff;
+        }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__emptyButton___1hOku:hover svg {
+                color: #525252;
+            }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__emptyButton___1hOku:focus {
+            outline: #00adee solid 1px;
+            outline-offset: 1px;
+        }
+
+.ToggleEditor__colorButtonWrapper___3GiQ0 .ToggleEditor__emptyButton___1hOku svg {
+            color: #fff;
+        }
 
 .ToggleEditor__colorTransparent___1iYdv {
     background-size: 14px;
     background-image: url('data:image/svg+xml, <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F5F5F5"/><rect width="50" height="50" fill="%23d4d4d4"/><rect x="50" y="50" width="50" height="50" fill="%23d4d4d4"/></svg>');
 }
-
-.ToggleEditor__colorNone___tB3ik {
-    background-color: #3f3f3f;
-}
-
-.ToggleEditor__colorNone___tB3ik svg {
-        display: block;
-        margin: 0 auto;
-        width: 18px;
-        height: 18px;
-        color: #d4d4d4;
-    }
 
 .ToggleEditor__button___3t2C2 {
     display: flex;

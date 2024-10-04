@@ -12,6 +12,7 @@ export default class ToggleEditor extends PureComponent {
         options: PropTypes.shape({
             layout: PropTypes.string,
             columns: PropTypes.string,
+            allowEmpty: PropTypes.bool,
             values: PropTypes.objectOf(
                 PropTypes.shape({
                     label: PropTypes.string,
@@ -27,6 +28,7 @@ export default class ToggleEditor extends PureComponent {
     static defaultOptions = {
         layout: 'grid',
         columns: null,
+        allowEmpty: false,
     };
 
     render() {
@@ -74,7 +76,7 @@ export default class ToggleEditor extends PureComponent {
             if (node) {
                 node.blur();
             }
-            commit(item.key);
+            commit(item ? item.key : '');
         }
 
         return (
@@ -83,9 +85,11 @@ export default class ToggleEditor extends PureComponent {
                     switch (options.layout) {
                         case 'list':
                             return (
-                                <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button" title={item.description}
+                                <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button"
+                                        title={item.description}
                                         className={value === item.key ? style.selected : ''}>
-                                    <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
+                                    <span
+                                        className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
                                     {item.icon && <Icon icon={item.icon}/>}
                                     {item.label && <span>{item.label}</span>}
                                 </button>
@@ -94,12 +98,20 @@ export default class ToggleEditor extends PureComponent {
                         case 'color':
                             return (
                                 <div className={style.colorBox}>
-                                    <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button"
-                                            title={item.description}
-                                            className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
-                                            style={{'background-color': item.color}}>
-                                        {item.color == 'none' && <Icon icon="times-circle"/>}
-                                    </button>
+                                    <div className={style.colorButtonWrapper}>
+                                        <button onClick={({currentTarget}) => onChange(item, currentTarget)}
+                                                type="button"
+                                                title={item.description}
+                                                className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : ''].join(' ')}
+                                                style={{'background-color': item.color}}/>
+
+                                        {options.allowEmpty && value === item.key &&
+                                            <button onClick={({currentTarget}) => onChange(null, currentTarget)}
+                                                    type="button" title="clear" className={style.emptyButton}>
+                                                <Icon icon="times" size="sm"/>
+                                            </button>
+                                        }
+                                    </div>
                                     {item.label && <span className={style.label}>{item.label}</span>}
                                 </div>
                             );
@@ -107,7 +119,8 @@ export default class ToggleEditor extends PureComponent {
                         default:
                             return (
                                 <Button onClick={() => onChange(item)} isActive={value === item.key}
-                                        title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
+                                        title={item.description}
+                                        className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon && !item.color && <Icon icon={item.icon}/>}
                                     {item.color &&
                                         <span className={style.color} style={{'background-color': item.color}}></span>}
