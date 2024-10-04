@@ -120,6 +120,7 @@ properties:
         editorOptions:
           layout: 'color'
           columns: 3
+          allowEmpty: true
           values:
             primary:
               color: '#6366f1'
@@ -131,8 +132,6 @@ properties:
             transparent:
               color: 'transparent'
               label: 'Transparent'
-            none:
-              color: 'none'
 ```
 
 </details>
@@ -158,8 +157,8 @@ You can select one of the following layout options:
 
 If you use the color layout or the grid layout, you can optionally specify the number of columns to render more than one
 row.
-The color layout is a special case for selecting a color. It renders the color in the editor. You can use `none` and
-`transparent` as color values to render these values in a visible way for the editors (see screenshot above).
+The color layout is a special case for selecting a color. It renders the color in the editor. You can use `transparent`
+as color value to render this value in a visible way for the editors (see screenshot above).
 
 Add a property of type string to your NodeType definition and use the following editor configuration:
 
@@ -178,6 +177,8 @@ properties:
           layout: 'flex'
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
           columns: 2
+          # Allow empty value. Show a clear button in the selected color box. Does only work with the color layout
+          allowEmpty: true
           values:
             left:
               # Show a label
