@@ -108,10 +108,8 @@ export default class ToggleEditor extends PureComponent {
                             return (
                                 <Button onClick={() => onChange(item)} isActive={value === item.key}
                                         title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
-                                    {item.icon && !item.color && <Icon icon={item.icon}/>}
-                                    {item.color &&
-                                        <span className={style.color} style={{'background-color': item.color}}></span>}
-                                    {item.label && <span className={item.icon ? style.label : ''}>{item.label}</span>}
+                                    {item.icon <Icon icon={item.icon}/>}
+                                    {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
                                 </Button>
                             );
                     }
