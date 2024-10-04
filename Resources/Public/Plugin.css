@@ -1,10 +1,17 @@
+.ToggleEditor__highlight___16C4N {
+    outline: #ff8700 solid 2px;
+    outline-offset: 2px;
+    z-index: 2;
+    border-radius: 2px;
+}
+
 .ToggleEditor__flex___2iYJQ {
     display: flex;
     gap: 1px;
     background-color: #525252;
 }
 
-    .ToggleEditor__flex___2iYJQ > * {
+.ToggleEditor__flex___2iYJQ > * {
         flex: auto;
     }
 
@@ -29,10 +36,18 @@
         background-color: inherit;
         border: none;
         border-radius: 0;
+        cursor: pointer;
     }
 
-.ToggleEditor__list___2HR4X button.ToggleEditor__selected___7KwJL .ToggleEditor__radio___2Ij4y,
-        .ToggleEditor__list___2HR4X button:hover .ToggleEditor__radio___2Ij4y {
+.ToggleEditor__list___2HR4X button:focus {
+            outline: none;
+        }
+
+.ToggleEditor__list___2HR4X button:focus .ToggleEditor__radio___2Ij4y {
+                outline: #00adee solid 1px;
+            }
+
+.ToggleEditor__list___2HR4X button:where(.ToggleEditor__selected___7KwJL,:hover) .ToggleEditor__radio___2Ij4y {
             background-color: #00adee;
         }
 
@@ -68,52 +83,52 @@
     padding-top: 4px;
 }
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorBox___2LQlG {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        row-gap: 4px;
+.ToggleEditor__colorBox___2LQlG {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 4px;
+}
+
+.ToggleEditor__colorButton___28s45 {
+    width: 100%;
+    height: 40px;
+    max-width: 60px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ToggleEditor__colorButton___28s45:hover {
+        opacity: 0.9;
     }
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45 {
-        width: 100%;
-        height: 40px;
-        max-width: 60px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+.ToggleEditor__colorButton___28s45:focus {
+        outline: #00adee solid 1px;
+        outline-offset: 1px;
     }
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45:hover {
-            opacity: 0.9;
-        }
+.ToggleEditor__colorButton___28s45.ToggleEditor__selected___7KwJL {
+        outline: #00adee solid 2px;
+        outline-offset: 2px;
+    }
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__selected___7KwJL,
-        .ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45:focus {
-            outline: #00adee solid 2px;
-            outline-offset: 2px;
-        }
+.ToggleEditor__colorTransparent___1iYdv {
+    background-size: 14px;
+    background-image: url('data:image/svg+xml, <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F5F5F5"/><rect width="50" height="50" fill="%23d4d4d4"/><rect x="50" y="50" width="50" height="50" fill="%23d4d4d4"/></svg>');
+}
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45 svg {
-            display: none;
-        }
+.ToggleEditor__colorNone___tB3ik {
+    background-color: #3f3f3f;
+}
 
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorTransparent___1iYdv {
-            background-size: 14px;
-            background-image: url('data:image/svg+xml, <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%23F5F5F5"/><rect width="50" height="50" fill="%23d4d4d4"/><rect x="50" y="50" width="50" height="50" fill="%23d4d4d4"/></svg>');
-        }
-
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorNone___tB3ik {
-            background-color: #3f3f3f !important;
-        }
-
-.ToggleEditor__color___-gymi .ToggleEditor__colorButton___28s45.ToggleEditor__colorNone___tB3ik svg {
-                display: block;
-                margin: 0 auto;
-                width: 18px;
-                height: 18px;
-                color: #d4d4d4;
-            }
+.ToggleEditor__colorNone___tB3ik svg {
+        display: block;
+        margin: 0 auto;
+        width: 18px;
+        height: 18px;
+        color: #d4d4d4;
+    }
 
 .ToggleEditor__button___3t2C2 {
     display: flex;
@@ -127,6 +142,12 @@
 
 .ToggleEditor__button___3t2C2 > * + * {
         margin-top: 6px;
+    }
+
+.ToggleEditor__button___3t2C2:focus {
+        outline: #00adee solid 1px;
+        z-index: 1;
+        border-radius: 2px;
     }
 
 .ToggleEditor__label___2AZh1 {

@@ -8,6 +8,7 @@ export default class ToggleEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
         commit: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         options: PropTypes.shape({
             layout: PropTypes.string,
             columns: PropTypes.string,
@@ -17,6 +18,7 @@ export default class ToggleEditor extends PureComponent {
                     icon: PropTypes.string,
                     description: PropTypes.string,
                     color: PropTypes.string,
+                    hidden: PropTypes.bool,
                 })
             ),
         }).isRequired,
@@ -28,7 +30,7 @@ export default class ToggleEditor extends PureComponent {
     };
 
     render() {
-        const {commit, value} = this.props;
+        const {commit, value, highlight, i18nRegistry} = this.props;
         const options = Object.assign(
             {},
             this.constructor.defaultOptions,
@@ -48,25 +50,31 @@ export default class ToggleEditor extends PureComponent {
 
         for (const key in values) {
             const item = values[key];
+            if (item.hidden) {
+                continue;
+            }
             valueArray.push({
-                label: item.label,
-                icon: item.icon,
-                description: item.description,
-                color: item.color,
+                ...item,
+                label: i18nRegistry.translate(item.label),
+                description: i18nRegistry.translate(item.description),
                 key,
             });
         }
 
         function getColumnsClassNames() {
-            if (options.layout === 'list') {
+            if (options.layout === 'list' || options.layout === 'flex') {
                 return null;
-            } else if (options.layout === 'flex') {
-                return null;
-            } else if (options.columns === null) {
-                return {'grid-template-columns': 'repeat(' + Object.keys(options.values).length + ', 1fr)'};
             }
 
-            return {'grid-template-columns': 'repeat(' + options.columns + ', 1fr)'};
+            const columns = options.columns || valueArray.length;
+            return {'grid-template-columns': `repeat(${columns}, 1fr)`};
+        }
+
+        function onChange(item, node) {
+            if (node) {
+                node.blur();
+            }
+            commit(item.key);
         }
 
         return (
@@ -75,9 +83,9 @@ export default class ToggleEditor extends PureComponent {
                     switch (options.layout) {
                         case 'list':
                             return (
-                                <button onClick={() => commit(item.key)} type="button" title={item.description}
+                                <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button" title={item.description}
                                         className={value === item.key ? style.selected : ''}>
-                                    <span className={style.radio}><span></span></span>
+                                    <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
                                     {item.icon && <Icon icon={item.icon}/>}
                                     {item.label && <span>{item.label}</span>}
                                 </button>
@@ -86,11 +94,11 @@ export default class ToggleEditor extends PureComponent {
                         case 'color':
                             return (
                                 <div className={style.colorBox}>
-                                    <button onClick={() => commit(item.key)} type="button"
+                                    <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button"
                                             title={item.description}
-                                            className={[style.colorButton, value === item.key ? style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
+                                            className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : '', item.color === 'none' ? style.colorNone : ''].join(' ')}
                                             style={{'background-color': item.color}}>
-                                        <Icon icon="times-circle"/>
+                                        {item.color == 'none' && <Icon icon="times-circle"/>}
                                     </button>
                                     {item.label && <span className={style.label}>{item.label}</span>}
                                 </div>
@@ -98,8 +106,8 @@ export default class ToggleEditor extends PureComponent {
 
                         default:
                             return (
-                                <Button onClick={() => commit(item.key)} isActive={value === item.key}
-                                        title={item.description} className={style.button}>
+                                <Button onClick={() => onChange(item)} isActive={value === item.key}
+                                        title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon && !item.color && <Icon icon={item.icon}/>}
                                     {item.color &&
                                         <span className={style.color} style={{'background-color': item.color}}></span>}
