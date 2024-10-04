@@ -5,7 +5,8 @@
     border-radius: 2px;
 }
 
-.ToggleEditor__image___3sEPg {
+.ToggleEditor__image___3sEPg,
+.ToggleEditor__imageFull___2jv4y {
     width: 100%;
     height: auto;
 }
@@ -146,8 +147,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 12px;
     height: auto;
 }
 
@@ -161,7 +161,7 @@
         border-radius: 2px;
     }
 
-.ToggleEditor__button___3t2C2 .ToggleEditor__image___3sEPg:only-child {
+.ToggleEditor__button___3t2C2 .ToggleEditor__imageFull___2jv4y:only-child {
         margin: -12px;
     }
 

@@ -192,6 +192,8 @@ properties:
               hidden: 'ClientEval: !!node.property.anotherProperty'
               # Add a preview image. Does not work with the color layout
               preview: 'resource://Vendor.Package/filenameInPublicFolder.png'
+              # If true and no label is defined, the margin from the button get's removed. Defaults to false
+              previewFull: true
             center:
               label: 'Center'
               icon: 'align-center'

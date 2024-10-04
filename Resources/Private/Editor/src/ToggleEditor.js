@@ -20,6 +20,7 @@ export default class ToggleEditor extends PureComponent {
                     color: PropTypes.string,
                     hidden: PropTypes.bool,
                     preview: PropTypes.string,
+                    previewFull: PropTypes.bool,
                 })
             ),
         }).isRequired,
@@ -85,7 +86,7 @@ export default class ToggleEditor extends PureComponent {
             const preview = item.preview;
             const src = preview.startsWith('resource://') ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
             return (
-                <img src={src} className={style.image} alt={item.description || item.label} />
+                <img src={src} className={[item.previewFull ? style.imageFull : style.image]} alt={item.description || item.label} />
             )
         }
 
@@ -121,7 +122,7 @@ export default class ToggleEditor extends PureComponent {
                             return (
                                 <Button onClick={() => onChange(item)} isActive={value === item.key}
                                         title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
-                                    {item.icon <Icon icon={item.icon}/>}
+                                    {item.icon && <Icon icon={item.icon}/>}
                                     {getPreview(item)}
                                     {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
                                 </Button>
