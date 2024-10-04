@@ -5,6 +5,38 @@
     border-radius: 2px;
 }
 
+.ToggleEditor__image___3sEPg {
+    width: 100%;
+    height: auto;
+}
+
+.ToggleEditor__imageSVG___LVMPs {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.ToggleEditor__radio___2Ij4y {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    border: none;
+    background-color: #525252;
+    cursor: pointer;
+}
+
+.ToggleEditor__radio___2Ij4y span {
+        width: 6px;
+        height: 6px;
+        background-color: #fafafa;
+        border-radius: 9999px;
+    }
+
 .ToggleEditor__flex___2iYJQ {
     display: flex;
     gap: 1px;
@@ -26,6 +58,12 @@
     gap: 12px;
     grid-template-columns: repeat(1, 1fr);
 }
+
+.ToggleEditor__list___2HR4X .ToggleEditor__image___3sEPg {
+        width: auto;
+        height: 1em;
+        margin-right: 8px;
+    }
 
 .ToggleEditor__list___2HR4X button {
         display: flex;
@@ -53,26 +91,6 @@
 
 .ToggleEditor__list___2HR4X button svg {
             margin-right: 8px;
-        }
-
-.ToggleEditor__list___2HR4X .ToggleEditor__radio___2Ij4y {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 12px;
-        width: 22px;
-        height: 22px;
-        border-radius: 9999px;
-        border: none;
-        background-color: #525252;
-        cursor: pointer;
-    }
-
-.ToggleEditor__list___2HR4X .ToggleEditor__radio___2Ij4y span {
-            width: 6px;
-            height: 6px;
-            background-color: #fafafa;
-            border-radius: 9999px;
         }
 
 .ToggleEditor__color___-gymi {
@@ -163,8 +181,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 12px;
     height: auto;
 }
 
@@ -176,6 +193,10 @@
         outline: #00adee solid 1px;
         z-index: 1;
         border-radius: 2px;
+    }
+
+.ToggleEditor__button___3t2C2 .ToggleEditor__imageFull___2jv4y:only-child {
+        margin: -12px;
     }
 
 .ToggleEditor__label___2AZh1 {
