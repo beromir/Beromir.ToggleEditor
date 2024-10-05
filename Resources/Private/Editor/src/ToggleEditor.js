@@ -65,13 +65,15 @@ export default class ToggleEditor extends PureComponent {
             });
         }
 
-        function getColumnsClassNames() {
+        function getColumnsStyle() {
             if (options.layout === 'list' || options.layout === 'flex') {
                 return null;
             }
 
             const columns = options.columns || valueArray.length;
-            return {'grid-template-columns': `repeat(${columns}, 1fr)`};
+            return {
+                gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
+            };
         }
 
         function onChange(item, node) {
@@ -102,7 +104,7 @@ export default class ToggleEditor extends PureComponent {
         }
 
         return (
-            <div className={style[options.layout]} style={getColumnsClassNames()}>
+            <div className={style[options.layout]} style={getColumnsStyle()}>
                 {valueArray.map((item) => {
                     switch (options.layout) {
                         case 'list':
