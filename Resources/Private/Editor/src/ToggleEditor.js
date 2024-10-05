@@ -10,8 +10,8 @@ export default class ToggleEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         options: PropTypes.shape({
-            layout: PropTypes.string,
-            columns: PropTypes.string,
+            layout: PropTypes.oneOf(['grid', 'flex', 'list', 'color']),
+            columns: PropTypes.number,
             allowEmpty: PropTypes.bool,
             values: PropTypes.objectOf(
                 PropTypes.shape({
