@@ -97,21 +97,21 @@ export default class ToggleEditor extends PureComponent {
             return [];
         }
         const i18n = this.props.i18nRegistry;
-        const valueArray = [];
+        const array = [];
 
-        for (const key in values) {
-            const item = values[key];
+        for (const value in values) {
+            const item = values[value];
             if (item.hidden) {
                 continue;
             }
-            valueArray.push({
+            array.push({
                 ...item,
                 label: i18n.translate(item.label),
                 description: i18n.translate(item.description),
-                key,
+                value,
             });
         }
-        return valueArray;
+        return array;
     }
 
     render() {
@@ -154,7 +154,7 @@ export default class ToggleEditor extends PureComponent {
             if (node) {
                 node.blur();
             }
-            commit(item ? item.key : '');
+            commit(item && item.value ? item.value : '');
         }
 
         function getPreview(item) {
@@ -195,8 +195,8 @@ export default class ToggleEditor extends PureComponent {
                                 <button onClick={({currentTarget}) => onChange(item, currentTarget)}
                                         type="button"
                                         title={item.description}
-                                        className={value === item.key ? style.selected : ''}>
-                                    <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}>
+                                        className={value === item.value ? style.selected : ''}>
+                                    <span className={[style.radio, value === item.value && highlight ? style.highlight : ''].join(' ')}>
                                         <span></span>
                                     </span>
                                     {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
@@ -212,10 +212,10 @@ export default class ToggleEditor extends PureComponent {
                                         <button onClick={({currentTarget}) => onChange(item, currentTarget)}
                                                 type="button"
                                                 title={item.description}
-                                                className={[style.colorButton, value === item.key ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : ''].join(' ')}
+                                                className={[style.colorButton, value === item.value ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : ''].join(' ')}
                                                 style={{'background-color': item.color}}/>
 
-                                        {options.allowEmpty && value === item.key &&
+                                        {options.allowEmpty && value === item.value &&
                                             <button onClick={({currentTarget}) => onChange(null, currentTarget)}
                                                     type="button"
                                                     title={i18nRegistry.translate('Beromir.ToggleEditor:Main:resetColor')}
@@ -231,9 +231,9 @@ export default class ToggleEditor extends PureComponent {
                         default:
                             return (
                                 <Button onClick={() => onChange(item)}
-                                        isActive={value === item.key}
+                                        isActive={value === item.value}
                                         title={item.description}
-                                        className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
+                                        className={[style.button, value === item.value && highlight ? style.highlight : ''].join(' ')}>
                                     {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
                                     {getPreview(item)}
                                     {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
