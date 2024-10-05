@@ -13,10 +13,12 @@ export default class ToggleEditor extends PureComponent {
             layout: PropTypes.oneOf(['grid', 'flex', 'list', 'color']),
             columns: PropTypes.number,
             allowEmpty: PropTypes.bool,
+            iconSize: PropTypes.oneOf(['xs', 'sm', 'lg', '2x', '3x']),
             values: PropTypes.objectOf(
                 PropTypes.shape({
                     label: PropTypes.string,
                     icon: PropTypes.string,
+                    iconRotate: PropTypes.number,
                     description: PropTypes.string,
                     color: PropTypes.string,
                     hidden: PropTypes.bool,
@@ -31,6 +33,7 @@ export default class ToggleEditor extends PureComponent {
         layout: 'grid',
         columns: null,
         allowEmpty: false,
+        iconSize: null,
     };
 
     render() {
@@ -103,18 +106,29 @@ export default class ToggleEditor extends PureComponent {
             )
         }
 
+        const getRotationStyle = (item) => {
+            if (item.iconRotate) {
+                return {
+                    transform: `rotate(${item.iconRotate}deg)`
+                };
+            }
+            return {};
+        };
+
         return (
             <div className={style[options.layout]} style={getColumnsStyle()}>
                 {valueArray.map((item) => {
                     switch (options.layout) {
                         case 'list':
                             return (
-                                <button onClick={({currentTarget}) => onChange(item, currentTarget)} type="button"
+                                <button onClick={({currentTarget}) => onChange(item, currentTarget)}
+                                        type="button"
                                         title={item.description}
                                         className={value === item.key ? style.selected : ''}>
-                                    <span
-                                        className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}><span></span></span>
-                                    {item.icon && <Icon icon={item.icon}/>}
+                                    <span className={[style.radio, value === item.key && highlight ? style.highlight : ''].join(' ')}>
+                                        <span></span>
+                                    </span>
+                                    {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
                                     {getPreview(item)}
                                     {item.label && <span>{item.label}</span>}
                                 </button>
@@ -145,9 +159,11 @@ export default class ToggleEditor extends PureComponent {
 
                         default:
                             return (
-                                <Button onClick={() => onChange(item)} isActive={value === item.key}
-                                        title={item.description} className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
-                                    {item.icon && <Icon icon={item.icon}/>}
+                                <Button onClick={() => onChange(item)}
+                                        isActive={value === item.key}
+                                        title={item.description}
+                                        className={[style.button, value === item.key && highlight ? style.highlight : ''].join(' ')}>
+                                    {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
                                     {getPreview(item)}
                                     {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
                                 </Button>
