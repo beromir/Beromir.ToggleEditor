@@ -3,8 +3,8 @@ Neos:
     Ui:
       resources:
         javascript:
-          Beromir.ToogleEditor:
+          Beromir.ToggleEditor:
             resource: resource://Beromir.ToggleEditor/Public/Plugin.js
         stylesheets:
-          Beromir.ToogleEditor:
+          Beromir.ToggleEditor:
             resource: resource://Beromir.ToggleEditor/Public/Plugin.css
