@@ -1,3 +1,10 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}
+
 .highlight {
     outline: #ff8700 solid 2px;
     outline-offset: 2px;

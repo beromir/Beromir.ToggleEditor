@@ -10,6 +10,10 @@
                 <source>Reset color</source>
                 <target>Farbe zurücksetzen</target>
             </trans-unit>
+            <trans-unit id="loading" xml:space="preserve">
+                <source>Loading…</source>
+                <target>Lade…</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

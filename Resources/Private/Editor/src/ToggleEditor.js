@@ -1,8 +1,26 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent, useState } from 'react';
 import PropTypes from 'prop-types';
-import {Button, Icon} from '@neos-project/react-ui-components';
+import { Button, Icon } from '@neos-project/react-ui-components';
+import { neos } from '@neos-project/neos-ui-decorators';
 import style from './ToggleEditor.css';
+import { connect } from 'react-redux';
+import { selectors } from '@neos-project/neos-ui-redux-store';
 
+const getDataLoaderOptionsForProps = props => ({
+    contextNodePath: props.focusedNodePath,
+    dataSourceIdentifier: props.options.dataSourceIdentifier,
+    dataSourceUri: props.options.dataSourceUri,
+    dataSourceAdditionalData: props.options.dataSourceAdditionalData,
+    dataSourceDisableCaching: Boolean(props.options.dataSourceDisableCaching)
+});
+
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
+    dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
+}))
+@connect(state => ({
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
+}))
 export default class ToggleEditor extends PureComponent {
 
     static propTypes = {
@@ -26,6 +44,11 @@ export default class ToggleEditor extends PureComponent {
                     previewFull: PropTypes.bool,
                 })
             ),
+
+            dataSourceIdentifier: PropTypes.string,
+            dataSourceUri: PropTypes.string,
+            dataSourceDisableCaching: PropTypes.bool,
+            dataSourceAdditionalData: PropTypes.objectOf(PropTypes.any)
         }).isRequired,
     };
 
@@ -36,23 +59,44 @@ export default class ToggleEditor extends PureComponent {
         iconSize: null,
     };
 
-    render() {
-        const {commit, value, highlight, i18nRegistry} = this.props;
-        const options = Object.assign(
-            {},
-            this.constructor.defaultOptions,
-            this.props.options,
-        );
-        const values = options.values;
+    state = {
+        isLoading: false,
+        values: []
+    };
 
-        if (!values) {
-            return (
-                <div className={style.textError}>
-                    {i18nRegistry.translate('Beromir.ToggleEditor:Main:error.noNodeTypeDefintion')}
-                </div>
-            );
+    constructor(props) {
+        super(props);
+        this.state = {
+            values: this.hasDataSource() ? [] : this.flattenValues(this.props.options.values)
+        };
+    }
+
+    hasDataSource() {
+        return this.props.options.dataSourceIdentifier || this.props.options.dataSourceUri;
+    }
+
+    componentDidMount() {
+        if (this.hasDataSource()) {
+            this.loadOptions();
         }
+    }
 
+    loadOptions() {
+        this.setState({ isLoading: true });
+        this.props.dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(this.props), this.props.value)
+            .then(values => {
+                this.setState({
+                    isLoading: false,
+                    values
+                });
+            });
+    }
+
+    flattenValues(values) {
+        if (!values || typeof values !== 'object') {
+            return [];
+        }
+        const i18n = this.props.i18nRegistry;
         const valueArray = [];
 
         for (const key in values) {
@@ -62,18 +106,45 @@ export default class ToggleEditor extends PureComponent {
             }
             valueArray.push({
                 ...item,
-                label: i18nRegistry.translate(item.label),
-                description: i18nRegistry.translate(item.description),
+                label: i18n.translate(item.label),
+                description: i18n.translate(item.description),
                 key,
             });
+        }
+        return valueArray;
+    }
+
+    render() {
+        const {values, isLoading} = this.state;
+        const {commit, value, highlight, i18nRegistry} = this.props;
+        const options = Object.assign(
+            {},
+            this.constructor.defaultOptions,
+            this.props.options,
+        );
+
+        if (isLoading) {
+            return (
+                <div className={style.loading}
+                     title={i18nRegistry.translate('Beromir.ToggleEditor:Main:loading')}>
+                    <Icon icon="spinner" size="lg" spin/>
+                </div>
+            );
+        }
+
+        if (!values || !values.length) {
+            return (
+                <div className={style.textError}>
+                    {i18nRegistry.translate('Beromir.ToggleEditor:Main:error.noNodeTypeDefintion')}
+                </div>
+            );
         }
 
         function getColumnsStyle() {
             if (options.layout === 'list' || options.layout === 'flex') {
                 return null;
             }
-
-            const columns = options.columns || valueArray.length;
+            const columns = options.columns || values.length || 1;
             return {
                 gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
             };
@@ -106,18 +177,18 @@ export default class ToggleEditor extends PureComponent {
             )
         }
 
-        const getRotationStyle = (item) => {
+        function getRotationStyle(item) {
             if (item.iconRotate) {
                 return {
                     transform: `rotate(${item.iconRotate}deg)`
                 };
             }
             return {};
-        };
+        }
 
         return (
             <div className={style[options.layout]} style={getColumnsStyle()}>
-                {valueArray.map((item) => {
+                {values.map((item) => {
                     switch (options.layout) {
                         case 'list':
                             return (

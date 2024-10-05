@@ -205,6 +205,14 @@ properties:
             right:
               label: 'Right'
               icon: 'align-right'
+
+          # Optionally use a data source:
+          # If `dataSourceIdentifier` or `dataSourceUri` is defined, the `values` from above will be ignored
+          dataSourceIdentifier: 'some-datasource'
+          dataSourceUri: 'some/custom-route'
+          dataSourceAdditionalData:
+            foo: 'bar'
+          dataSourceDisableCaching: false
 ```
 
 ## Credits
@@ -214,3 +222,4 @@ This package is inspired by:
 - [Carbon.ColorValues](https://github.com/CarbonPackages/Carbon.ColorValues)
 - [Shel.Neos.ColorPicker](https://github.com/Sebobo/Shel.Neos.ColorPicker)
 - [Kirby CMS toggles field](https://getkirby.com/docs/reference/panel/fields/toggles)
+- [I13e.ButtonEditor](https://github.com/ideenstadtwerke/I13e.ButtonEditor)
