@@ -1,6 +1,6 @@
 {
     "name": "beromir/neos-toggle-editor",
-    "type": "neos-package",
+    "type": "neos-plugin",
     "description": "A plugin for Neos CMS which provides a toggle editor.",
     "license": "GPL-3.0",
     "keywords": [

@@ -179,12 +179,16 @@ properties:
           columns: 2
           # Allow empty value. Show a clear button in the selected color box. Does only work with the color layout
           allowEmpty: true
+          # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null
+          iconSize: 'lg'
           values:
             left:
               # Show a label
               label: 'Left'
               # Show an icon. Does not work with the color layout
               icon: 'align-left'
+              # Rotate the icon (in degrees)
+              iconRotate: -45
               # Show a description on hover
               description: 'Align left'
               # Specify the color to display in the editor. Does only work with the color layout
@@ -201,6 +205,14 @@ properties:
             right:
               label: 'Right'
               icon: 'align-right'
+
+          # Optionally use a data source:
+          # If `dataSourceIdentifier` or `dataSourceUri` is defined, the `values` from above will be ignored
+          dataSourceIdentifier: 'some-datasource'
+          dataSourceUri: 'some/custom-route'
+          dataSourceAdditionalData:
+            foo: 'bar'
+          dataSourceDisableCaching: false
 ```
 
 ## Credits
@@ -210,3 +222,4 @@ This package is inspired by:
 - [Carbon.ColorValues](https://github.com/CarbonPackages/Carbon.ColorValues)
 - [Shel.Neos.ColorPicker](https://github.com/Sebobo/Shel.Neos.ColorPicker)
 - [Kirby CMS toggles field](https://getkirby.com/docs/reference/panel/fields/toggles)
+- [I13e.ButtonEditor](https://github.com/ideenstadtwerke/I13e.ButtonEditor)
