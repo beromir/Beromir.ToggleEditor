@@ -45,7 +45,7 @@ export default class ToggleEditor extends PureComponent {
         if (!values) {
             return (
                 <div className={style.textError}>
-                    No options defined, add some to the NodeType definition.
+                    {i18nRegistry.translate('Beromir.ToggleEditor:Main:error.noNodeTypeDefintion')}
                 </div>
             );
         }
@@ -130,7 +130,9 @@ export default class ToggleEditor extends PureComponent {
 
                                         {options.allowEmpty && value === item.key &&
                                             <button onClick={({currentTarget}) => onChange(null, currentTarget)}
-                                                    type="button" title="clear" className={style.emptyButton}>
+                                                    type="button"
+                                                    title={i18nRegistry.translate('Beromir.ToggleEditor:Main:resetColor')}
+                                                    className={style.emptyButton}>
                                                 <Icon icon="times" size="sm"/>
                                             </button>
                                         }

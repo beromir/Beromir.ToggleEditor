@@ -8,3 +8,8 @@ Neos:
         stylesheets:
           Beromir.ToggleEditor:
             resource: resource://Beromir.ToggleEditor/Public/Plugin.css
+    userInterface:
+      translation:
+        autoInclude:
+          Beromir.ToggleEditor:
+            - Main
