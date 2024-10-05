@@ -1,3 +1,10 @@
+.ToggleEditor__loading___3kYZQ {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}
+
 .ToggleEditor__highlight___16C4N {
     outline: #ff8700 solid 2px;
     outline-offset: 2px;
