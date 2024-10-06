@@ -5,8 +5,8 @@
             <trans-unit id="error.noNodeTypeDefintion" xml:space="preserve">
                 <source>No options defined, add some to the NodeType definition.</source>
             </trans-unit>
-            <trans-unit id="resetColor" xml:space="preserve">
-                <source>Reset color</source>
+            <trans-unit id="reset" xml:space="preserve">
+                <source>Reset</source>
             </trans-unit>
             <trans-unit id="loading" xml:space="preserve">
                 <source>Loading…</source>

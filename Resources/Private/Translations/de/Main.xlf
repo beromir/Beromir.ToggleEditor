@@ -6,9 +6,9 @@
                 <source>No options defined, add some to the NodeType definition.</source>
                 <target>Keine Optionen definiert, fügen Sie einige zur NodeType-Definition hinzu.</target>
             </trans-unit>
-            <trans-unit id="resetColor" xml:space="preserve">
-                <source>Reset color</source>
-                <target>Farbe zurücksetzen</target>
+            <trans-unit id="reset" xml:space="preserve">
+                <source>Reset</source>
+                <target>Zurücksetzen</target>
             </trans-unit>
             <trans-unit id="loading" xml:space="preserve">
                 <source>Loading…</source>

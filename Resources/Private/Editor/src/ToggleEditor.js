@@ -5,6 +5,7 @@ import { neos } from '@neos-project/neos-ui-decorators';
 import style from './ToggleEditor.css';
 import { connect } from 'react-redux';
 import { selectors } from '@neos-project/neos-ui-redux-store';
+import clsx from 'clsx';
 
 const getDataLoaderOptionsForProps = props => ({
     contextNodePath: props.focusedNodePath,
@@ -42,6 +43,7 @@ export default class ToggleEditor extends PureComponent {
                     hidden: PropTypes.bool,
                     preview: PropTypes.string,
                     previewFull: PropTypes.bool,
+                    disabled: PropTypes.bool
                 })
             ),
 
@@ -57,6 +59,7 @@ export default class ToggleEditor extends PureComponent {
         columns: null,
         allowEmpty: false,
         iconSize: null,
+        disabled: false,
     };
 
     state = {
@@ -66,13 +69,18 @@ export default class ToggleEditor extends PureComponent {
 
     constructor(props) {
         super(props);
+        const options = this.props.options;
         this.state = {
-            values: this.hasDataSource() ? [] : this.flattenValues(this.props.options.values)
+            values: !options || this.hasDataSource() ? [] : this.flattenValues(options.values)
         };
     }
 
     hasDataSource() {
-        return this.props.options.dataSourceIdentifier || this.props.options.dataSourceUri;
+        const options = this.props.options;
+        if (!options) {
+            return false;
+        }
+        return options.dataSourceIdentifier || options.dataSourceUri;
     }
 
     componentDidMount() {
@@ -120,12 +128,13 @@ export default class ToggleEditor extends PureComponent {
         const options = Object.assign(
             {},
             this.constructor.defaultOptions,
-            this.props.options,
+            this.props.options || {},
         );
+        const resetLabel = i18nRegistry.translate('Beromir.ToggleEditor:Main:reset');
 
         if (isLoading) {
             return (
-                <div className={style.loading}
+                <div className={clsx(style.wrapper, style.loading)}
                      title={i18nRegistry.translate('Beromir.ToggleEditor:Main:loading')}>
                     <Icon icon="spinner" size="lg" spin/>
                 </div>
@@ -134,12 +143,47 @@ export default class ToggleEditor extends PureComponent {
 
         if (!values || !values.length) {
             return (
-                <div className={style.textError}>
+                <div className={clsx(style.wrapper, style.error)}>
                     {i18nRegistry.translate('Beromir.ToggleEditor:Main:error.noNodeTypeDefintion')}
                 </div>
             );
         }
 
+        function onChange(item, node) {
+            if (node) {
+                node.blur();
+            }
+            if (!item || (options.allowEmpty && value === item.value)) {
+                commit('');
+                return;
+            }
+            commit(item.value);
+        }
+
+        function getPreview(item) {
+            if (!item || !item.preview) {
+                return null;
+            }
+            const preview = item.preview;
+            const fullClass = item.previewFull ? style.imageFull : null;
+            const label = item.description || item.label;
+
+            if (preview.startsWith('<svg ')) {
+                return (
+                    <div className={clsx(style.imageSVG, fullClass)} aria-label={label} dangerouslySetInnerHTML={{__html: preview}}/>
+                )
+            }
+
+            const src = preview.startsWith('resource://') ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
+            return (
+                <img src={src} className={clsx(style.image, fullClass)} alt={label} />
+            )
+        }
+
+        // const getColumnsStyle = () => ({'--columns': options.columns || values.length || 1})
+        const getRotationStyle = (item) => ({transform: `rotate(${item.iconRotate || 0}deg)`})
+        const getTitle = (item) => options.allowEmpty && value === item.value ? resetLabel : item.description || item.label;
+        const getAllowEmptyIcon = (item, className = style.allowEmpty) => options.allowEmpty && value === item.value ? <div className={className}><Icon size="sm" icon="times"/></div> : null;
         function getColumnsStyle() {
             if (options.layout === 'list' || options.layout === 'flex') {
                 return null;
@@ -150,80 +194,41 @@ export default class ToggleEditor extends PureComponent {
             };
         }
 
-        function onChange(item, node) {
-            if (node) {
-                node.blur();
-            }
-            commit(item && item.value ? item.value : '');
-        }
-
-        function getPreview(item) {
-            if (!item || !item.preview) {
-                return null;
-            }
-            const preview = item.preview;
-            const fullClass = item.previewFull ? style.imageFull : '';
-            const label = item.description || item.label;
-
-            if (preview.startsWith('<svg ')) {
-                return (
-                    <div className={`${style.imageSVG} ${fullClass}`} aria-label={label} dangerouslySetInnerHTML={{__html: preview}}/>
-                )
-            }
-
-            const src = preview.startsWith('resource://') ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
-            return (
-                <img src={src} className={`${style.image} ${fullClass}`} alt={label} />
-            )
-        }
-
-        function getRotationStyle(item) {
-            if (item.iconRotate) {
-                return {
-                    transform: `rotate(${item.iconRotate}deg)`
-                };
-            }
-            return {};
-        }
-
         return (
-            <div className={style[options.layout]} style={getColumnsStyle()}>
+            <div className={clsx(style.wrapper, style[options.layout], options.disabled && style.disabled)} style={getColumnsStyle()}>
                 {values.map((item) => {
+                    const isCurrent = value === item.value;
                     switch (options.layout) {
                         case 'list':
                             return (
                                 <button onClick={({currentTarget}) => onChange(item, currentTarget)}
                                         type="button"
-                                        title={item.description}
-                                        className={value === item.value ? style.selected : ''}>
-                                    <span className={[style.radio, value === item.value && highlight ? style.highlight : ''].join(' ')}>
+                                        title={getTitle(item)}
+                                        disabled={item.disabled}
+                                        className={clsx(style.listButton, isCurrent && style.selected)}
+                                >
+                                    <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
                                         <span></span>
                                     </span>
                                     {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
                                     {getPreview(item)}
                                     {item.label && <span>{item.label}</span>}
+                                    {getAllowEmptyIcon(item, style.allowEmptyRadio)}
                                 </button>
                             );
 
                         case 'color':
                             return (
                                 <div className={style.colorBox}>
-                                    <div className={style.colorButtonWrapper}>
-                                        <button onClick={({currentTarget}) => onChange(item, currentTarget)}
-                                                type="button"
-                                                title={item.description}
-                                                className={[style.colorButton, value === item.value ? highlight ? style.highlight : style.selected : '', item.color === 'transparent' ? style.colorTransparent : ''].join(' ')}
-                                                style={{'background-color': item.color}}/>
-
-                                        {options.allowEmpty && value === item.value &&
-                                            <button onClick={({currentTarget}) => onChange(null, currentTarget)}
-                                                    type="button"
-                                                    title={i18nRegistry.translate('Beromir.ToggleEditor:Main:resetColor')}
-                                                    className={style.emptyButton}>
-                                                <Icon icon="times" size="sm"/>
-                                            </button>
-                                        }
-                                    </div>
+                                    <button onClick={({currentTarget}) => onChange(item, currentTarget)}
+                                            type="button"
+                                            title={getTitle(item)}
+                                            disabled={item.disabled}
+                                            className={clsx(style.colorButton, isCurrent && (highlight ? style.highlight : style.selected), item.color === 'transparent' && style.colorTransparent)}
+                                            style={{backgroundColor: item.color}}
+                                    >
+                                        {getAllowEmptyIcon(item)}
+                                    </button>
                                     {item.label && <span className={style.label}>{item.label}</span>}
                                 </div>
                             );
@@ -231,12 +236,15 @@ export default class ToggleEditor extends PureComponent {
                         default:
                             return (
                                 <Button onClick={() => onChange(item)}
-                                        isActive={value === item.value}
-                                        title={item.description}
-                                        className={[style.button, value === item.value && highlight ? style.highlight : ''].join(' ')}>
+                                        isActive={isCurrent}
+                                        title={getTitle(item)}
+                                        disabled={item.disabled}
+                                        className={clsx(style.button, isCurrent && highlight && style.highlight)}
+                                >
                                     {item.icon && <Icon icon={item.icon} style={getRotationStyle(item)} size={options.iconSize} />}
                                     {getPreview(item)}
-                                    {item.label && <span className={item.icon || item.preview ? style.label : ''}>{item.label}</span>}
+                                    {item.label && <span className={clsx(item.icon || item.preview ? style.label : null)}>{item.label}</span>}
+                                    {getAllowEmptyIcon(item)}
                                 </Button>
                             );
                     }

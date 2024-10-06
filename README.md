@@ -177,10 +177,12 @@ properties:
           layout: 'flex'
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
           columns: 2
-          # Allow empty value. Show a clear button in the selected color box. Does only work with the color layout
+          # Allow empty value
           allowEmpty: true
           # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null
           iconSize: 'lg'
+          # Disable the whole editor
+          disable: false
           values:
             left:
               # Show a label
@@ -199,6 +201,8 @@ properties:
               preview: 'resource://Vendor.Package/filenameInPublicFolder.png'
               # If true and no label is defined, the margin from the button get's removed. Defaults to false
               previewFull: true
+              # Disable an item option
+              disabled: false
             center:
               label: 'Center'
               icon: 'align-center'
