@@ -11,7 +11,7 @@ const options = {
     sourcemap: true,
     target: "es2020",
     format: "iife",
-    legalComments: "none",
+    legalComments: "eof",
     entryPoints: { Plugin: "Resources/Private/Editor/manifest.js" },
     loader: {
         ".js": "jsx"
