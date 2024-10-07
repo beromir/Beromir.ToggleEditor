@@ -27,10 +27,9 @@ const defaultOptions = {
 };
 
 function Editor(props) {
-    const { layout, values, columns, allowEmpty, iconSize, disabled, dataSourceIdentifier, dataSourceUri } = {
-        ...defaultOptions,
-        ...props.options,
-    };
+    const mergedOptions = { ...defaultOptions, ...props.options };
+    const { layout, values, columns, allowEmpty, iconSize, disabled, dataSourceIdentifier, dataSourceUri } =
+        mergedOptions;
     const { value, commit, highlight, i18nRegistry, dataSourcesDataLoader } = props;
 
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
@@ -46,7 +45,7 @@ function Editor(props) {
                 setOptions(values);
             });
         }
-    });
+    }, [mergedOptions]);
 
     if (isLoading) {
         return (
