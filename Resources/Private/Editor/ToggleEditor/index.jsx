@@ -122,7 +122,8 @@ function Editor(props) {
         item.icon ? (
             <Icon icon={item.icon} style={{ transform: `rotate(${item.iconRotate || 0}deg)` }} size={iconSize} />
         ) : null;
-    const getTitle = (item) => (allowEmpty && value === item.value ? resetLabel : item.description || item.label);
+    const getTitle = (item) =>
+        allowEmpty && value === item.value ? resetLabel : i18nRegistry.translate(item.description || item.label);
     const getAllowEmptyIcon = (item, className = style.allowEmpty) =>
         allowEmpty ? (
             <div className={clsx(className, value === item.value && style.allowEmptyShow)}>
@@ -134,7 +135,8 @@ function Editor(props) {
         <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
             {options.map((item) => {
                 const isCurrent = value === item.value;
-                const { label, disabled } = item;
+                const disabled = item.disabled;
+                const label = i18nRegistry.translate(item.label);
                 switch (layout) {
                     case "list":
                         return (
@@ -149,7 +151,7 @@ function Editor(props) {
                                     <span></span>
                                 </span>
                                 {getIcon(item)}
-                                {getPreview(item)}
+                                {getPreview(item, i18nRegistry)}
                                 {label && <span>{label}</span>}
                                 {getAllowEmptyIcon(item, style.allowEmptyRadio)}
                             </button>
@@ -188,7 +190,7 @@ function Editor(props) {
                                 className={clsx(style.button, isCurrent && highlight && style.highlight)}
                             >
                                 {getIcon(item)}
-                                {getPreview(item)}
+                                {getPreview(item, i18nRegistry)}
                                 {label && (
                                     <span className={clsx(item.icon || item.preview ? style.label : null)}>
                                         {label}
@@ -234,13 +236,13 @@ Editor.propTypes = {
     }).isRequired,
 };
 
-function getPreview(item) {
+function getPreview(item, i18nRegistry) {
     if (!item || !item.preview) {
         return null;
     }
     const preview = item.preview;
     const fullClass = item.previewFull ? style.imageFull : null;
-    const label = item.description || item.label;
+    const label = i18nRegistry.translate(item.description || item.label);
 
     if (preview.startsWith("<svg ")) {
         return (
@@ -270,8 +272,6 @@ function flattenValues(values, i18nRegistry) {
         }
         array.push({
             ...item,
-            label: i18nRegistry.translate(item.label),
-            description: i18nRegistry.translate(item.description),
             value,
         });
     }
