@@ -176,7 +176,16 @@ properties:
           # One of 'grid', 'flex', 'list' or 'color'. Default: 'grid'
           layout: "flex"
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
+          # This can also be an expression like {items} / 2
+          # Gets surrounded by Math.floor
+          # Available values {items} = number of values / {maximalRows} = value from maximalRows
+          # The smaller value from columns and maximalColumns will be used
           columns: 2
+          # Alternativly you can set the maximal number of columns. Defaults to 4. Works only with 'grid' and 'color'
+          # This can also be an expression like {items} / 2
+          # Gets surrounded by Math.floor
+          # Available values {items} = number of values
+          maximalColumns: 4
           # Allow empty value
           allowEmpty: true
           # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null

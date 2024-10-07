@@ -17,6 +17,7 @@ const getDataLoaderOptionsForProps = (props) => ({
 
 const defaultOptions = {
     layout: "grid",
+    maximalColumns: 4,
     values: {},
     columns: null,
     allowEmpty: false,
@@ -28,8 +29,17 @@ const defaultOptions = {
 
 function Editor(props) {
     const mergedOptions = { ...defaultOptions, ...props.options };
-    const { layout, values, columns, allowEmpty, iconSize, disabled, dataSourceIdentifier, dataSourceUri } =
-        mergedOptions;
+    const {
+        layout,
+        values,
+        columns,
+        maximalColumns,
+        allowEmpty,
+        iconSize,
+        disabled,
+        dataSourceIdentifier,
+        dataSourceUri,
+    } = mergedOptions;
     const { value, commit, highlight, i18nRegistry, dataSourcesDataLoader } = props;
 
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
@@ -81,6 +91,33 @@ function Editor(props) {
         commit(item.value);
     }
 
+    const convertToColumns = (value, maximalColumns = 0) => {
+        if (typeof value === "number" && value > 0) {
+            return value;
+        }
+        const items = options.length || 1;
+        if (!value || typeof value !== "string") {
+            return items;
+        }
+        try {
+            value = value.replaceAll("{items}", items);
+            if (maximalColumns) {
+                value = value.replaceAll("{maximalColumns}", items);
+            }
+            // eslint-disable-next-line no-new-func
+            const evaluateFn = new Function(`return Math.floor(${value})`);
+            return evaluateFn();
+        } catch (e) {
+            console.warn('An error occurred while trying to evaluate "' + value + '"\n', e);
+        }
+    };
+
+    const getColumns = () => {
+        const evaluatedColumns = convertToColumns(columns, maximalColumns);
+        const evaluatedMaximalColumns = convertToColumns(maximalColumns);
+        return { "--columns": Math.min(evaluatedColumns, evaluatedMaximalColumns) };
+    };
+
     const getIcon = (item) =>
         item.icon ? (
             <Icon icon={item.icon} style={{ transform: `rotate(${item.iconRotate || 0}deg)` }} size={iconSize} />
@@ -94,10 +131,7 @@ function Editor(props) {
         ) : null;
 
     return (
-        <div
-            className={clsx(style.wrapper, style[layout], disabled && style.disabled)}
-            style={{ "--columns": columns || options.length || 1 }}
-        >
+        <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
             {options.map((item) => {
                 const isCurrent = value === item.value;
                 const { label, disabled } = item;
@@ -175,7 +209,8 @@ Editor.propTypes = {
     i18nRegistry: PropTypes.object.isRequired,
     options: PropTypes.shape({
         layout: PropTypes.oneOf(["grid", "flex", "list", "color"]),
-        columns: PropTypes.number,
+        columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        maximalColumns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         allowEmpty: PropTypes.bool,
         iconSize: PropTypes.oneOf(["xs", "sm", "lg", "2x", "3x"]),
         values: PropTypes.objectOf(
