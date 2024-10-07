@@ -203,6 +203,8 @@ properties:
               # Show a description on hover
               description: "Align left"
               # Specify the color to display in the editor. Does only work with the color layout
+              # If you pass multiple colors as an array (e.g. ['white', 'black]) it will generate a gradient with hard
+              # stops. This is useful if you have light and dark mode on your website
               color: "#ffffff"
               # Hide the value. Great if you work with ClientEval
               hidden: "ClientEval: !!node.property.anotherProperty"

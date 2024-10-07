@@ -48,7 +48,7 @@ function Editor(props) {
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
 
     const [isLoading, setIsLoading] = useState(hasDataSource);
-    const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, i18nRegistry));
+    const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, layout, i18nRegistry));
 
     useEffect(() => {
         if (!hasDataSource || mergedOptionsAsJSON === JSON.stringify(mergedOptions)) {
@@ -59,6 +59,11 @@ function Editor(props) {
         // Load options from data source
         dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
             setIsLoading(false);
+
+            if (layout === "color") {
+                setOptions(processColorValues(values));
+                return;
+            }
             setOptions(values);
         });
     }, [mergedOptions]);
@@ -164,6 +169,7 @@ function Editor(props) {
                         );
 
                     case "color":
+                        const isTransparent = item.color.length === 1 && item.color[0] === "transparent";
                         return (
                             <div className={style.colorBox}>
                                 <button
@@ -174,9 +180,9 @@ function Editor(props) {
                                     className={clsx(
                                         style.colorButton,
                                         isCurrent && (highlight ? style.highlight : style.selected),
-                                        item.color === "transparent" && style.colorTransparent,
+                                        isTransparent && style.colorTransparent,
                                     )}
-                                    style={{ backgroundColor: item.color }}
+                                    style={getBackgroundColor(item.color)}
                                 >
                                     {getAllowEmptyIcon(item)}
                                 </button>
@@ -227,7 +233,7 @@ Editor.propTypes = {
                 icon: PropTypes.string,
                 iconRotate: PropTypes.number,
                 description: PropTypes.string,
-                color: PropTypes.string,
+                color: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
                 hidden: PropTypes.bool,
                 preview: PropTypes.string,
                 previewFull: PropTypes.bool,
@@ -241,6 +247,58 @@ Editor.propTypes = {
         dataSourceAdditionalData: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 };
+
+function processColorValues(values) {
+    if (!Array.isArray(values)) {
+        return [];
+    }
+    values = values
+        .map((item) => ({
+            ...item,
+            color: processColor(item.color),
+        }))
+        .filter((item) => item.color);
+
+    return values;
+}
+
+function processColor(color) {
+    if (!color || (typeof color !== "string" && !Array.isArray(color))) {
+        return null;
+    }
+    if (typeof color === "string") {
+        return [color];
+    }
+    color = color.filter(Boolean);
+    if (color.length < 1) {
+        return null;
+    }
+    return color;
+}
+
+function getBackgroundColor(color) {
+    const numberOfColors = color.length;
+    if (numberOfColors === 1) {
+        return { backgroundColor: color[0] };
+    }
+
+    // Genertate a gradient with hard stops
+    let previousColor = "";
+    const gradient = [];
+    color.forEach((color, index) => {
+        const stop = `${Math.round((index / numberOfColors) * 100)}%`;
+        if (previousColor) {
+            gradient.push(`${previousColor} ${stop}`);
+        }
+        previousColor = color;
+        gradient.push(`${color} ${stop}`);
+    });
+    gradient.push(`${previousColor} 100%`);
+
+    return {
+        backgroundImage: `linear-gradient(90deg, ${gradient.join(", ")})`,
+    };
+}
 
 function getPreview(item, i18nRegistry) {
     if (!item || !item.preview) {
@@ -264,7 +322,7 @@ function getPreview(item, i18nRegistry) {
     return <img src={src} className={clsx(style.image, fullClass)} alt={label} />;
 }
 
-function flattenValues(values, i18nRegistry) {
+function flattenValues(values, layout, i18nRegistry) {
     if (!values || typeof values !== "object") {
         return [];
     }
@@ -280,6 +338,9 @@ function flattenValues(values, i18nRegistry) {
             ...item,
             value,
         });
+    }
+    if (layout === "color") {
+        return processColorValues(array);
     }
     return array;
 }
