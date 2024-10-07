@@ -27,6 +27,9 @@ const defaultOptions = {
     dataSourceUri: null,
 };
 
+// We use this hack to prevent the editor from re-rendering all the time, even if the options are the same.
+let mergedOptionsAsJSON = null;
+
 function Editor(props) {
     const mergedOptions = { ...defaultOptions, ...props.options };
     const {
@@ -48,13 +51,16 @@ function Editor(props) {
     const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, i18nRegistry));
 
     useEffect(() => {
-        if (hasDataSource) {
-            // Load options from data source
-            dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
-                setIsLoading(false);
-                setOptions(values);
-            });
+        if (!hasDataSource || mergedOptionsAsJSON === JSON.stringify(mergedOptions)) {
+            return;
         }
+        mergedOptionsAsJSON = JSON.stringify(mergedOptions);
+
+        // Load options from data source
+        dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
+            setIsLoading(false);
+            setOptions(values);
+        });
     }, [mergedOptions]);
 
     if (isLoading) {
