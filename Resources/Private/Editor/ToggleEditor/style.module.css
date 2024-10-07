@@ -4,11 +4,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 40px;
+    min-height: var(--spacing-GoldenUnit);
 }
 
 .highlight {
-    outline: #ff8700 solid 2px;
+    outline: var(--colors-Warn) solid 2px;
     outline-offset: 2px;
     z-index: 2;
     border-radius: 2px;
@@ -25,11 +25,10 @@
 }
 
 .error {
-    background-color: #ff460d;
-    color: #fff;
-    margin-left: -16px;
-    margin-right: -16px;
-    padding: 10px 16px;
+    background-color: var(--colors-Error);
+    color: var(--colors-ContrastBrightest);
+    margin: 0 calc(var(--spacing-Full) * -1);
+    padding: var(--spacing-Half) var(--spacing-Full);
 }
 
 /* Layouts */
@@ -41,7 +40,6 @@
 .flex {
     display: flex;
     gap: 1px;
-    background-color: #525252;
 
     & > * {
         flex: auto;
@@ -51,15 +49,14 @@
 .color {
     display: grid;
     row-gap: 14px;
-    column-gap: 8px;
-    padding-top: 4px;
+    column-gap: var(--spacing-Half);
+    padding-top: var(--spacing-Quarter);
     grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
 }
 
 .grid {
     display: grid;
     gap: 1px;
-    background-color: #525252;
     grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
 }
 
@@ -71,10 +68,9 @@
     & .image {
         width: auto;
         height: 1em;
-        margin-right: 8px;
+        margin-right: var(--spacing-Half);
     }
 }
-
 
 /* Image */
 
@@ -96,7 +92,7 @@
     display: flex;
     align-items: center;
     width: fit-content;
-    color: #fff;
+    color: var(--colors-ContrastBrightest);
     background-color: inherit;
     border: none;
     border-radius: 0;
@@ -106,16 +102,16 @@
         outline: none;
 
         & .radio {
-            outline: #00adee solid 1px;
+            outline: var(--colors-PrimaryBlue) solid 1px;
         }
     }
 
-    &:where(.selected,:hover:not([disabled])) .radio {
-        background-color: #00adee;
+    &:where(.selected, :hover:not([disabled])) .radio {
+        background-color: var(--colors-PrimaryBlue);
     }
 
     & svg {
-        margin-right: 8px;
+        margin-right: var(--spacing-Half);
     }
 }
 
@@ -130,13 +126,13 @@
     height: 22px;
     border-radius: 9999px;
     border: none;
-    background-color: #525252;
+    background-color: var(--colors-ContrastDark);
     pointer-events: none;
 
     & span {
         width: 6px;
         height: 6px;
-        background-color: #fafafa;
+        background-color: var(--colors-ContrastBrightest);
         border-radius: 9999px;
     }
 }
@@ -147,19 +143,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 4px;
+    row-gap: var(--spacing-Quarter);
 }
 
 .colorButton {
     cursor: pointer;
     width: 100%;
-    height: 40px;
+    height: var(--spacing-GoldenUnit);
     max-width: 60px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--spacing-Quarter);
 
-    &:where(:hover:not([disabled]),:focus,.selected) {
-        outline: #00adee solid 2px;
+    &:where(:hover:not([disabled]), :focus, .selected) {
+        outline: var(--colors-PrimaryBlue) solid 2px;
         outline-offset: 2px;
     }
 
@@ -189,7 +185,7 @@
     }
 
     &:focus {
-        outline: #00adee solid 1px;
+        outline: var(--colors-PrimaryBlue) solid 1px;
         z-index: 1;
         border-radius: 2px;
     }
@@ -200,7 +196,7 @@
 }
 
 .label {
-    font-size: 0.75rem;
+    font-size: var(--fontSize-Small);
 }
 
 /* Allow empty */
@@ -215,35 +211,39 @@
     width: 20px;
     height: 20px;
     margin: 0 !important;
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-Default) ease;
     pointer-events: none;
-    opacity: 0;
     right: 0;
+    opacity: 0;
 
     & svg {
-        color: #fff;
+        color: var(--colors-ContrastBrightest);
     }
 }
 
 .allowEmpty {
-    top: 0;
-    background-color: #525252;
-    border-radius: 50%;
-    transform: translate(50%, -50%);
+    top: -10px;
+    right: -10px;
+    background-color: var(--colors-ContrastDark);
+    border-radius: 9999px;
+}
+
+.allowEmptyShow {
+    opacity: 1;
 }
 
 :where(.grid, .flex, .color) button {
     position: relative;
 
-    &:is(:hover:not([disabled]),:focus) .allowEmpty {
-        opacity: 1;
+    &:is(:hover:not([disabled]), :focus) .allowEmpty {
+        transform: scale(1.1);
     }
 }
 
 .list {
     position: relative;
 
-    & button:is(:hover:not([disabled]),:focus) .allowEmptyRadio {
-        opacity: 1;
+    & button:is(:hover:not([disabled]), :focus) .allowEmptyRadio {
+        transform: scale(1.1);
     }
 }

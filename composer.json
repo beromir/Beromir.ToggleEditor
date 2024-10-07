@@ -18,15 +18,6 @@
     "require": {
         "neos/neos-ui": "^5.3 || ^7.0 || ^8.0"
     },
-    "archive": {
-        "exclude": [
-            ".github",
-            ".gitattributes",
-            ".gitignore",
-            "CODE_OF_CONDUCT.md",
-            "LICENSE"
-        ]
-    },
     "extra": {
         "neos": {
             "package-key": "Beromir.ToggleEditor"

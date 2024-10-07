@@ -5,6 +5,9 @@
             <trans-unit id="error.noNodeTypeDefintion" xml:space="preserve">
                 <source>No options defined, add some to the NodeType definition.</source>
             </trans-unit>
+            <trans-unit id="error.noDataFromSource" xml:space="preserve">
+                <source>No data was return from the source.</source>
+            </trans-unit>
             <trans-unit id="reset" xml:space="preserve">
                 <source>Reset</source>
             </trans-unit>
