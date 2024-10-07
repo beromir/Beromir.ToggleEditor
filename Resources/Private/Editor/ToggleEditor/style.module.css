@@ -153,6 +153,7 @@
     max-width: 60px;
     border: none;
     border-radius: var(--spacing-Quarter);
+    outline: var(--colors-ContrastNeutral) solid 1px;
 
     &:where(:hover:not([disabled]), :focus, .selected) {
         outline: var(--colors-PrimaryBlue) solid 2px;
