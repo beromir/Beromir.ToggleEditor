@@ -2,136 +2,167 @@
 
 The toggle editor lets you select one of multiple values. It provides different layout options.
 
-![Example of the toggle editor in the Neos CMS backend](./docs/images/editor-example.png)
+## Layouts
+
+### Grid
+
+<img alt="Screenshot of grid layouts" src="https://github.com/user-attachments/assets/59a680e4-da5e-4f47-a610-3a9a98928427" width="300" />
 
 <details>
-
 <summary>Property definitions from the screenshot</summary>
 
 ```yaml
-properties:
-  headingLevel:
-    type: string
-    ui:
-      label: "Heading level"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          values:
-            h1:
-              label: "H1"
-              description: "Heading level 1"
-            h2:
-              label: "H2"
-              description: "Heading level 2"
-            h3:
-              label: "H3"
-              description: "Heading level 3"
-  alignment:
-    type: string
-    ui:
-      label: "Alignment"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          values:
-            left:
-              label: "Left"
-              icon: "align-left"
-              description: "Align left"
-            center:
-              label: "Center"
-              icon: "align-center"
-            right:
-              label: "Right"
-              icon: "align-right"
-  layout:
-    type: string
-    ui:
-      label: "Layout"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          columns: 2
-          values:
-            grid:
-              label: "Grid"
-            flex:
-              label: "Flex"
-            list:
-              label: "Radio"
+headingLevel:
+  type: string
+  ui:
+    label: Heading level
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        values:
+          h1:
+            label: H1
+            description: Heading level 1
+          h2:
+            label: H2
+            description: Heading level 2
+          h3:
+            label: H3
+            description: Heading level 3
+alignment:
+  type: string
+  ui:
+    label: Alignment
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        values:
+          left:
+            icon: align-left
+            description: Align left
+          center:
+            label: Center
+            icon: align-center
+          right:
+            label: Right
+            icon: align-right
+layout:
+  type: string
+  ui:
+    label: Layout
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        allowEmpty: true
+        columns: 2
+        values:
+          grid:
+            label: Grid
+          flex:
+            label: Flex
+          list:
+            label: Radio
+          color:
+            label: Color
+```
+
+</details>
+
+### Flex
+
+<img alt="Screenshot of flex" src="https://github.com/user-attachments/assets/ab880a7f-7ec7-4b5a-9e72-8d120ce3d859" width="300" />
+
+<details>
+<summary>Property definitions from the screenshot</summary>
+
+```yaml
+spacing:
+  type: string
+  ui:
+    label: Spacing
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        layout: flex
+        values:
+          none:
+            icon: times
+            description: No spacing
+          small:
+            label: Small
+          medium:
+            label: Medium
+          large:
+            label: Large
+```
+
+</details>
+
+### List
+
+<img alt="Screenshot of list layout" src="https://github.com/user-attachments/assets/6cf075e1-c34b-4484-9221-130733ac9cf7" width="300" />
+
+<details>
+<summary>Property definitions from the screenshot</summary>
+
+```yaml
+size:
+  type: string
+  ui:
+    label: Size
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        allowEmpty: true
+        layout: list
+        values:
+          auto:
+            icon: magic
+            label: Auto
+          small:
+            label: Small
+          medium:
+            label: Medium
+          large:
+            label: Large
+```
+
+</details>
+
+### Color
+
+<img alt="Screenshot of color layout with multiple color values" src="https://github.com/user-attachments/assets/1fbaf7c6-48fd-4db5-9777-5ac14d6f09fd" width="300" />
+
+<details>
+<summary>Property definitions from the screenshot</summary>
+
+```yaml
+color:
+  type: string
+  ui:
+    label: Color layout
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        layout: color
+        values:
+          three:
             color:
-              label: "Color"
-  spacing:
-    type: string
-    ui:
-      label: "Spacing"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          layout: "flex"
-          values:
-            none:
-              icon: "times"
-              description: "No spacing"
-            small:
-              label: "Small"
-            medium:
-              label: "Medium"
-            large:
-              label: "Large"
-  size:
-    type: string
-    defaultValue: "auto"
-    ui:
-      label: "Size"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          layout: "list"
-          values:
-            auto:
-              icon: "magic"
-              label: "Auto"
-            small:
-              label: "Small"
-            medium:
-              label: "Medium"
-            large:
-              label: "Large"
-  color:
-    type: string
-    ui:
-      label: "Color"
-      reloadIfChanged: true
-      inspector:
-        group: "general"
-        editor: "Beromir.ToggleEditor/Editor"
-        editorOptions:
-          layout: "color"
-          columns: 3
-          allowEmpty: true
-          values:
-            primary:
-              color: "#6366f1"
-              label: "Primary"
-              description: "Primary color"
-            secondary:
-              color: "#eab308"
-              label: "Secondary"
-            transparent:
-              color: "transparent"
-              label: "Transparent"
+              - "#009246"
+              - white
+              - "#cd2b37"
+            label: "Italy colors"
+            description: "Pizza Margherita"
+          two:
+            color: ["#5d26c3", "#271150"]
+            label: "Two colors"
+            description: "Purple haze"
+          one:
+            color: "#0d0617"
+            label: "Dark color"
+          transparent:
+            color: transparent
+            label: Transparent
 ```
 
 </details>
