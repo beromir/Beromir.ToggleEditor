@@ -13,125 +13,125 @@ properties:
   headingLevel:
     type: string
     ui:
-      label: 'Heading level'
+      label: "Heading level"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
           values:
             h1:
-              label: 'H1'
-              description: 'Heading level 1'
+              label: "H1"
+              description: "Heading level 1"
             h2:
-              label: 'H2'
-              description: 'Heading level 2'
+              label: "H2"
+              description: "Heading level 2"
             h3:
-              label: 'H3'
-              description: 'Heading level 3'
+              label: "H3"
+              description: "Heading level 3"
   alignment:
     type: string
     ui:
-      label: 'Alignment'
+      label: "Alignment"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
           values:
             left:
-              label: 'Left'
-              icon: 'align-left'
-              description: 'Align left'
+              label: "Left"
+              icon: "align-left"
+              description: "Align left"
             center:
-              label: 'Center'
-              icon: 'align-center'
+              label: "Center"
+              icon: "align-center"
             right:
-              label: 'Right'
-              icon: 'align-right'
+              label: "Right"
+              icon: "align-right"
   layout:
     type: string
     ui:
-      label: 'Layout'
+      label: "Layout"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
           columns: 2
           values:
             grid:
-              label: 'Grid'
+              label: "Grid"
             flex:
-              label: 'Flex'
+              label: "Flex"
             list:
-              label: 'Radio'
+              label: "Radio"
             color:
-              label: 'Color'
+              label: "Color"
   spacing:
     type: string
     ui:
-      label: 'Spacing'
+      label: "Spacing"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
-          layout: 'flex'
+          layout: "flex"
           values:
             none:
-              icon: 'times'
-              description: 'No spacing'
+              icon: "times"
+              description: "No spacing"
             small:
-              label: 'Small'
+              label: "Small"
             medium:
-              label: 'Medium'
+              label: "Medium"
             large:
-              label: 'Large'
+              label: "Large"
   size:
     type: string
-    defaultValue: 'auto'
+    defaultValue: "auto"
     ui:
-      label: 'Size'
+      label: "Size"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
-          layout: 'list'
+          layout: "list"
           values:
             auto:
-              icon: 'magic'
-              label: 'Auto'
+              icon: "magic"
+              label: "Auto"
             small:
-              label: 'Small'
+              label: "Small"
             medium:
-              label: 'Medium'
+              label: "Medium"
             large:
-              label: 'Large'
+              label: "Large"
   color:
     type: string
     ui:
-      label: 'Color'
+      label: "Color"
       reloadIfChanged: true
       inspector:
-        group: 'general'
-        editor: 'Beromir.ToggleEditor/Editor'
+        group: "general"
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
-          layout: 'color'
+          layout: "color"
           columns: 3
           allowEmpty: true
           values:
             primary:
-              color: '#6366f1'
-              label: 'Primary'
-              description: 'Primary color'
+              color: "#6366f1"
+              label: "Primary"
+              description: "Primary color"
             secondary:
-              color: '#eab308'
-              label: 'Secondary'
+              color: "#eab308"
+              label: "Secondary"
             transparent:
-              color: 'transparent'
-              label: 'Transparent'
+              color: "transparent"
+              label: "Transparent"
 ```
 
 </details>
@@ -166,52 +166,65 @@ Add a property of type string to your NodeType definition and use the following 
 properties:
   alignment:
     type: string
-    defaultValue: 'left'
+    defaultValue: "left"
     ui:
-      label: 'Alignment'
+      label: "Alignment"
       reloadIfChanged: true
       inspector:
-        editor: 'Beromir.ToggleEditor/Editor'
+        editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
           # One of 'grid', 'flex', 'list' or 'color'. Default: 'grid'
-          layout: 'flex'
+          layout: "flex"
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
+          # This can also be an expression like {items} / 2
+          # Gets surrounded by Math.floor
+          # Available values {items} = number of values / {maximalRows} = value from maximalRows
+          # The smaller value from columns and maximalColumns will be used
           columns: 2
-          # Allow empty value. Show a clear button in the selected color box. Does only work with the color layout
+          # Alternativly you can set the maximal number of columns. Defaults to 4. Works only with 'grid' and 'color'
+          # This can also be an expression like {items} / 2
+          # Gets surrounded by Math.floor
+          # Available values {items} = number of values
+          maximalColumns: 4
+          # Allow empty value
           allowEmpty: true
           # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null
-          iconSize: 'lg'
+          iconSize: "lg"
+          # Disable the whole editor
+          disable: false
           values:
             left:
               # Show a label
-              label: 'Left'
+              label: "Left"
               # Show an icon. Does not work with the color layout
-              icon: 'align-left'
+              icon: "align-left"
               # Rotate the icon (in degrees)
               iconRotate: -45
               # Show a description on hover
-              description: 'Align left'
+              description: "Align left"
               # Specify the color to display in the editor. Does only work with the color layout
-              color: '#ffffff'
+              color: "#ffffff"
               # Hide the value. Great if you work with ClientEval
-              hidden: 'ClientEval: !!node.property.anotherProperty'
+              hidden: "ClientEval: !!node.property.anotherProperty"
               # Add a preview image. Does not work with the color layout. Can be also a string with svg markup
-              preview: 'resource://Vendor.Package/filenameInPublicFolder.png'
+              preview: "resource://Vendor.Package/filenameInPublicFolder.png"
               # If true and no label is defined, the margin from the button get's removed. Defaults to false
               previewFull: true
+              # Disable an item option
+              disabled: false
             center:
-              label: 'Center'
-              icon: 'align-center'
+              label: "Center"
+              icon: "align-center"
             right:
-              label: 'Right'
-              icon: 'align-right'
+              label: "Right"
+              icon: "align-right"
 
           # Optionally use a data source:
           # If `dataSourceIdentifier` or `dataSourceUri` is defined, the `values` from above will be ignored
-          dataSourceIdentifier: 'some-datasource'
-          dataSourceUri: 'some/custom-route'
+          dataSourceIdentifier: "some-datasource"
+          dataSourceUri: "some/custom-route"
           dataSourceAdditionalData:
-            foo: 'bar'
+            foo: "bar"
           dataSourceDisableCaching: false
 ```
 

@@ -1,0 +1,18 @@
+{
+  "description": "Carbon.DirectionEditor",
+  "license": "proprietary",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs --production",
+    "watch": "node build.mjs --watch",
+    "dev": "node build.mjs"
+  },
+  "devDependencies": {
+    "@neos-project/neos-ui-extensibility": "~8.3.10",
+    "clsx": "^2.1.1",
+    "esbuild": "^0.24.0",
+    "esbuild-plugin-lightningcss-modules": "^0.1.2",
+    "prettier": "^3.3.3",
+    "prop-types": "^15.8.1"
+  }
+}
