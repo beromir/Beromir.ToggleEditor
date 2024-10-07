@@ -101,6 +101,7 @@ function Editor(props) {
         >
             {options.map((item) => {
                 const isCurrent = value === item.value;
+                const { label, disabled } = item;
                 switch (layout) {
                     case "list":
                         return (
@@ -108,7 +109,7 @@ function Editor(props) {
                                 onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
                                 title={getTitle(item)}
-                                disabled={item.disabled}
+                                disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected)}
                             >
                                 <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
@@ -116,7 +117,7 @@ function Editor(props) {
                                 </span>
                                 {getIcon(item)}
                                 {getPreview(item)}
-                                {item.label && <span>{item.label}</span>}
+                                {label && <span>{label}</span>}
                                 {getAllowEmptyIcon(item, style.allowEmptyRadio)}
                             </button>
                         );
@@ -128,7 +129,7 @@ function Editor(props) {
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={getTitle(item)}
-                                    disabled={item.disabled}
+                                    disabled={disabled}
                                     className={clsx(
                                         style.colorButton,
                                         isCurrent && (highlight ? style.highlight : style.selected),
@@ -138,7 +139,9 @@ function Editor(props) {
                                 >
                                     {getAllowEmptyIcon(item)}
                                 </button>
-                                {item.label && <span className={style.label}>{item.label}</span>}
+                                {label && (
+                                    <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
+                                )}
                             </div>
                         );
 
@@ -148,14 +151,14 @@ function Editor(props) {
                                 onClick={() => onChange(item)}
                                 isActive={isCurrent}
                                 title={getTitle(item)}
-                                disabled={item.disabled}
+                                disabled={disabled}
                                 className={clsx(style.button, isCurrent && highlight && style.highlight)}
                             >
                                 {getIcon(item)}
                                 {getPreview(item)}
-                                {item.label && (
+                                {label && (
                                     <span className={clsx(item.icon || item.preview ? style.label : null)}>
-                                        {item.label}
+                                        {label}
                                     </span>
                                 )}
                                 {getAllowEmptyIcon(item)}
