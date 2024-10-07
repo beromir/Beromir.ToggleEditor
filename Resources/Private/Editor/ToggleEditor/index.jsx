@@ -133,8 +133,8 @@ function Editor(props) {
         item.icon ? (
             <Icon icon={item.icon} style={{ transform: `rotate(${item.iconRotate || 0}deg)` }} size={iconSize} />
         ) : null;
-    const getTitle = (item) =>
-        allowEmpty && value === item.value ? resetLabel : i18nRegistry.translate(item.description || item.label);
+    const getTitle = (item) => i18nRegistry.translate(item.description || item.label);
+    const getAriaLabel = (item) => (allowEmpty && value === item.value ? resetLabel : getTitle(item));
     const getAllowEmptyIcon = (item, className = style.allowEmpty) =>
         allowEmpty ? (
             <div className={clsx(className, value === item.value && style.allowEmptyShow)}>
@@ -155,6 +155,7 @@ function Editor(props) {
                                 onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
                                 title={getTitle(item)}
+                                aria-label={getAriaLabel(item)}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected)}
                             >
@@ -176,6 +177,7 @@ function Editor(props) {
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={getTitle(item)}
+                                    aria-label={getAriaLabel(item)}
                                     disabled={disabled}
                                     className={clsx(
                                         style.colorButton,
@@ -198,6 +200,7 @@ function Editor(props) {
                                 onClick={() => onChange(item)}
                                 isActive={isCurrent}
                                 title={getTitle(item)}
+                                aria-label={getAriaLabel(item)}
                                 disabled={disabled}
                                 className={clsx(style.button, isCurrent && highlight && style.highlight)}
                             >
