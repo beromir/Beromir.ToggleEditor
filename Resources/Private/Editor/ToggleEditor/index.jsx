@@ -27,9 +27,6 @@ const defaultOptions = {
     dataSourceUri: null,
 };
 
-// We use this hack to prevent the editor from re-rendering all the time, even if the options are the same.
-let mergedOptionsAsJSON = null;
-
 function Editor(props) {
     const mergedOptions = { ...defaultOptions, ...props.options };
     const {
@@ -42,6 +39,7 @@ function Editor(props) {
         disabled,
         dataSourceIdentifier,
         dataSourceUri,
+        dataSourceAdditionalData,
     } = mergedOptions;
     const { value, commit, highlight, i18nRegistry, dataSourcesDataLoader } = props;
 
@@ -50,11 +48,16 @@ function Editor(props) {
     const [isLoading, setIsLoading] = useState(hasDataSource);
     const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, layout, i18nRegistry));
 
+    // We use this hack to prevent the editor from re-rendering all the time, even if the options are the same.
+    const [dataSourceOptionsAsJSON, setDataSourceOptionsAsJSON] = useState(null);
+
     useEffect(() => {
-        if (!hasDataSource || mergedOptionsAsJSON === JSON.stringify(mergedOptions)) {
+        const dataAsJSON = JSON.stringify({ dataSourceIdentifier, dataSourceUri, dataSourceAdditionalData });
+        if (!hasDataSource || dataSourceOptionsAsJSON === dataAsJSON) {
             return;
         }
-        mergedOptionsAsJSON = JSON.stringify(mergedOptions);
+
+        setDataSourceOptionsAsJSON(dataAsJSON);
 
         // Load options from data source
         dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
@@ -66,7 +69,7 @@ function Editor(props) {
             }
             setOptions(values);
         });
-    }, [mergedOptions]);
+    }, [dataSourceIdentifier, dataSourceAdditionalData, dataSourceAdditionalData]);
 
     if (isLoading) {
         return (
