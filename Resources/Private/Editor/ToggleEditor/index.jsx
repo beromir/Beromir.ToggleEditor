@@ -137,9 +137,9 @@ function Editor(props) {
     const getAriaLabel = (item) => (allowEmpty && value === item.value ? resetLabel : getTitle(item));
     const getAllowEmptyIcon = (item, className = style.allowEmpty) =>
         allowEmpty ? (
-            <div className={clsx(className, value === item.value && style.allowEmptyShow)}>
+            <span className={clsx(className, value === item.value && style.allowEmptyShow)}>
                 <Icon size="sm" icon="times" />
-            </div>
+            </span>
         ) : null;
 
     return (
@@ -170,7 +170,7 @@ function Editor(props) {
                         );
 
                     case "color":
-                        const isTransparent = item.color.length === 1 && item.color[0] === "transparent";
+                        const maxColorIndex = item.color.length - 1;
                         return (
                             <div className={style.colorBox}>
                                 <button
@@ -182,10 +182,19 @@ function Editor(props) {
                                     className={clsx(
                                         style.colorButton,
                                         isCurrent && (highlight ? style.highlight : style.selected),
-                                        isTransparent && style.colorTransparent,
                                     )}
-                                    style={getBackgroundColor(item.color)}
                                 >
+                                    {item.color.map((color, index) => (
+                                        <span
+                                            key={`color-${index}`}
+                                            className={clsx(
+                                                style.colorPreview,
+                                                color === "transparent" && style.colorTransparent,
+                                                maxColorIndex === index && style.colorPreviewLast,
+                                            )}
+                                            style={{ backgroundColor: color }}
+                                        />
+                                    ))}
                                     {getAllowEmptyIcon(item)}
                                 </button>
                                 {label && (
@@ -277,30 +286,6 @@ function processColor(color) {
         return null;
     }
     return color;
-}
-
-function getBackgroundColor(color) {
-    const numberOfColors = color.length;
-    if (numberOfColors === 1) {
-        return { backgroundColor: color[0] };
-    }
-
-    // Genertate a gradient with hard stops
-    let previousColor = "";
-    const gradient = [];
-    color.forEach((color, index) => {
-        const stop = `${Math.round((index / numberOfColors) * 100)}%`;
-        if (previousColor) {
-            gradient.push(`${previousColor} ${stop}`);
-        }
-        previousColor = color;
-        gradient.push(`${color} ${stop}`);
-    });
-    gradient.push(`${previousColor} 100%`);
-
-    return {
-        backgroundImage: `linear-gradient(90deg, ${gradient.join(", ")})`,
-    };
 }
 
 function getPreview(item, i18nRegistry) {
