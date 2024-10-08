@@ -39,23 +39,37 @@ function Editor(props) {
         disabled,
         dataSourceIdentifier,
         dataSourceUri,
+        dataSourceAdditionalData,
     } = mergedOptions;
     const { value, commit, highlight, i18nRegistry, dataSourcesDataLoader } = props;
 
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
 
     const [isLoading, setIsLoading] = useState(hasDataSource);
-    const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, i18nRegistry));
+    const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, layout, i18nRegistry));
+
+    // We use this hack to prevent the editor from re-rendering all the time, even if the options are the same.
+    const [dataSourceOptionsAsJSON, setDataSourceOptionsAsJSON] = useState(null);
 
     useEffect(() => {
-        if (hasDataSource) {
-            // Load options from data source
-            dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
-                setIsLoading(false);
-                setOptions(values);
-            });
+        const dataAsJSON = JSON.stringify({ dataSourceIdentifier, dataSourceUri, dataSourceAdditionalData });
+        if (!hasDataSource || dataSourceOptionsAsJSON === dataAsJSON) {
+            return;
         }
-    }, [mergedOptions]);
+
+        setDataSourceOptionsAsJSON(dataAsJSON);
+
+        // Load options from data source
+        dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
+            setIsLoading(false);
+
+            if (layout === "color") {
+                setOptions(processColorValues(values));
+                return;
+            }
+            setOptions(values);
+        });
+    }, [dataSourceIdentifier, dataSourceAdditionalData, dataSourceAdditionalData]);
 
     if (isLoading) {
         return (
@@ -122,19 +136,21 @@ function Editor(props) {
         item.icon ? (
             <Icon icon={item.icon} style={{ transform: `rotate(${item.iconRotate || 0}deg)` }} size={iconSize} />
         ) : null;
-    const getTitle = (item) => (allowEmpty && value === item.value ? resetLabel : item.description || item.label);
+    const getTitle = (item) => i18nRegistry.translate(item.description || item.label);
+    const getAriaLabel = (item) => (allowEmpty && value === item.value ? resetLabel : getTitle(item));
     const getAllowEmptyIcon = (item, className = style.allowEmpty) =>
         allowEmpty ? (
-            <div className={clsx(className, value === item.value && style.allowEmptyShow)}>
+            <span className={clsx(className, value === item.value && style.allowEmptyShow)}>
                 <Icon size="sm" icon="times" />
-            </div>
+            </span>
         ) : null;
 
     return (
         <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
             {options.map((item) => {
                 const isCurrent = value === item.value;
-                const { label, disabled } = item;
+                const disabled = item.disabled;
+                const label = i18nRegistry.translate(item.label);
                 switch (layout) {
                     case "list":
                         return (
@@ -142,6 +158,7 @@ function Editor(props) {
                                 onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
                                 title={getTitle(item)}
+                                aria-label={getAriaLabel(item)}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected)}
                             >
@@ -149,27 +166,38 @@ function Editor(props) {
                                     <span></span>
                                 </span>
                                 {getIcon(item)}
-                                {getPreview(item)}
+                                {getPreview(item, i18nRegistry)}
                                 {label && <span>{label}</span>}
                                 {getAllowEmptyIcon(item, style.allowEmptyRadio)}
                             </button>
                         );
 
                     case "color":
+                        const maxColorIndex = item.color.length - 1;
                         return (
                             <div className={style.colorBox}>
                                 <button
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={getTitle(item)}
+                                    aria-label={getAriaLabel(item)}
                                     disabled={disabled}
                                     className={clsx(
                                         style.colorButton,
                                         isCurrent && (highlight ? style.highlight : style.selected),
-                                        item.color === "transparent" && style.colorTransparent,
                                     )}
-                                    style={{ backgroundColor: item.color }}
                                 >
+                                    {item.color.map((color, index) => (
+                                        <span
+                                            key={`color-${index}`}
+                                            className={clsx(
+                                                style.colorPreview,
+                                                color === "transparent" && style.colorTransparent,
+                                                maxColorIndex === index && style.colorPreviewLast,
+                                            )}
+                                            style={{ backgroundColor: color }}
+                                        />
+                                    ))}
                                     {getAllowEmptyIcon(item)}
                                 </button>
                                 {label && (
@@ -184,11 +212,12 @@ function Editor(props) {
                                 onClick={() => onChange(item)}
                                 isActive={isCurrent}
                                 title={getTitle(item)}
+                                aria-label={getAriaLabel(item)}
                                 disabled={disabled}
                                 className={clsx(style.button, isCurrent && highlight && style.highlight)}
                             >
                                 {getIcon(item)}
-                                {getPreview(item)}
+                                {getPreview(item, i18nRegistry)}
                                 {label && (
                                     <span className={clsx(item.icon || item.preview ? style.label : null)}>
                                         {label}
@@ -219,7 +248,7 @@ Editor.propTypes = {
                 icon: PropTypes.string,
                 iconRotate: PropTypes.number,
                 description: PropTypes.string,
-                color: PropTypes.string,
+                color: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
                 hidden: PropTypes.bool,
                 preview: PropTypes.string,
                 previewFull: PropTypes.bool,
@@ -234,13 +263,41 @@ Editor.propTypes = {
     }).isRequired,
 };
 
-function getPreview(item) {
+function processColorValues(values) {
+    if (!Array.isArray(values)) {
+        return [];
+    }
+    values = values
+        .map((item) => ({
+            ...item,
+            color: processColor(item.color),
+        }))
+        .filter((item) => item.color);
+
+    return values;
+}
+
+function processColor(color) {
+    if (!color || (typeof color !== "string" && !Array.isArray(color))) {
+        return null;
+    }
+    if (typeof color === "string") {
+        return [color];
+    }
+    color = color.filter(Boolean);
+    if (color.length < 1) {
+        return null;
+    }
+    return color;
+}
+
+function getPreview(item, i18nRegistry) {
     if (!item || !item.preview) {
         return null;
     }
     const preview = item.preview;
     const fullClass = item.previewFull ? style.imageFull : null;
-    const label = item.description || item.label;
+    const label = i18nRegistry.translate(item.description || item.label);
 
     if (preview.startsWith("<svg ")) {
         return (
@@ -256,7 +313,7 @@ function getPreview(item) {
     return <img src={src} className={clsx(style.image, fullClass)} alt={label} />;
 }
 
-function flattenValues(values, i18nRegistry) {
+function flattenValues(values, layout, i18nRegistry) {
     if (!values || typeof values !== "object") {
         return [];
     }
@@ -270,10 +327,11 @@ function flattenValues(values, i18nRegistry) {
         }
         array.push({
             ...item,
-            label: i18nRegistry.translate(item.label),
-            description: i18nRegistry.translate(item.description),
             value,
         });
+    }
+    if (layout === "color") {
+        return processColorValues(array);
     }
     return array;
 }
