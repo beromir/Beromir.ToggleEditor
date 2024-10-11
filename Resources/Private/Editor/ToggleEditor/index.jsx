@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon } from "@neos-project/react-ui-components";
+import { Button, Icon, Label } from "@neos-project/react-ui-components";
 import { neos } from "@neos-project/neos-ui-decorators";
 import style from "./style.module.css";
 import { connect } from "react-redux";
@@ -23,6 +23,7 @@ const defaultOptions = {
     allowEmpty: false,
     iconSize: null,
     disabled: false,
+    hidden: false,
     dataSourceIdentifier: null,
     dataSourceUri: null,
 };
@@ -41,7 +42,8 @@ function Editor(props) {
         dataSourceUri,
         dataSourceAdditionalData,
     } = mergedOptions;
-    const { value, commit, highlight, i18nRegistry, dataSourcesDataLoader } = props;
+    const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader } = props;
+    const label = i18nRegistry.translate(props.label);
 
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
 
@@ -73,22 +75,33 @@ function Editor(props) {
 
     if (isLoading) {
         return (
-            <div
-                className={clsx(style.wrapper, style.loading)}
-                title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
-            >
-                <Icon icon="spinner" size="lg" spin />
-            </div>
+            <>
+                <Label htmlFor={id}>{label}</Label>
+                <div
+                    id={id}
+                    className={clsx(style.wrapper, style.loading)}
+                    title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
+                >
+                    <Icon icon="spinner" size="lg" spin />
+                </div>
+            </>
         );
+    }
+
+    if (options.hidden) {
+        return null;
     }
 
     if (!options || !options.length) {
         return (
-            <div className={clsx(style.wrapper, style.error)}>
-                {i18nRegistry.translate(
-                    `Beromir.ToggleEditor:Main:error.${hasDataSource ? "noDataFromSource" : "noNodeTypeDefintion"}`,
-                )}
-            </div>
+            <>
+                <Label htmlFor={id}>{label}</Label>
+                <div id={id} className={clsx(style.wrapper, style.error)}>
+                    {i18nRegistry.translate(
+                        `Beromir.ToggleEditor:Main:error.${hasDataSource ? "noDataFromSource" : "noNodeTypeDefintion"}`,
+                    )}
+                </div>
+            </>
         );
     }
 
@@ -146,89 +159,96 @@ function Editor(props) {
         ) : null;
 
     return (
-        <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
-            {options.map((item) => {
-                const isCurrent = value === item.value;
-                const disabled = item.disabled;
-                const label = i18nRegistry.translate(item.label);
-                switch (layout) {
-                    case "list":
-                        return (
-                            <button
-                                onClick={({ currentTarget }) => onChange(item, currentTarget)}
-                                type="button"
-                                title={getTitle(item)}
-                                aria-label={getAriaLabel(item)}
-                                disabled={disabled}
-                                className={clsx(style.listButton, isCurrent && style.selected)}
-                            >
-                                <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
-                                    <span></span>
-                                </span>
-                                {getIcon(item)}
-                                {getPreview(item, i18nRegistry)}
-                                {label && <span>{label}</span>}
-                                {getAllowEmptyIcon(item, style.allowEmptyRadio)}
-                            </button>
-                        );
-
-                    case "color":
-                        const maxColorIndex = item.color.length - 1;
-                        return (
-                            <div className={style.colorBox}>
+        <>
+            <Label htmlFor={id}>{label}</Label>
+            <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
+                {options.map((item, index) => {
+                    const elementId = index === 0 ? id : null;
+                    const isCurrent = value === item.value;
+                    const disabled = item.disabled;
+                    const label = i18nRegistry.translate(item.label);
+                    switch (layout) {
+                        case "list":
+                            return (
                                 <button
+                                    id={elementId}
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={getTitle(item)}
                                     aria-label={getAriaLabel(item)}
                                     disabled={disabled}
-                                    className={clsx(
-                                        style.colorButton,
-                                        isCurrent && (highlight ? style.highlight : style.selected),
-                                    )}
+                                    className={clsx(style.listButton, isCurrent && style.selected)}
                                 >
-                                    {item.color.map((color, index) => (
-                                        <span
-                                            key={`color-${index}`}
-                                            className={clsx(
-                                                style.colorPreview,
-                                                color === "transparent" && style.colorTransparent,
-                                                maxColorIndex === index && style.colorPreviewLast,
-                                            )}
-                                            style={{ backgroundColor: color }}
-                                        />
-                                    ))}
-                                    {getAllowEmptyIcon(item)}
-                                </button>
-                                {label && (
-                                    <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
-                                )}
-                            </div>
-                        );
-
-                    default:
-                        return (
-                            <Button
-                                onClick={() => onChange(item)}
-                                isActive={isCurrent}
-                                title={getTitle(item)}
-                                aria-label={getAriaLabel(item)}
-                                disabled={disabled}
-                                className={clsx(style.button, isCurrent && highlight && style.highlight)}
-                            >
-                                {getIcon(item)}
-                                {getPreview(item, i18nRegistry)}
-                                {label && (
-                                    <span className={clsx(item.icon || item.preview ? style.label : null)}>
-                                        {label}
+                                    <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
+                                        <span></span>
                                     </span>
-                                )}
-                                {getAllowEmptyIcon(item)}
-                            </Button>
-                        );
-                }
-            })}
-        </div>
+                                    {getIcon(item)}
+                                    {getPreview(item, i18nRegistry)}
+                                    {label && <span>{label}</span>}
+                                    {getAllowEmptyIcon(item, style.allowEmptyRadio)}
+                                </button>
+                            );
+
+                        case "color":
+                            const maxColorIndex = item.color.length - 1;
+                            return (
+                                <div className={style.colorBox}>
+                                    <button
+                                        id={elementId}
+                                        onClick={({ currentTarget }) => onChange(item, currentTarget)}
+                                        type="button"
+                                        title={getTitle(item)}
+                                        aria-label={getAriaLabel(item)}
+                                        disabled={disabled}
+                                        className={clsx(
+                                            style.colorButton,
+                                            isCurrent && (highlight ? style.highlight : style.selected),
+                                        )}
+                                    >
+                                        {item.color.map((color, index) => (
+                                            <span
+                                                key={`color-${index}`}
+                                                className={clsx(
+                                                    style.colorPreview,
+                                                    color === "transparent" && style.colorTransparent,
+                                                    maxColorIndex === index && style.colorPreviewLast,
+                                                )}
+                                                style={{ backgroundColor: color }}
+                                            />
+                                        ))}
+                                        {getAllowEmptyIcon(item)}
+                                    </button>
+                                    {label && (
+                                        <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
+                                    )}
+                                </div>
+                            );
+
+                        default:
+                            return (
+                                <Button
+                                    id={elementId}
+                                    onClick={() => onChange(item)}
+                                    isActive={isCurrent}
+                                    title={getTitle(item)}
+                                    aria-label={getAriaLabel(item)}
+                                    disabled={disabled}
+                                    className={clsx(style.button, isCurrent && highlight && style.highlight)}
+                                >
+                                    {getIcon(item)}
+                                    {getPreview(item, i18nRegistry)}
+                                    {label && (
+                                        <span className={clsx(item.icon || item.preview ? style.label : null)}>
+                                            {label}
+                                        </span>
+                                    )}
+                                    {getAllowEmptyIcon(item)}
+                                </Button>
+                            );
+                    }
+                })}
+            </div>
+        </>
     );
 }
 
