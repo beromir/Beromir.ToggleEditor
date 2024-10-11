@@ -69,7 +69,7 @@ function Editor(props) {
             }
             setOptions(values);
         });
-    }, [dataSourceIdentifier, dataSourceAdditionalData, dataSourceAdditionalData]);
+    }, [dataSourceIdentifier, dataSourceUri, dataSourceAdditionalData]);
 
     if (isLoading) {
         return (
