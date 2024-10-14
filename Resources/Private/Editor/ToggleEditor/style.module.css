@@ -91,7 +91,7 @@
     margin-right: 12px;
     width: 22px;
     height: 22px;
-    border-radius: 9999px;
+    border-radius: 9999px !important;
     border: none;
     background-color: var(--colors-ContrastDark);
     pointer-events: none;

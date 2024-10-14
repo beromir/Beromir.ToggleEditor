@@ -223,6 +223,8 @@ properties:
           iconSize: "lg"
           # Disable the whole editor
           disable: false
+          # This option makes it possible hide the whole editor (incl. label) based on data source
+          hidden: false
           values:
             left:
               # Show a label

@@ -7,5 +7,6 @@ manifest("Beromir.ToggleEditor:Editor", {}, (globalRegistry) => {
 
     editorsRegistry.set("Beromir.ToggleEditor/Editor", {
         component: ToggleEditor,
+        hasOwnLabel: true,
     });
 });
