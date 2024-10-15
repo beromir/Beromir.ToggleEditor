@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Label } from "@neos-project/react-ui-components";
+import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
 import { neos } from "@neos-project/neos-ui-decorators";
 import style from "./style.module.css";
 import { connect } from "react-redux";
 import { selectors } from "@neos-project/neos-ui-redux-store";
+import { Icons, PreviewImage, Wrapper } from "./Components";
+import { flattenValues, processColorValues, getItemVariants } from "./utils";
 import clsx from "clsx";
 
 const getDataLoaderOptionsForProps = (props) => ({
@@ -21,6 +23,7 @@ const defaultOptions = {
     values: {},
     columns: null,
     allowEmpty: false,
+    multiple: false,
     iconSize: null,
     disabled: false,
     hidden: false,
@@ -35,20 +38,28 @@ function Editor(props) {
         values,
         columns,
         maximalColumns,
-        allowEmpty,
         iconSize,
         disabled,
         dataSourceIdentifier,
         dataSourceUri,
         dataSourceAdditionalData,
+        multiple,
     } = mergedOptions;
+    const allowEmpty = multiple || mergedOptions.allowEmpty;
     const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader } = props;
     const label = i18nRegistry.translate(props.label);
+
+    if (multiple && !Array.isArray(value)) {
+        console.warn(
+            `Misconfiguration in property "${props.identifier}". Multiple is activated but value type seems to be "string" but should be "array".`,
+        );
+    }
 
     const hasDataSource = !!(dataSourceIdentifier || dataSourceUri);
 
     const [isLoading, setIsLoading] = useState(hasDataSource);
     const [options, setOptions] = useState(hasDataSource ? [] : flattenValues(values, layout, i18nRegistry));
+    const [active, setActive] = useState(Array.isArray(value) ? value : [value]);
 
     // We use this hack to prevent the editor from re-rendering all the time, even if the options are the same.
     const [dataSourceOptionsAsJSON, setDataSourceOptionsAsJSON] = useState(null);
@@ -79,16 +90,14 @@ function Editor(props) {
 
     if (isLoading) {
         return (
-            <>
-                <Label htmlFor={id}>{label}</Label>
-                <div
-                    id={id}
-                    className={clsx(style.wrapper, style.loading)}
-                    title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
-                >
-                    <Icon icon="spinner" size="lg" spin />
-                </div>
-            </>
+            <Wrapper
+                id={id}
+                label={label}
+                className={style.loading}
+                title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
+            >
+                <Icon icon="spinner" size="lg" spin />
+            </Wrapper>
         );
     }
 
@@ -98,28 +107,56 @@ function Editor(props) {
 
     if (!options || !options.length) {
         return (
-            <>
-                <Label htmlFor={id}>{label}</Label>
-                <div id={id} className={clsx(style.wrapper, style.error)}>
-                    {i18nRegistry.translate(
-                        `Beromir.ToggleEditor:Main:error.${hasDataSource ? "noDataFromSource" : "noNodeTypeDefintion"}`,
-                    )}
-                </div>
-            </>
+            <Wrapper id={id} label={label} className={style.error}>
+                {i18nRegistry.translate(
+                    `Beromir.ToggleEditor:Main:error.${hasDataSource ? "noDataFromSource" : "noNodeTypeDefintion"}`,
+                )}
+            </Wrapper>
         );
     }
 
-    const resetLabel = i18nRegistry.translate("Beromir.ToggleEditor:Main:reset");
+    function itemIsActive(item) {
+        return active.includes(item.value);
+    }
 
     function onChange(item, node) {
         if (node) {
             node.blur();
         }
-        if (!item || (allowEmpty && value === item.value)) {
-            commit("");
+        if (!item) {
+            // No item is set, so we reset the value
+            // This should not happen, but we handle it anyway
+            commit(multiple ? [] : "");
+            setActive([]);
             return;
         }
-        commit(item.value);
+
+        const valueFromItem = item.value;
+
+        // we'd like to have a copy instead of ref
+        let activeItems = [...active];
+        const valueIsAlreadyActive = activeItems.includes(valueFromItem);
+        if (!multiple) {
+            // Toggle single value
+            activeItems = valueIsAlreadyActive ? [] : [valueFromItem];
+        } else if (valueIsAlreadyActive) {
+            activeItems.splice(activeItems.indexOf(valueFromItem), 1);
+        } else {
+            activeItems.push(valueFromItem);
+        }
+
+        // if allowEmpty is false but new active length will be 0, drop changes
+        if (!allowEmpty && activeItems.length === 0) {
+            return;
+        }
+
+        setActive(activeItems);
+
+        // if multiple is deisabled, we return array the first value
+        if (!multiple) {
+            activeItems = activeItems[0] || "";
+        }
+        commit(activeItems);
     }
 
     const convertToColumns = (value, maximalColumns = 0) => {
@@ -149,110 +186,142 @@ function Editor(props) {
         return { "--columns": Math.min(evaluatedColumns, evaluatedMaximalColumns) };
     };
 
-    const getIcon = (item) =>
-        item.icon ? (
-            <Icon icon={item.icon} style={{ transform: `rotate(${item.iconRotate || 0}deg)` }} size={iconSize} />
-        ) : null;
-    const getTitle = (item) => i18nRegistry.translate(item.description || item.label);
-    const getAriaLabel = (item) => (allowEmpty && value === item.value ? resetLabel : getTitle(item));
-    const getAllowEmptyIcon = (item, className = style.allowEmpty) =>
-        allowEmpty ? (
-            <span className={clsx(className, value === item.value && style.allowEmptyShow)}>
+    const resetLabel = i18nRegistry.translate("Beromir.ToggleEditor:Main:reset");
+    const AllowEmptyIcon = ({ item, className = style.allowEmpty }) =>
+        allowEmpty && !multiple ? (
+            <span className={clsx(className, itemIsActive(item) && style.allowEmptyShow)}>
                 <Icon size="sm" icon="times" />
             </span>
         ) : null;
 
     return (
-        <>
-            <Label htmlFor={id}>{label}</Label>
-            <div className={clsx(style.wrapper, style[layout], disabled && style.disabled)} style={getColumns()}>
-                {options.map((item, index) => {
-                    const elementId = index === 0 ? id : null;
-                    const isCurrent = value === item.value;
-                    const disabled = item.disabled;
-                    const label = i18nRegistry.translate(item.label);
-                    switch (layout) {
-                        case "list":
+        <Wrapper
+            id={id}
+            label={label}
+            className={[style[layout], disabled && style.disabled]}
+            style={getColumns()}
+            setIdOnWrapper={false}
+        >
+            {options.map((item, index) => {
+                const elementId = index === 0 ? id : null;
+                const isCurrent = itemIsActive(item);
+                const disabled = item.disabled;
+                const state = isCurrent ? "active" : "default";
+
+                const labels = getItemVariants(item, "label", true, (value) => i18nRegistry.translate(value));
+                const descriptions = getItemVariants(item, "description", true, (value) =>
+                    i18nRegistry.translate(value),
+                );
+                const label = labels?.[state];
+                const description = descriptions?.[state];
+
+                const title = description || label;
+                const ariaLabel = isCurrent && allowEmpty ? resetLabel : title;
+
+                switch (layout) {
+                    case "list":
+                        if (multiple) {
                             return (
+                                <Label
+                                    id={elementId}
+                                    className={style.listButton}
+                                    title={title}
+                                    aria-label={ariaLabel}
+                                    key={index}
+                                >
+                                    <CheckBox
+                                        isChecked={isCurrent}
+                                        disabled={disabled}
+                                        onChange={() => onChange(item)}
+                                    />
+                                    <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                    <PreviewImage item={item} isCurrent={isCurrent} />
+                                    {label && <span>{label}</span>}
+                                </Label>
+                            );
+                        }
+
+                        return (
+                            <button
+                                id={elementId}
+                                onClick={({ currentTarget }) => onChange(item, currentTarget)}
+                                type="button"
+                                title={title}
+                                aria-label={ariaLabel}
+                                disabled={disabled}
+                                className={clsx(style.listButton, isCurrent && style.selected)}
+                                key={index}
+                            >
+                                <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
+                                    <span></span>
+                                </span>
+                                <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                <PreviewImage item={item} isCurrent={isCurrent} />
+                                {label && <span>{label}</span>}
+                                <AllowEmptyIcon item={item} className={style.allowEmptyRadio} />
+                            </button>
+                        );
+
+                    case "color":
+                        const maxColorIndex = item.color.length - 1;
+                        return (
+                            <div className={style.colorBox} key={index}>
                                 <button
                                     id={elementId}
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
-                                    title={getTitle(item)}
-                                    aria-label={getAriaLabel(item)}
+                                    title={title}
+                                    aria-label={ariaLabel}
                                     disabled={disabled}
-                                    className={clsx(style.listButton, isCurrent && style.selected)}
+                                    className={clsx(
+                                        style.colorButton,
+                                        isCurrent && (highlight ? style.highlight : style.selected),
+                                    )}
                                 >
-                                    <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
-                                        <span></span>
-                                    </span>
-                                    {getIcon(item)}
-                                    {getPreview(item, i18nRegistry)}
-                                    {label && <span>{label}</span>}
-                                    {getAllowEmptyIcon(item, style.allowEmptyRadio)}
+                                    {item.color.map((color, index) => (
+                                        <span
+                                            key={`color-${index}`}
+                                            className={clsx(
+                                                style.colorPreview,
+                                                color === "transparent" && style.colorTransparent,
+                                                maxColorIndex === index && style.colorPreviewLast,
+                                            )}
+                                            style={{ backgroundColor: color }}
+                                        />
+                                    ))}
+                                    <AllowEmptyIcon item={item} />
                                 </button>
-                            );
+                                {label && (
+                                    <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
+                                )}
+                            </div>
+                        );
 
-                        case "color":
-                            const maxColorIndex = item.color.length - 1;
-                            return (
-                                <div className={style.colorBox}>
-                                    <button
-                                        id={elementId}
-                                        onClick={({ currentTarget }) => onChange(item, currentTarget)}
-                                        type="button"
-                                        title={getTitle(item)}
-                                        aria-label={getAriaLabel(item)}
-                                        disabled={disabled}
-                                        className={clsx(
-                                            style.colorButton,
-                                            isCurrent && (highlight ? style.highlight : style.selected),
-                                        )}
-                                    >
-                                        {item.color.map((color, index) => (
-                                            <span
-                                                key={`color-${index}`}
-                                                className={clsx(
-                                                    style.colorPreview,
-                                                    color === "transparent" && style.colorTransparent,
-                                                    maxColorIndex === index && style.colorPreviewLast,
-                                                )}
-                                                style={{ backgroundColor: color }}
-                                            />
-                                        ))}
-                                        {getAllowEmptyIcon(item)}
-                                    </button>
-                                    {label && (
-                                        <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
-                                    )}
-                                </div>
-                            );
-
-                        default:
-                            return (
-                                <Button
-                                    id={elementId}
-                                    onClick={() => onChange(item)}
-                                    isActive={isCurrent}
-                                    title={getTitle(item)}
-                                    aria-label={getAriaLabel(item)}
-                                    disabled={disabled}
-                                    className={clsx(style.button, isCurrent && highlight && style.highlight)}
-                                >
-                                    {getIcon(item)}
-                                    {getPreview(item, i18nRegistry)}
-                                    {label && (
-                                        <span className={clsx(item.icon || item.preview ? style.label : null)}>
-                                            {label}
-                                        </span>
-                                    )}
-                                    {getAllowEmptyIcon(item)}
-                                </Button>
-                            );
-                    }
-                })}
-            </div>
-        </>
+                    default:
+                        return (
+                            <Button
+                                id={elementId}
+                                onClick={() => onChange(item)}
+                                isActive={isCurrent}
+                                title={title}
+                                aria-label={ariaLabel}
+                                disabled={disabled}
+                                className={clsx(style.button, isCurrent && highlight && style.highlight)}
+                                key={index}
+                            >
+                                <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                <PreviewImage item={item} isCurrent={isCurrent} />
+                                {label && (
+                                    <span className={clsx(item.icon || item.preview ? style.label : null)}>
+                                        {label}
+                                    </span>
+                                )}
+                                <AllowEmptyIcon item={item} />
+                            </Button>
+                        );
+                }
+            })}
+        </Wrapper>
     );
 }
 
@@ -261,10 +330,11 @@ Editor.propTypes = {
     commit: PropTypes.func.isRequired,
     i18nRegistry: PropTypes.object.isRequired,
     options: PropTypes.shape({
-        layout: PropTypes.oneOf(["grid", "flex", "list", "color"]),
+        layout: PropTypes.oneOf(["grid", "flex", "flex-start", "list", "color"]),
         columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         maximalColumns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         allowEmpty: PropTypes.bool,
+        multiple: PropTypes.bool,
         iconSize: PropTypes.oneOf(["xs", "sm", "lg", "2x", "3x"]),
         values: PropTypes.objectOf(
             PropTypes.shape({
@@ -286,79 +356,6 @@ Editor.propTypes = {
         dataSourceAdditionalData: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 };
-
-function processColorValues(values) {
-    if (!Array.isArray(values)) {
-        return [];
-    }
-    values = values
-        .map((item) => ({
-            ...item,
-            color: processColor(item.color),
-        }))
-        .filter((item) => item.color);
-
-    return values;
-}
-
-function processColor(color) {
-    if (!color || (typeof color !== "string" && !Array.isArray(color))) {
-        return null;
-    }
-    if (typeof color === "string") {
-        return [color];
-    }
-    color = color.filter(Boolean);
-    if (color.length < 1) {
-        return null;
-    }
-    return color;
-}
-
-function getPreview(item, i18nRegistry) {
-    if (!item || !item.preview) {
-        return null;
-    }
-    const preview = item.preview;
-    const fullClass = item.previewFull ? style.imageFull : null;
-    const label = i18nRegistry.translate(item.description || item.label);
-
-    if (preview.startsWith("<svg ")) {
-        return (
-            <div
-                className={clsx(style.imageSVG, fullClass)}
-                aria-label={label}
-                dangerouslySetInnerHTML={{ __html: preview }}
-            />
-        );
-    }
-
-    const src = preview.startsWith("resource://") ? `/_Resources/Static/Packages/${preview.substr(11)}` : preview;
-    return <img src={src} className={clsx(style.image, fullClass)} alt={label} />;
-}
-
-function flattenValues(values, layout, i18nRegistry) {
-    if (!values || typeof values !== "object") {
-        return [];
-    }
-
-    const array = [];
-
-    for (const value in values) {
-        const item = values[value];
-        if (item.hidden) {
-            continue;
-        }
-        array.push({
-            ...item,
-            value,
-        });
-    }
-    if (layout === "color") {
-        return processColorValues(array);
-    }
-    return array;
-}
 
 const neosifier = neos((globalRegistry) => ({
     i18nRegistry: globalRegistry.get("i18n"),
