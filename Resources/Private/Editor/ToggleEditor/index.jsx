@@ -64,6 +64,10 @@ function Editor(props) {
         // Load options from data source
         dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
             setIsLoading(false);
+            if (values.hidden) {
+                setOptions({ hidden: true });
+                return;
+            }
 
             if (layout === "color") {
                 setOptions(processColorValues(values));
