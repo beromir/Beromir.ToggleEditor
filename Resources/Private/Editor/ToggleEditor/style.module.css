@@ -13,10 +13,16 @@
     }
 }
 
+.flex-start {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    justify-content: flex-start;
+}
+
 .color {
     display: grid;
-    row-gap: 14px;
-    column-gap: var(--spacing-Half);
+    gap: 14px var(--spacing-Half);
     padding-top: var(--spacing-Quarter);
     grid-template-columns: repeat(var(--columns, 1), minmax(0, 1fr));
 }
@@ -53,6 +59,21 @@
     justify-content: stretch;
 }
 
+/* Icon and image wrapper (this prevents that one icon get's bigger than another */
+
+.layered {
+    grid-template: "content" 1fr / 1fr;
+    display: inline-grid;
+    align-content: center;
+    justify-items: center;
+    width: 100%;
+    min-width: var(--spacing-Full);
+
+    & > * {
+        grid-area: content;
+    }
+}
+
 /* List button */
 
 .listButton {
@@ -64,6 +85,8 @@
     border: none;
     border-radius: 0;
     cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    padding: 0;
 
     &:focus {
         outline: none;
@@ -77,8 +100,11 @@
         background-color: var(--colors-PrimaryBlue);
     }
 
-    & svg {
+    & > svg,
+    & > img,
+    & > .layered {
         margin-right: var(--spacing-Half);
+        max-height: 1em;
     }
 }
 
@@ -184,6 +210,12 @@
 
 .label {
     font-size: var(--fontSize-Small);
+}
+
+.transition {
+    transition:
+        transform var(--transition-Slow) ease,
+        opacity var(--transition-Default) ease;
 }
 
 /* Allow empty */

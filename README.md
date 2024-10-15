@@ -98,6 +98,31 @@ spacing:
 
 </details>
 
+### Flex Start
+
+<img width="300" alt="Screenshot of flex-start layout" src="https://github.com/user-attachments/assets/f89d32f5-a87c-4191-a5e2-dc56eeed269e">
+
+<details>
+<summary>Property definitions from the screenshot</summary>
+
+```yaml
+toggle:
+  type: array
+  ui:
+    label: Toggle Mode
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        multiple: true
+        layout: flex-start
+        values:
+          enable:
+            icon: toggle-off
+            iconActive: toggle-on
+```
+
+</details>
+
 ### List
 
 <img alt="Screenshot of list layout" src="https://github.com/user-attachments/assets/6cf075e1-c34b-4484-9221-130733ac9cf7" width="300" />
@@ -125,6 +150,34 @@ size:
             label: Medium
           large:
             label: Large
+```
+
+</details>
+
+<img alt="Screenshot of list layout with multiple option" src="https://github.com/user-attachments/assets/9239e9c9-ae76-4d0d-9466-b173537cd049" width="300">
+
+<details>
+<summary>Property definitions from the screenshot</summary>
+
+```yaml
+checkboxGroup:
+  type: array
+  ui:
+    label: Checkbox Group
+    inspector:
+      editor: Beromir.ToggleEditor/Editor
+      editorOptions:
+        multiple: true
+        layout: list
+        values:
+          first:
+            icon: wrench
+            iconActiveRotate: 15
+            label: First Checkbox
+          second:
+            iconActive: fire
+            label: Second Checkbox
+            labelActive: Second Checkbox checked
 ```
 
 </details>
@@ -183,6 +236,7 @@ You can select one of the following layout options:
 
 - grid
 - flex
+- flex-start
 - list
 - color
 
@@ -196,6 +250,7 @@ Add a property of type string to your NodeType definition and use the following 
 ```yaml
 properties:
   alignment:
+    # If multiple is true, this must be array, otherwise string
     type: string
     defaultValue: "left"
     ui:
@@ -204,47 +259,80 @@ properties:
       inspector:
         editor: "Beromir.ToggleEditor/Editor"
         editorOptions:
-          # One of 'grid', 'flex', 'list' or 'color'. Default: 'grid'
+          # One of 'grid', 'flex', 'flex-start', 'list' or 'color'. Default: 'grid'
           layout: "flex"
+
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
           # This can also be an expression like {items} / 2
           # Gets surrounded by Math.floor
           # Available values {items} = number of values / {maximalRows} = value from maximalRows
           # The smaller value from columns and maximalColumns will be used
           columns: 2
+
           # Alternativly you can set the maximal number of columns. Defaults to 4. Works only with 'grid' and 'color'
           # This can also be an expression like {items} / 2
           # Gets surrounded by Math.floor
           # Available values {items} = number of values
           maximalColumns: 4
+
           # Allow empty value
           allowEmpty: true
+
+          # Enable multiple mode. If this is true, the type must be array
+          # If true, setting allowEmpty to false has no effect. The array can always be empty
+          multiple: false
+
           # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null
           iconSize: "lg"
+
           # Disable the whole editor
           disable: false
+
           # This option makes it possible hide the whole editor (incl. label) based on data source
           hidden: false
+
+          # Set the values
           values:
             left:
               # Show a label
               label: "Left"
-              # Show an icon. Does not work with the color layout
-              icon: "align-left"
-              # Rotate the icon (in degrees)
-              iconRotate: -45
+              # Label on active state
+              labelActive: "Item is left"
+
               # Show a description on hover
               description: "Align left"
+              # Description on active state
+              descriptionActive: "Item is left aligned"
+
+              # Show an icon. Does not work with the color layout
+              icon: "align-right"
+              # Icon on active state. Does not work with the color layout
+              iconActive: "align-left"
+              # Rotate the icon (in degrees)
+              iconRotate: -45
+              # Rotate the icon on active state (in degrees)
+              iconActiveRotate: -45
+
               # Specify the color to display in the editor. Does only work with the color layout
               # If you pass multiple colors as an array (e.g. ['white', 'black]) it will generate a gradient with hard
               # stops. This is useful if you have light and dark mode on your website
               color: "#ffffff"
+
               # Hide the value. Great if you work with ClientEval
               hidden: "ClientEval: !!node.property.anotherProperty"
+
               # Add a preview image. Does not work with the color layout. Can be also a string with svg markup
               preview: "resource://Vendor.Package/filenameInPublicFolder.png"
+              # Add a preview on active state image. Does not work with the color layout. Can be also a string with svg markup
+              previewActive: "resource://Vendor.Package/filenameInPublicFolder.png"
+              # Rotate the preview (in degrees)
+              previewRotate: -45
+              # Rotate the preview on active state (in degrees)
+              previewActiveRotate: -45
+
               # If true and no label is defined, the margin from the button get's removed. Defaults to false
               previewFull: true
+
               # Disable an item option
               disabled: false
             center:
