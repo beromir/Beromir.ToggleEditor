@@ -250,6 +250,7 @@ Add a property of type string to your NodeType definition and use the following 
 ```yaml
 properties:
   alignment:
+    # If multiple is true, this must be array, otherwise string
     type: string
     defaultValue: "left"
     ui:
@@ -260,25 +261,37 @@ properties:
         editorOptions:
           # One of 'grid', 'flex', 'flex-start', 'list' or 'color'. Default: 'grid'
           layout: "flex"
+
           # Set number of columns to render multiple rows. Works only with 'grid' and 'color'
           # This can also be an expression like {items} / 2
           # Gets surrounded by Math.floor
           # Available values {items} = number of values / {maximalRows} = value from maximalRows
           # The smaller value from columns and maximalColumns will be used
           columns: 2
+
           # Alternativly you can set the maximal number of columns. Defaults to 4. Works only with 'grid' and 'color'
           # This can also be an expression like {items} / 2
           # Gets surrounded by Math.floor
           # Available values {items} = number of values
           maximalColumns: 4
+
           # Allow empty value
           allowEmpty: true
+
+          # Enable multiple mode. If this is true, the type must be array
+          # If true, setting allowEmpty to false has no effect. The array can always be empty
+          multiple: false
+
           # Define the size of the icons: 'xs', 'sm', 'lg', '2x' or '3x'. Default: null
           iconSize: "lg"
+
           # Disable the whole editor
           disable: false
+
           # This option makes it possible hide the whole editor (incl. label) based on data source
           hidden: false
+
+          # Set the values
           values:
             left:
               # Show a label
