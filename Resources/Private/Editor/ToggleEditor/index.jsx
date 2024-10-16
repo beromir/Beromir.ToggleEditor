@@ -46,7 +46,7 @@ function Editor(props) {
         multiple,
     } = mergedOptions;
     const allowEmpty = multiple || mergedOptions.allowEmpty;
-    const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader } = props;
+    const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon } = props;
     const label = i18nRegistry.translate(props.label);
 
     if (multiple && !Array.isArray(value)) {
@@ -95,6 +95,7 @@ function Editor(props) {
                 label={label}
                 className={style.loading}
                 title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
+                renderHelpIcon={renderHelpIcon}
             >
                 <Icon icon="spinner" size="lg" spin />
             </Wrapper>
@@ -107,7 +108,7 @@ function Editor(props) {
 
     if (!options || !options.length) {
         return (
-            <Wrapper id={id} label={label} className={style.error}>
+            <Wrapper id={id} label={label} className={style.error} renderHelpIcon={renderHelpIcon}>
                 {i18nRegistry.translate(
                     `Beromir.ToggleEditor:Main:error.${hasDataSource ? "noDataFromSource" : "noNodeTypeDefintion"}`,
                 )}
@@ -201,6 +202,7 @@ function Editor(props) {
             className={[style[layout], disabled && style.disabled]}
             style={getColumns()}
             setIdOnWrapper={false}
+            renderHelpIcon={renderHelpIcon}
         >
             {options.map((item, index) => {
                 const elementId = index === 0 ? id : null;
