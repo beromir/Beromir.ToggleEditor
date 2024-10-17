@@ -203,7 +203,6 @@ function Editor(props) {
             label={label}
             className={[style[layout], disabled && style.disabled]}
             style={getColumns()}
-            setIdOnWrapper={false}
             renderHelpIcon={renderHelpIcon}
         >
             {options.map((item, index) => {
