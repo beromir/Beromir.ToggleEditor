@@ -277,6 +277,9 @@ properties:
 
           # Allow empty value
           allowEmpty: true
+          
+          # Value for empty state. Does not work in multiple mode
+          emptyValue: "none"
 
           # Enable multiple mode. If this is true, the type must be array
           # If true, setting allowEmpty to false has no effect. The array can always be empty
