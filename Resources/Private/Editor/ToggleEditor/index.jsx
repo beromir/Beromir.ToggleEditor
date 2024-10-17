@@ -23,6 +23,7 @@ const defaultOptions = {
     values: {},
     columns: null,
     allowEmpty: false,
+    emptyValue: "",
     multiple: false,
     iconSize: null,
     disabled: false,
@@ -38,6 +39,7 @@ function Editor(props) {
         values,
         columns,
         maximalColumns,
+        emptyValue,
         iconSize,
         disabled,
         dataSourceIdentifier,
@@ -127,7 +129,7 @@ function Editor(props) {
         if (!item) {
             // No item is set, so we reset the value
             // This should not happen, but we handle it anyway
-            commit(multiple ? [] : "");
+            commit(multiple ? [] : emptyValue);
             setActive([]);
             return;
         }
@@ -153,9 +155,9 @@ function Editor(props) {
 
         setActive(activeItems);
 
-        // if multiple is deisabled, we return array the first value
+        // if multiple is disabled, we return array the first value
         if (!multiple) {
-            activeItems = activeItems[0] || "";
+            activeItems = activeItems[0] || emptyValue;
         }
         commit(activeItems);
     }
@@ -336,6 +338,7 @@ Editor.propTypes = {
         columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         maximalColumns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         allowEmpty: PropTypes.bool,
+        emptyValue: PropTypes.string,
         multiple: PropTypes.bool,
         iconSize: PropTypes.oneOf(["xs", "sm", "lg", "2x", "3x"]),
         values: PropTypes.objectOf(
