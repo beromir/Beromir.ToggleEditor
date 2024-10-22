@@ -271,13 +271,6 @@
 
 /* States */
 
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: var(--spacing-GoldenUnit);
-}
-
 .highlight {
     outline: var(--colors-Warn) solid 2px;
     outline-offset: 2px;

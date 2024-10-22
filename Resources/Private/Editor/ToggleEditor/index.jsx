@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { selectors } from "@neos-project/neos-ui-redux-store";
 import { neos } from "@neos-project/neos-ui-decorators";
 import { connect } from "react-redux";
+import Loading from "carbon-neos-loadinganimation/LoadingWithStyles";
 import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
 import { Icons, PreviewImage, Wrapper } from "./Components";
 import { flattenValues, processColorValues, getItemVariants } from "./utils";
@@ -92,14 +93,8 @@ function Editor(props) {
 
     if (isLoading) {
         return (
-            <Wrapper
-                id={id}
-                label={label}
-                className={style.loading}
-                title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
-                renderHelpIcon={renderHelpIcon}
-            >
-                <Icon icon="spinner" size="lg" spin />
+            <Wrapper id={id} label={label} renderHelpIcon={renderHelpIcon}>
+                <Loading isLoading={isLoading} title="Beromir.ToggleEditor:Main:loading" />
             </Wrapper>
         );
     }
