@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
-import { neos } from "@neos-project/neos-ui-decorators";
-import style from "./style.module.css";
-import { connect } from "react-redux";
 import { selectors } from "@neos-project/neos-ui-redux-store";
+import { neos } from "@neos-project/neos-ui-decorators";
+import { connect } from "react-redux";
+import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
 import { Icons, PreviewImage, Wrapper } from "./Components";
 import { flattenValues, processColorValues, getItemVariants } from "./utils";
 import clsx from "clsx";
+import style from "./style.module.css";
 
 const getDataLoaderOptionsForProps = (props) => ({
     contextNodePath: props.focusedNodePath,
