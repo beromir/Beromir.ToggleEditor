@@ -232,6 +232,7 @@
     margin: 0 !important;
     transition: opacity var(--transition-Default) ease;
     pointer-events: none;
+    border-radius: 9999px;
     right: 0;
     opacity: 0;
 
@@ -244,7 +245,6 @@
     top: -10px;
     right: -10px;
     background-color: var(--colors-ContrastNeutral);
-    border-radius: 9999px;
 }
 
 .allowEmptyShow {
