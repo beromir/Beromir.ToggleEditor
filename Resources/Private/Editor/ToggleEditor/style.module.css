@@ -230,7 +230,9 @@
     width: 20px;
     height: 20px;
     margin: 0 !important;
-    transition: opacity var(--transition-Default) ease;
+    transition:
+        opacity var(--transition-Default) ease,
+        background-color var(--transition-Default) ease;
     pointer-events: none;
     border-radius: 9999px;
     right: 0;
