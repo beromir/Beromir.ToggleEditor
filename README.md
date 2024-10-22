@@ -277,7 +277,7 @@ properties:
 
           # Allow empty value
           allowEmpty: true
-          
+
           # Value for empty state. Does not work in multiple mode
           emptyValue: "none"
 
