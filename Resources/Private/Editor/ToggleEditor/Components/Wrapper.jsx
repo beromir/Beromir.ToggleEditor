@@ -3,16 +3,7 @@ import { Label } from "@neos-project/react-ui-components";
 import clsx from "clsx";
 import styles from "../style.module.css";
 
-export default function Wrapper({
-    children,
-    label,
-    id,
-    className,
-    setIdOnWrapper = true,
-    title,
-    style,
-    renderHelpIcon,
-}) {
+export default function Wrapper({ children, label, id, className, title, style, renderHelpIcon }) {
     if (!children) {
         return null;
     }
@@ -24,12 +15,7 @@ export default function Wrapper({
                     {label} {renderHelpIcon()}
                 </Label>
             )}
-            <div
-                id={setIdOnWrapper ? id : null}
-                className={clsx(styles.wrapper, className)}
-                style={style}
-                title={title}
-            >
+            <div id={id} className={clsx(styles.wrapper, className)} style={style} title={title}>
                 {children}
             </div>
         </>

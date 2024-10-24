@@ -9,8 +9,11 @@ importers:
   .:
     devDependencies:
       '@neos-project/neos-ui-extensibility':
-        specifier: ~8.3.10
-        version: 8.3.10
+        specifier: ~8.3.11
+        version: 8.3.11
+      carbon-neos-loadinganimation:
+        specifier: ^1.0.0
+        version: 1.0.0(@neos-project/neos-ui-extensibility@8.3.11)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -173,11 +176,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@neos-project/neos-ui-extensibility@8.3.10':
-    resolution: {integrity: sha512-cLj8iju4JIjFExjbCi2SL88DLKx8LQI7v3A4deKiXD7aigOTBprdVUwWMC4DRgNZ6tQKsWnwiQI3g0Qji+8+CQ==}
+  '@neos-project/neos-ui-extensibility@8.3.11':
+    resolution: {integrity: sha512-thhE0LBNTA/FclFcz42JWsYSIODtb3QUSl9+JZBk7npB6xxsuaxaU9SDqT9MwS72X//qKwqnU01fDW/w/yrlIg==}
 
-  '@neos-project/positional-array-sorter@8.3.10':
-    resolution: {integrity: sha512-HzF/6b7FJdGzVPKeI4ga1kKHMqxNzWCW+AGvRjjXdc3Hxfzox2OgZ/jS421StKESvCnhmTQCWY1GamxSB3FuqA==}
+  '@neos-project/positional-array-sorter@8.3.11':
+    resolution: {integrity: sha512-Bo1JjzidH3yUFeBcr0e0sv+K8VAdDmO1gqTMpRusfozV+kR0Rcmb2qJJ/dgNaHI6BcNpecLZF6EJDzrqwO1Ueg==}
+
+  carbon-neos-loadinganimation@1.0.0:
+    resolution: {integrity: sha512-/JvI+4CicCkahm17O2XzWNANH3Fn8k401v7uozwxqm/a/Z6im+09WmAbHn2otvR7Q2W+d7PvTsCpOpPJ5+lO7g==}
+    peerDependencies:
+      '@neos-project/neos-ui-extensibility': ^8.3.0 || ^9.0.0
 
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
@@ -358,11 +366,15 @@ snapshots:
   '@esbuild/win32-x64@0.24.0':
     optional: true
 
-  '@neos-project/neos-ui-extensibility@8.3.10':
+  '@neos-project/neos-ui-extensibility@8.3.11':
     dependencies:
-      '@neos-project/positional-array-sorter': 8.3.10
+      '@neos-project/positional-array-sorter': 8.3.11
 
-  '@neos-project/positional-array-sorter@8.3.10': {}
+  '@neos-project/positional-array-sorter@8.3.11': {}
+
+  carbon-neos-loadinganimation@1.0.0(@neos-project/neos-ui-extensibility@8.3.11):
+    dependencies:
+      '@neos-project/neos-ui-extensibility': 8.3.11
 
   clsx@2.1.1: {}
 

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
-import { neos } from "@neos-project/neos-ui-decorators";
-import style from "./style.module.css";
-import { connect } from "react-redux";
 import { selectors } from "@neos-project/neos-ui-redux-store";
+import { neos } from "@neos-project/neos-ui-decorators";
+import { connect } from "react-redux";
+import Loading from "carbon-neos-loadinganimation/LoadingWithStyles";
+import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
 import { Icons, PreviewImage, Wrapper } from "./Components";
 import { flattenValues, processColorValues, getItemVariants } from "./utils";
 import clsx from "clsx";
+import style from "./style.module.css";
 
 const getDataLoaderOptionsForProps = (props) => ({
     contextNodePath: props.focusedNodePath,
@@ -92,14 +93,8 @@ function Editor(props) {
 
     if (isLoading) {
         return (
-            <Wrapper
-                id={id}
-                label={label}
-                className={style.loading}
-                title={i18nRegistry.translate("Beromir.ToggleEditor:Main:loading")}
-                renderHelpIcon={renderHelpIcon}
-            >
-                <Icon icon="spinner" size="lg" spin />
+            <Wrapper id={id} label={label} renderHelpIcon={renderHelpIcon}>
+                <Loading isLoading={isLoading} title="Beromir.ToggleEditor:Main:loading" />
             </Wrapper>
         );
     }
@@ -206,7 +201,6 @@ function Editor(props) {
             renderHelpIcon={renderHelpIcon}
         >
             {options.map((item, index) => {
-                const elementId = index === 0 ? id : null;
                 const isCurrent = itemIsActive(item);
                 const disabled = item.disabled;
                 const state = isCurrent ? "active" : "default";
@@ -225,13 +219,7 @@ function Editor(props) {
                     case "list":
                         if (multiple) {
                             return (
-                                <Label
-                                    id={elementId}
-                                    className={style.listButton}
-                                    title={title}
-                                    aria-label={ariaLabel}
-                                    key={index}
-                                >
+                                <Label className={style.listButton} title={title} aria-label={ariaLabel} key={index}>
                                     <CheckBox
                                         isChecked={isCurrent}
                                         disabled={disabled}
@@ -246,7 +234,6 @@ function Editor(props) {
 
                         return (
                             <button
-                                id={elementId}
                                 onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
                                 title={title}
@@ -270,7 +257,6 @@ function Editor(props) {
                         return (
                             <div className={style.colorBox} key={index}>
                                 <button
-                                    id={elementId}
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={title}
@@ -303,7 +289,6 @@ function Editor(props) {
                     default:
                         return (
                             <Button
-                                id={elementId}
                                 onClick={() => onChange(item)}
                                 isActive={isCurrent}
                                 title={title}
