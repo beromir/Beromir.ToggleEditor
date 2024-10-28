@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { selectors } from "@neos-project/neos-ui-redux-store";
 import { neos } from "@neos-project/neos-ui-decorators";
+import positionalArraySorter from "@neos-project/positional-array-sorter";
 import { connect } from "react-redux";
 import Loading from "carbon-neos-loadinganimation/LoadingWithStyles";
 import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
@@ -200,7 +201,7 @@ function Editor(props) {
             style={getColumns()}
             renderHelpIcon={renderHelpIcon}
         >
-            {options.map((item, index) => {
+            {positionalArraySorter(options).map((item, index) => {
                 const isCurrent = itemIsActive(item);
                 const disabled = item.disabled;
                 const state = isCurrent ? "active" : "default";

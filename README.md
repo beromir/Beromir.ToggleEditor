@@ -341,6 +341,9 @@ properties:
             center:
               label: "Center"
               icon: "align-center"
+              # With position, you set the position of the toggle
+              # https://www.npmjs.com/package/@neos-project/positional-array-sorter
+              postion: 10
             right:
               label: "Right"
               icon: "align-right"
