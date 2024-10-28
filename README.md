@@ -170,14 +170,16 @@ checkboxGroup:
         multiple: true
         layout: list
         values:
-          first:
-            icon: wrench
-            iconActiveRotate: 15
-            label: First Checkbox
           second:
             iconActive: fire
             label: Second Checkbox
             labelActive: Second Checkbox checked
+            position: 20
+          first:
+            icon: wrench
+            iconActiveRotate: 15
+            label: First Checkbox
+            position: 10
 ```
 
 </details>
