@@ -343,8 +343,9 @@ properties:
             center:
               label: "Center"
               icon: "align-center"
-              # With position, you set the position of the toggle
-              # https://www.npmjs.com/package/@neos-project/positional-array-sorter
+
+              # The order of the values can be altered by setting position. It is the same logic as @position in Fusion
+              # https://neos.readthedocs.io/en/stable/References/NeosFusionReference.html#neos-fusion-join
               postion: 10
             right:
               label: "Right"
