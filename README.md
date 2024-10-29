@@ -346,6 +346,7 @@ properties:
 
               # The order of the values can be altered by setting position. It is the same logic as @position in Fusion
               # https://neos.readthedocs.io/en/stable/References/NeosFusionReference.html#neos-fusion-join
+              # If the value is empty (''), the key for sorting is set to __empty__
               postion: 10
             right:
               label: "Right"

@@ -84,6 +84,9 @@ function Editor(props) {
                 return;
             }
 
+            // Add key to values
+            values = values.map((item) => ({ key: item.value == "" ? "__empty__" : item.value, ...item }));
+
             if (layout === "color") {
                 setOptions(processColorValues(values));
                 return;
