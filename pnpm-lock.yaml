@@ -11,9 +11,12 @@ importers:
       '@neos-project/neos-ui-extensibility':
         specifier: ~8.3.11
         version: 8.3.11
+      '@neos-project/positional-array-sorter':
+        specifier: ^8.3.11
+        version: 8.3.11
       carbon-neos-loadinganimation:
-        specifier: ^1.0.0
-        version: 1.0.0(@neos-project/neos-ui-extensibility@8.3.11)
+        specifier: ^1.1.1
+        version: 1.1.1(@neos-project/neos-ui-extensibility@8.3.11)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -182,8 +185,8 @@ packages:
   '@neos-project/positional-array-sorter@8.3.11':
     resolution: {integrity: sha512-Bo1JjzidH3yUFeBcr0e0sv+K8VAdDmO1gqTMpRusfozV+kR0Rcmb2qJJ/dgNaHI6BcNpecLZF6EJDzrqwO1Ueg==}
 
-  carbon-neos-loadinganimation@1.0.0:
-    resolution: {integrity: sha512-/JvI+4CicCkahm17O2XzWNANH3Fn8k401v7uozwxqm/a/Z6im+09WmAbHn2otvR7Q2W+d7PvTsCpOpPJ5+lO7g==}
+  carbon-neos-loadinganimation@1.1.1:
+    resolution: {integrity: sha512-x0xjMyMdYEEZxe+Qn2Q077PPdr7SAuJ6b7B7mTT/550KZPaHCIKdPHNnWt9O20/811cPGv+tU4wSXCaDvExJVw==}
     peerDependencies:
       '@neos-project/neos-ui-extensibility': ^8.3.0 || ^9.0.0
 
@@ -372,7 +375,7 @@ snapshots:
 
   '@neos-project/positional-array-sorter@8.3.11': {}
 
-  carbon-neos-loadinganimation@1.0.0(@neos-project/neos-ui-extensibility@8.3.11):
+  carbon-neos-loadinganimation@1.1.1(@neos-project/neos-ui-extensibility@8.3.11):
     dependencies:
       '@neos-project/neos-ui-extensibility': 8.3.11
 

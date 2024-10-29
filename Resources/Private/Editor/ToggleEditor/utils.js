@@ -41,6 +41,7 @@ export function flattenValues(values, layout) {
         array.push({
             ...item,
             value,
+            key: value == "" ? "__empty__" : value,
         });
     }
     if (layout === "color") {

@@ -170,14 +170,16 @@ checkboxGroup:
         multiple: true
         layout: list
         values:
-          first:
-            icon: wrench
-            iconActiveRotate: 15
-            label: First Checkbox
           second:
             iconActive: fire
             label: Second Checkbox
             labelActive: Second Checkbox checked
+            position: 20
+          first:
+            icon: wrench
+            iconActiveRotate: 15
+            label: First Checkbox
+            position: 10
 ```
 
 </details>
@@ -317,8 +319,8 @@ properties:
               iconActiveRotate: -45
 
               # Specify the color to display in the editor. Does only work with the color layout
-              # If you pass multiple colors as an array (e.g. ['white', 'black]) it will generate a gradient with hard
-              # stops. This is useful if you have light and dark mode on your website
+              # If you pass multiple colors as an array (e.g. ['white', 'black]) it will put all defined colors side by
+              # side. (Transparent is also possible) This is useful if you have light and dark mode on your website
               color: "#ffffff"
 
               # Hide the value. Great if you work with ClientEval
@@ -341,6 +343,11 @@ properties:
             center:
               label: "Center"
               icon: "align-center"
+
+              # The order of the values can be altered by setting position. It is the same logic as @position in Fusion
+              # https://neos.readthedocs.io/en/stable/References/NeosFusionReference.html#neos-fusion-join
+              # If the value is empty (''), the key for sorting is set to __empty__
+              postion: 10
             right:
               label: "Right"
               icon: "align-right"
