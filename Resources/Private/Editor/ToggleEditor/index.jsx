@@ -268,7 +268,7 @@ function Editor(props) {
                                     />
                                     <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                     <PreviewImage item={item} isCurrent={isCurrent} />
-                                    {label && <span>{label}</span>}
+                                    {label && <span className={style.flex1}>{label}</span>}
                                 </Label>
                             );
                         }
@@ -288,7 +288,7 @@ function Editor(props) {
                                 </span>
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />
-                                {label && <span>{label}</span>}
+                                {label && <span className={style.flex1}>{label}</span>}
                                 <AllowEmptyIcon item={item} className={style.allowEmptyRadio} />
                             </button>
                         );

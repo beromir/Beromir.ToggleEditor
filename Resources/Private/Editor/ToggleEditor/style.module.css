@@ -92,6 +92,7 @@
     -webkit-font-smoothing: antialiased;
     padding: 5px;
     margin: 0;
+    text-align: left;
 
     &:focus {
         outline: none;
@@ -103,6 +104,10 @@
 
     &:where(.selected, :hover:not([disabled])) .radio {
         background-color: var(--colors-PrimaryBlue);
+    }
+
+    & .flex1 {
+        flex: 1;
     }
 
     & > svg,
@@ -122,6 +127,7 @@
     margin-right: 12px;
     width: 22px;
     height: 22px;
+    min-width: 22px;
     border-radius: 9999px !important;
     border: none;
     background-color: var(--colors-ContrastDark);
@@ -227,18 +233,14 @@
 
 .allowEmpty,
 .allowEmptyRadio {
-    position: absolute;
-    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 !important;
     transition:
         opacity var(--transition-Default) ease,
         background-color var(--transition-Default) ease;
     pointer-events: none;
     aspect-ratio: 1;
-    right: 0;
     opacity: 0;
 
     & svg {
@@ -249,12 +251,16 @@
 .allowEmpty {
     border-radius: 9999px;
     width: 20px;
-    height: 20px;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    margin: 0 !important;
 }
 
 .allowEmptyRadio {
-    top: 0;
-    bottom: 0;
+    min-width: 32px;
+    max-width: 32px;
+    margin: -5px -5px -5px 0 !important;
 }
 
 .allowEmpty {
