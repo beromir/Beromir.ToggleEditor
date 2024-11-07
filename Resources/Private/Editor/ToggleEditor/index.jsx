@@ -52,6 +52,14 @@ function Editor(props) {
     const allowEmpty = multiple || mergedOptions.allowEmpty;
     const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon } = props;
     const label = i18nRegistry.translate(props.label);
+    const [savedValue, setSavedValue] = useState([]);
+
+    useEffect(() => {
+        // This allows us to get the value stored in the content repository
+        if (!highlight) {
+            setSavedValue(Array.isArray(value) ? value : [value]);
+        }
+    }, [highlight]);
 
     if (multiple && !Array.isArray(value)) {
         console.warn(
@@ -115,6 +123,29 @@ function Editor(props) {
                 )}
             </Wrapper>
         );
+    }
+
+    function highlightItem(item) {
+        // We need to compare the active with the saved value, as hightlight doesn't work with the arrays
+        if (JSON.stringify(active) === JSON.stringify(savedValue)) {
+            return false;
+        }
+
+        const valueIsInSaved = savedValue.includes(item.value);
+
+        // No value is active, so we highlight it if it is in the saved value
+        if (!active.length) {
+            return valueIsInSaved;
+        }
+
+        const valueIsActive = itemIsActive(item);
+
+        // If the value is a string, we can just use the active value
+        if (!multiple) {
+            return valueIsActive;
+        }
+
+        return (valueIsActive && !valueIsInSaved) || (valueIsInSaved && !valueIsActive);
     }
 
     function itemIsActive(item) {
@@ -218,12 +249,18 @@ function Editor(props) {
 
                 const title = description || label;
                 const ariaLabel = isCurrent && allowEmpty ? resetLabel : title;
+                const highlightStyle = highlightItem(item) && style.highlight;
 
                 switch (layout) {
                     case "list":
                         if (multiple) {
                             return (
-                                <Label className={style.listButton} title={title} aria-label={ariaLabel} key={index}>
+                                <Label
+                                    className={clsx(style.listButton, highlightStyle)}
+                                    title={title}
+                                    aria-label={ariaLabel}
+                                    key={index}
+                                >
                                     <CheckBox
                                         isChecked={isCurrent}
                                         disabled={disabled}
@@ -243,10 +280,10 @@ function Editor(props) {
                                 title={title}
                                 aria-label={ariaLabel}
                                 disabled={disabled}
-                                className={clsx(style.listButton, isCurrent && style.selected)}
+                                className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
                                 key={index}
                             >
-                                <span className={clsx(style.radio, isCurrent && highlight && style.highlight)}>
+                                <span className={style.radio}>
                                     <span></span>
                                 </span>
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
@@ -266,10 +303,7 @@ function Editor(props) {
                                     title={title}
                                     aria-label={ariaLabel}
                                     disabled={disabled}
-                                    className={clsx(
-                                        style.colorButton,
-                                        isCurrent && (highlight ? style.highlight : style.selected),
-                                    )}
+                                    className={clsx(style.colorButton, isCurrent && style.selected, highlightStyle)}
                                 >
                                     {item.color.map((color, index) => (
                                         <span
@@ -298,7 +332,7 @@ function Editor(props) {
                                 title={title}
                                 aria-label={ariaLabel}
                                 disabled={disabled}
-                                className={clsx(style.button, isCurrent && highlight && style.highlight)}
+                                className={clsx(style.button, highlightStyle)}
                                 key={index}
                             >
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />

@@ -35,13 +35,17 @@
 
 .list {
     display: grid;
-    gap: 12px;
+    gap: 5px;
     grid-template-columns: repeat(1, minmax(0, 1fr));
 
     & .image {
         width: auto;
         height: 1em;
         margin-right: var(--spacing-Half);
+    }
+
+    & .highlight {
+        outline-offset: 0;
     }
 }
 
@@ -79,14 +83,14 @@
 .listButton {
     display: flex;
     align-items: center;
-    width: fit-content;
     color: var(--colors-ContrastBrightest);
     background-color: inherit;
     border: none;
     border-radius: 0;
     cursor: pointer;
     -webkit-font-smoothing: antialiased;
-    padding: 0;
+    padding: 5px;
+    margin: 0;
 
     &:focus {
         outline: none;
@@ -227,20 +231,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
     margin: 0 !important;
     transition:
         opacity var(--transition-Default) ease,
         background-color var(--transition-Default) ease;
     pointer-events: none;
-    border-radius: 9999px;
+    aspect-ratio: 1;
     right: 0;
     opacity: 0;
 
     & svg {
         color: var(--colors-ContrastBrightest);
     }
+}
+
+.allowEmpty {
+    border-radius: 9999px;
+    width: 20px;
+    height: 20px;
+}
+
+.allowEmptyRadio {
+    top: 0;
+    bottom: 0;
 }
 
 .allowEmpty {
@@ -261,10 +274,10 @@
     }
 }
 
-.list {
+.list button {
     position: relative;
 
-    & button:is(:hover:not([disabled]), :focus) .allowEmptyRadio {
+    &:is(:hover:not([disabled]), :focus) .allowEmptyRadio {
         background-color: var(--colors-ContrastDark);
     }
 }
