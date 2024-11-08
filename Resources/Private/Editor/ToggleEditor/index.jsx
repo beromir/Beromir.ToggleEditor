@@ -257,7 +257,7 @@ function Editor(props) {
                             return (
                                 <Label
                                     className={clsx(style.listButton, highlightStyle)}
-                                    title={title}
+                                    title={description}
                                     aria-label={ariaLabel}
                                     key={index}
                                 >
@@ -277,7 +277,7 @@ function Editor(props) {
                             <button
                                 onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
-                                title={title}
+                                title={description}
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
