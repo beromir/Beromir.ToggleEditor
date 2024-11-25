@@ -17,13 +17,13 @@ export default function PreviewImage({ item, isCurrent }) {
             <span className={style.layered}>
                 <SinglePreview
                     src={state.default}
-                    className={[style.transition, fullClass]}
+                    className={fullClass}
                     style={{ opacity: isCurrent ? 0 : 1, transform: rotate?.default }}
                     label={description?.default || label?.default}
                 />
                 <SinglePreview
                     src={state.active}
-                    className={[style.transition, fullClass]}
+                    className={fullClass}
                     style={{ opacity: isCurrent ? 1 : 0, transform: rotate?.active }}
                     label={description?.active || label?.active}
                 />
@@ -36,7 +36,7 @@ export default function PreviewImage({ item, isCurrent }) {
         return (
             <SinglePreview
                 src={state.default}
-                className={[style.transition, fullClass]}
+                className={fullClass}
                 style={{ transform: isCurrent ? rotate?.active : rotate?.default }}
                 label={description?.default || label?.default}
             />
@@ -48,7 +48,7 @@ export default function PreviewImage({ item, isCurrent }) {
         return (
             <SinglePreview
                 src={state.active}
-                className={[style.transition, fullClass]}
+                className={fullClass}
                 style={{ transform: rotate?.active }}
                 label={description?.active || label?.active}
             />

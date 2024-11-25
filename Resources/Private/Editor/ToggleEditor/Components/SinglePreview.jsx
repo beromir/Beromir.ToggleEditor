@@ -1,6 +1,6 @@
 import React from "react";
 import { neos } from "@neos-project/neos-ui-decorators";
-import style from "../style.module.css";
+import styles from "../style.module.css";
 import clsx from "clsx";
 
 const neosifier = neos((globalRegistry) => ({
@@ -13,7 +13,7 @@ function SinglePreview({ src, className, style, label, i18nRegistry }) {
     if (src.startsWith("<svg ")) {
         return (
             <div
-                className={clsx(style.imageSVG, className)}
+                className={clsx(styles.transition, styles.imageSVG, className)}
                 style={style}
                 aria-label={translatedLabel}
                 dangerouslySetInnerHTML={{ __html: src }}
@@ -23,7 +23,7 @@ function SinglePreview({ src, className, style, label, i18nRegistry }) {
 
     return (
         <img
-            className={clsx(style.image, className)}
+            className={clsx(styles.transition, styles.image, className)}
             style={style}
             alt={translatedLabel}
             src={src.startsWith("resource://") ? `/_Resources/Static/Packages/${src.substr(11)}` : src}
