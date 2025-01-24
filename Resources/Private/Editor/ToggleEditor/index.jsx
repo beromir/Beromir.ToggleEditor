@@ -259,7 +259,7 @@ function Editor(props) {
                                     className={clsx(style.listButton, highlightStyle)}
                                     title={description}
                                     aria-label={ariaLabel}
-                                    key={index}
+                                    key={`list-multiple-${index}`}
                                 >
                                     <CheckBox
                                         isChecked={isCurrent}
@@ -281,7 +281,7 @@ function Editor(props) {
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
-                                key={index}
+                                key={`list-single-${index}`}
                             >
                                 <span className={style.radio}>
                                     <span></span>
@@ -296,7 +296,7 @@ function Editor(props) {
                     case "color":
                         const maxColorIndex = item.color.length - 1;
                         return (
-                            <div className={style.colorBox} key={index}>
+                            <div className={style.colorBox} key={`color-${index}`}>
                                 <button
                                     onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
@@ -333,7 +333,7 @@ function Editor(props) {
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.button, highlightStyle)}
-                                key={index}
+                                key={`default-${index}`}
                             >
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />

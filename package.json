@@ -2,6 +2,7 @@
   "description": "Carbon.DirectionEditor",
   "license": "proprietary",
   "private": true,
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0",
   "scripts": {
     "build": "node build.mjs --production",
     "watch": "node build.mjs --watch",
@@ -12,9 +13,9 @@
     "@neos-project/positional-array-sorter": "^8.3.11",
     "carbon-neos-loadinganimation": "^1.1.1",
     "clsx": "^2.1.1",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.24.2",
     "esbuild-plugin-lightningcss-modules": "^0.1.2",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "prop-types": "^15.8.1"
   }
 }
