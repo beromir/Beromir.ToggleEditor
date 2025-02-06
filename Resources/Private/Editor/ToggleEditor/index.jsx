@@ -342,7 +342,7 @@ function Editor(props) {
                                 {label && (
                                     <span
                                         className={clsx(item.icon || item.preview ? style.label : null)}
-                                        style={labelCustomStyle}
+                                        style={item.labelCustomStyle || labelCustomStyle || {}}
                                     >
                                         {label}
                                     </span>
@@ -372,6 +372,7 @@ Editor.propTypes = {
         values: PropTypes.objectOf(
             PropTypes.shape({
                 label: PropTypes.string,
+                labelCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
                 icon: PropTypes.string,
                 iconRotate: PropTypes.number,
                 description: PropTypes.string,
