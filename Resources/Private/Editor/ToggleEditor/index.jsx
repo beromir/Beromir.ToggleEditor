@@ -32,6 +32,7 @@ const defaultOptions = {
     hidden: false,
     dataSourceIdentifier: null,
     dataSourceUri: null,
+    labelCustomStyle: null,
 };
 
 function Editor(props) {
@@ -48,6 +49,7 @@ function Editor(props) {
         dataSourceUri,
         dataSourceAdditionalData,
         multiple,
+        labelCustomStyle,
     } = mergedOptions;
     const allowEmpty = multiple || mergedOptions.allowEmpty;
     const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon } = props;
@@ -338,7 +340,10 @@ function Editor(props) {
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />
                                 {label && (
-                                    <span className={clsx(item.icon || item.preview ? style.label : null)}>
+                                    <span
+                                        className={clsx(item.icon || item.preview ? style.label : null)}
+                                        style={item.labelCustomStyle || labelCustomStyle || {}}
+                                    >
                                         {label}
                                     </span>
                                 )}
@@ -363,9 +368,11 @@ Editor.propTypes = {
         emptyValue: PropTypes.string,
         multiple: PropTypes.bool,
         iconSize: PropTypes.oneOf(["xs", "sm", "lg", "2x", "3x"]),
+        labelCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
         values: PropTypes.objectOf(
             PropTypes.shape({
                 label: PropTypes.string,
+                labelCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
                 icon: PropTypes.string,
                 iconRotate: PropTypes.number,
                 description: PropTypes.string,

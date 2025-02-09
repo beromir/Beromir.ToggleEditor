@@ -296,9 +296,20 @@ properties:
           # This option makes it possible hide the whole editor (incl. label) based on data source
           hidden: false
 
+          # Only in view 'grid', 'flex' and 'flex-start': Set custom style for the labels
+          # The same is allowed inside a single value
+          labelCustomStyle:
+            fontSize: 25
+            lineHeight: "39px"
+
           # Set the values
           values:
             left:
+              # Only in view 'grid', 'flex' and 'flex-start': Set custom style for the label
+              labelCustomStyle:
+                fontSize: 25
+                lineHeight: "39px"
+
               # Show a label
               label: "Left"
               # Label on active state
