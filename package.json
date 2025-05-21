@@ -9,13 +9,13 @@
     "dev": "node build.mjs"
   },
   "devDependencies": {
-    "@neos-project/neos-ui-extensibility": "~8.3.11",
-    "@neos-project/positional-array-sorter": "^8.3.11",
-    "carbon-neos-loadinganimation": "^1.1.1",
+    "@neos-project/neos-ui-extensibility": "~8.3.13",
+    "@neos-project/positional-array-sorter": "^8.3.13",
+    "carbon-neos-loadinganimation": "^1.2.0",
     "clsx": "^2.1.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.4",
     "esbuild-plugin-lightningcss-modules": "^0.1.2",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "prop-types": "^15.8.1"
   }
 }
