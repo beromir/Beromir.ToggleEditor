@@ -5,7 +5,7 @@ import { neos } from "@neos-project/neos-ui-decorators";
 import positionalArraySorter from "@neos-project/positional-array-sorter";
 import { connect } from "react-redux";
 import Loading from "carbon-neos-loadinganimation/LoadingWithStyles";
-import { Button, Icon, Label, CheckBox } from "@neos-project/react-ui-components";
+import { Icon, CheckBox } from "@neos-project/react-ui-components";
 import { Icons, PreviewImage, Wrapper } from "./Components";
 import { flattenValues, processColorValues, getItemVariants } from "./utils";
 import clsx from "clsx";
@@ -33,9 +33,11 @@ const defaultOptions = {
     dataSourceIdentifier: null,
     dataSourceUri: null,
     labelCustomStyle: null,
+    buttonCustomStyle: null,
+    wrapperCustomStyle: null,
 };
 
-function Editor(props) {
+function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon, ...props }) {
     const mergedOptions = { ...defaultOptions, ...props.options };
     const {
         layout,
@@ -50,9 +52,10 @@ function Editor(props) {
         dataSourceAdditionalData,
         multiple,
         labelCustomStyle,
+        buttonCustomStyle,
+        wrapperCustomStyle,
     } = mergedOptions;
     const allowEmpty = multiple || mergedOptions.allowEmpty;
-    const { value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon } = props;
     const label = i18nRegistry.translate(props.label);
     const [savedValue, setSavedValue] = useState([]);
 
@@ -65,7 +68,7 @@ function Editor(props) {
 
     if (multiple && !Array.isArray(value)) {
         console.warn(
-            `Misconfiguration in property "${props.identifier}". Multiple is activated but value type seems to be "string" but should be "array".`,
+            `Misconfiguration in property "${props.identifier}". Multiple is activated but value type seems to be "string" or "integer" but should be "array".`,
         );
     }
 
@@ -234,7 +237,7 @@ function Editor(props) {
             id={id}
             label={label}
             className={[style[layout], disabled && style.disabled]}
-            style={getColumns()}
+            style={{ ...(wrapperCustomStyle || {}), ...getColumns() }}
             renderHelpIcon={renderHelpIcon}
         >
             {positionalArraySorter(options).map((item, index) => {
@@ -257,10 +260,11 @@ function Editor(props) {
                     case "list":
                         if (multiple) {
                             return (
-                                <Label
+                                <label
                                     className={clsx(style.listButton, highlightStyle)}
                                     title={description}
                                     aria-label={ariaLabel}
+                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
                                     key={`list-multiple-${index}`}
                                 >
                                     <CheckBox
@@ -270,8 +274,15 @@ function Editor(props) {
                                     />
                                     <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                     <PreviewImage item={item} isCurrent={isCurrent} />
-                                    {label && <span className={style.flex1}>{label}</span>}
-                                </Label>
+                                    {label && (
+                                        <span
+                                            className={style.flex1}
+                                            style={item.labelCustomStyle || labelCustomStyle || {}}
+                                        >
+                                            {label}
+                                        </span>
+                                    )}
+                                </label>
                             );
                         }
 
@@ -283,6 +294,7 @@ function Editor(props) {
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
+                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
                                 key={`list-single-${index}`}
                             >
                                 <span className={style.radio}>
@@ -290,7 +302,14 @@ function Editor(props) {
                                 </span>
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />
-                                {label && <span className={style.flex1}>{label}</span>}
+                                {label && (
+                                    <span
+                                        className={style.flex1}
+                                        style={item.labelCustomStyle || labelCustomStyle || {}}
+                                    >
+                                        {label}
+                                    </span>
+                                )}
                                 <AllowEmptyIcon item={item} className={style.allowEmptyRadio} />
                             </button>
                         );
@@ -306,6 +325,7 @@ function Editor(props) {
                                     aria-label={ariaLabel}
                                     disabled={disabled}
                                     className={clsx(style.colorButton, isCurrent && style.selected, highlightStyle)}
+                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
                                 >
                                     {item.color.map((color, index) => (
                                         <span
@@ -328,14 +348,15 @@ function Editor(props) {
 
                     default:
                         return (
-                            <Button
+                            <button
                                 onClick={() => onChange(item)}
-                                isActive={isCurrent}
                                 title={title}
                                 aria-label={ariaLabel}
                                 disabled={disabled}
-                                className={clsx(style.button, highlightStyle)}
+                                className={clsx(style.button, isCurrent && style.buttonCurrent, highlightStyle)}
+                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
                                 key={`default-${index}`}
+                                type="button"
                             >
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />
@@ -348,7 +369,7 @@ function Editor(props) {
                                     </span>
                                 )}
                                 <AllowEmptyIcon item={item} />
-                            </Button>
+                            </button>
                         );
                 }
             })}
@@ -369,10 +390,13 @@ Editor.propTypes = {
         multiple: PropTypes.bool,
         iconSize: PropTypes.oneOf(["xs", "sm", "lg", "2x", "3x"]),
         labelCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+        buttonCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+        wrapperCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
         values: PropTypes.objectOf(
             PropTypes.shape({
                 label: PropTypes.string,
                 labelCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+                buttonCustomStyle: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
                 icon: PropTypes.string,
                 iconRotate: PropTypes.number,
                 description: PropTypes.string,

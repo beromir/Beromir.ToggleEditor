@@ -296,7 +296,15 @@ properties:
           # This option makes it possible hide the whole editor (incl. label) based on data source
           hidden: false
 
-          # Only in view 'grid', 'flex' and 'flex-start': Set custom style for the labels
+          # Add custom styles to the wrapper
+          wrapperCustomStyle:
+            gap: 2
+
+          # Add custom styles to the buttons itself
+          buttonCustomStyle:
+            borderRadius: 2
+
+          # Set custom style for the labels (not set on view 'color')
           # The same is allowed inside a single value
           labelCustomStyle:
             fontSize: 25
@@ -305,7 +313,11 @@ properties:
           # Set the values
           values:
             left:
-              # Only in view 'grid', 'flex' and 'flex-start': Set custom style for the label
+              # Add custom styles to the button itself
+              buttonCustomStyle:
+                borderRadius: 2
+
+              # Set custom style for the label (not set on view 'color')
               labelCustomStyle:
                 fontSize: 25
                 lineHeight: "39px"
