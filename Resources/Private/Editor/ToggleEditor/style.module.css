@@ -94,6 +94,12 @@
     padding: 5px;
     margin: 0;
     text-align: left;
+    font-size: var(--fontSize-Base);
+    user-select: none;
+
+    :where(span) {
+        max-width: 100%;
+    }
 
     &:focus {
         outline: none;
@@ -204,13 +210,25 @@
     justify-content: center;
     padding: 12px;
     height: auto;
+    min-width: var(--spacing-GoldenUnit);
+    border: 0;
+    -webkit-font-smoothing: antialiased;
+    width: auto;
+    color: var(--colors-ContrastBrightest);
+    cursor: pointer;
+    background-color: var(--colors-ContrastDark);
+    font-size: var(--fontSize-Base);
 
     & > * + * {
         margin-top: 6px;
     }
 
+    &:hover {
+        background-color: var(--colors-PrimaryBlue);
+    }
+
     &:focus {
-        outline: var(--colors-PrimaryBlue) solid 1px;
+        outline: 1px solid var(--colors-PrimaryBlue);
         z-index: 1;
         border-radius: 2px;
     }
@@ -218,6 +236,19 @@
     & .imageFull:only-child {
         margin: -12px;
     }
+
+    &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+
+        &:is(:hover, :hover i, i) {
+            color: var(--colors-ContrastBrightest);
+        }
+    }
+}
+
+.buttonCurrent {
+    background-color: var(--colors-PrimaryBlue);
 }
 
 .label {
