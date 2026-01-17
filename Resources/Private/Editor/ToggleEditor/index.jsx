@@ -58,13 +58,7 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
         wrapperCustomStyle,
     } = mergedOptions;
     const allowEmpty = multiple || mergedOptions.allowEmpty;
-    let label = i18nRegistry.translate(props.label);
-    if (label === "i18n") {
-        const sitePackage = props.focusedNodeType.split(":")[0];
-        const nodeType = props.focusedNodeType.split(":")[1];
-        const qualifier = (sitePackage + ":NodeTypes." + nodeType) + ":properties." + props.identifier;
-        return i18nRegistry.translate(qualifier);
-    }
+    const label = i18nRegistry.translate(props.label);
     const [savedValue, setSavedValue] = useState([]);
 
     useEffect(() => {
