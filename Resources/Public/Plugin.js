@@ -356,7 +356,7 @@
   var import_react_ui_components = __toESM(require_react_ui_components());
 
   // Resources/Private/Editor/ToggleEditor/style.module.css
-  var style_default = { "imageSVG": "beromir-toggleeditor-blateq-imageSVG", "layered": "beromir-toggleeditor-blateq-layered", "selected": "beromir-toggleeditor-blateq-selected", "transition": "beromir-toggleeditor-blateq-transition", "flex1": "beromir-toggleeditor-blateq-flex1", "colorBox": "beromir-toggleeditor-blateq-colorBox", "flex": "beromir-toggleeditor-blateq-flex", "colorButton": "beromir-toggleeditor-blateq-colorButton", "label": "beromir-toggleeditor-blateq-label", "allowEmptyShow": "beromir-toggleeditor-blateq-allowEmptyShow", "listButton": "beromir-toggleeditor-blateq-listButton", "colorPreview": "beromir-toggleeditor-blateq-colorPreview", "highlight": "beromir-toggleeditor-blateq-highlight", "wrapper": "beromir-toggleeditor-blateq-wrapper", "color": "beromir-toggleeditor-blateq-color", "image": "beromir-toggleeditor-blateq-image", "allowEmptyRadio": "beromir-toggleeditor-blateq-allowEmptyRadio", "error": "beromir-toggleeditor-blateq-error", "buttonCurrent": "beromir-toggleeditor-blateq-buttonCurrent", "flex-start": "beromir-toggleeditor-blateq-flex-start", "disabled": "beromir-toggleeditor-blateq-disabled", "list": "beromir-toggleeditor-blateq-list", "allowEmpty": "beromir-toggleeditor-blateq-allowEmpty", "content": "beromir-toggleeditor-blateq-content", "colorPreviewLast": "beromir-toggleeditor-blateq-colorPreviewLast", "button": "beromir-toggleeditor-blateq-button", "imageFull": "beromir-toggleeditor-blateq-imageFull", "grid": "beromir-toggleeditor-blateq-grid", "radio": "beromir-toggleeditor-blateq-radio", "colorTransparent": "beromir-toggleeditor-blateq-colorTransparent" };
+  var style_default = { "listButton": "beromir-toggleeditor-blateq-listButton", "wrapper": "beromir-toggleeditor-blateq-wrapper", "imageFull": "beromir-toggleeditor-blateq-imageFull", "transition": "beromir-toggleeditor-blateq-transition", "color": "beromir-toggleeditor-blateq-color", "disabled": "beromir-toggleeditor-blateq-disabled", "colorTransparent": "beromir-toggleeditor-blateq-colorTransparent", "flex-start": "beromir-toggleeditor-blateq-flex-start", "highlight": "beromir-toggleeditor-blateq-highlight", "colorButton": "beromir-toggleeditor-blateq-colorButton", "colorPreviewLast": "beromir-toggleeditor-blateq-colorPreviewLast", "colorPreview": "beromir-toggleeditor-blateq-colorPreview", "image": "beromir-toggleeditor-blateq-image", "selected": "beromir-toggleeditor-blateq-selected", "button": "beromir-toggleeditor-blateq-button", "grid": "beromir-toggleeditor-blateq-grid", "colorBox": "beromir-toggleeditor-blateq-colorBox", "content": "beromir-toggleeditor-blateq-content", "flex1": "beromir-toggleeditor-blateq-flex1", "allowEmpty": "beromir-toggleeditor-blateq-allowEmpty", "label": "beromir-toggleeditor-blateq-label", "allowEmptyRadio": "beromir-toggleeditor-blateq-allowEmptyRadio", "allowEmptyShow": "beromir-toggleeditor-blateq-allowEmptyShow", "buttonCurrent": "beromir-toggleeditor-blateq-buttonCurrent", "flex": "beromir-toggleeditor-blateq-flex", "imageSVG": "beromir-toggleeditor-blateq-imageSVG", "error": "beromir-toggleeditor-blateq-error", "radio": "beromir-toggleeditor-blateq-radio", "layered": "beromir-toggleeditor-blateq-layered", "list": "beromir-toggleeditor-blateq-list" };
 
   // node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/dist/clsx.mjs
   function r(e) {
@@ -643,13 +643,7 @@
       wrapperCustomStyle
     } = mergedOptions;
     const allowEmpty = multiple || mergedOptions.allowEmpty;
-    let label = i18nRegistry.translate(props.label);
-    if (label === "i18n") {
-      const sitePackage = props.focusedNodeType.split(":")[0];
-      const nodeType = props.focusedNodeType.split(":")[1];
-      const qualifier = sitePackage + ":NodeTypes." + nodeType + ":properties." + props.identifier;
-      return i18nRegistry.translate(qualifier);
-    }
+    const label = i18nRegistry.translate(props.label);
     const [savedValue, setSavedValue] = (0, import_react7.useState)([]);
     (0, import_react7.useEffect)(() => {
       if (!highlight) {
