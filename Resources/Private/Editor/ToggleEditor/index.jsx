@@ -247,26 +247,9 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                 const disabled = item.disabled;
                 const state = isCurrent ? "active" : "default";
 
-                const labels = getItemVariants(item, "label", true, (value) => {
-                        if (value === "i18n") {
-                            const sitePackage = props.focusedNodeType.split(":")[0];
-                            const nodeType = props.focusedNodeType.split(":")[1];
-                            const qualifier = (sitePackage + ":NodeTypes." + nodeType) + ":properties." + props.identifier + ".values." + item.key;
-                            return i18nRegistry.translate(qualifier);
-                        }
-                        return i18nRegistry.translate(value);
-                    }
-                );
-
-                const descriptions = getItemVariants(item, "description", true, (value) => {
-                        if (value === "i18n") {
-                            const sitePackage = props.focusedNodeType.split(":")[0];
-                            const nodeType = props.focusedNodeType.split(":")[1];
-                            const qualifier = (sitePackage + ":NodeTypes." + nodeType) + ":properties." + props.identifier + ".descriptions." + item.key;
-                            return i18nRegistry.translate(qualifier);
-                        }
-                        return i18nRegistry.translate(value);
-                    }
+                const labels = getItemVariants(item, "label", true, (value) => i18nRegistry.translate(value));
+                const descriptions = getItemVariants(item, "description", true, (value) =>
+                    i18nRegistry.translate(value),
                 );
 
                 const label = labels?.[state];
