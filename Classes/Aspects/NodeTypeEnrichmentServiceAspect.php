@@ -31,6 +31,9 @@ class NodeTypeEnrichmentServiceAspect
                     if ($this->shouldFetchTranslation($optionConfiguration)) {
                         $optionConfiguration['label'] = $translationIdGenerator('values.' . $value);
                     }
+                    if ($this->shouldFetchTranslation($optionConfiguration, 'description')) {
+                        $optionConfiguration['description'] = $translationIdGenerator('values.' . $value . '.description');
+                    }
                 }
                 break;
         }
