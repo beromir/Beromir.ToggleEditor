@@ -1,26 +1,31 @@
 {
-    "name": "beromir/neos-toggle-editor",
-    "type": "neos-plugin",
-    "description": "A plugin for Neos CMS which provides a toggle editor.",
-    "license": "GPL-3.0",
-    "keywords": [
-        "neos",
-        "neoscms",
-        "flow",
-        "editor"
-    ],
-    "authors": [
-        {
-            "name": "Henrik Reißig",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "neos/neos-ui": "^5.3 || ^7.0 || ^8.0 || ^9.0"
-    },
-    "extra": {
-        "neos": {
-            "package-key": "Beromir.ToggleEditor"
-        }
+  "name": "beromir/neos-toggle-editor",
+  "type": "neos-plugin",
+  "description": "A plugin for Neos CMS which provides a toggle editor.",
+  "license": "GPL-3.0",
+  "autoload": {
+    "psr-4": {
+      "Beromir\\ToggleEditor\\": "Classes"
     }
+  },
+  "keywords": [
+    "neos",
+    "neoscms",
+    "flow",
+    "editor"
+  ],
+  "authors": [
+    {
+      "name": "Henrik Reißig",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "neos/neos-ui": "^5.3 || ^7.0 || ^8.0 || ^9.0"
+  },
+  "extra": {
+    "neos": {
+      "package-key": "Beromir.ToggleEditor"
+    }
+  }
 }

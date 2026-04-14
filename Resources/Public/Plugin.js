@@ -356,7 +356,7 @@
   var import_react_ui_components = __toESM(require_react_ui_components());
 
   // Resources/Private/Editor/ToggleEditor/style.module.css
-  var style_default = { "listButton": "beromir-toggleeditor-blateq-listButton", "wrapper": "beromir-toggleeditor-blateq-wrapper", "imageFull": "beromir-toggleeditor-blateq-imageFull", "transition": "beromir-toggleeditor-blateq-transition", "color": "beromir-toggleeditor-blateq-color", "disabled": "beromir-toggleeditor-blateq-disabled", "colorTransparent": "beromir-toggleeditor-blateq-colorTransparent", "flex-start": "beromir-toggleeditor-blateq-flex-start", "highlight": "beromir-toggleeditor-blateq-highlight", "colorButton": "beromir-toggleeditor-blateq-colorButton", "colorPreviewLast": "beromir-toggleeditor-blateq-colorPreviewLast", "colorPreview": "beromir-toggleeditor-blateq-colorPreview", "image": "beromir-toggleeditor-blateq-image", "selected": "beromir-toggleeditor-blateq-selected", "button": "beromir-toggleeditor-blateq-button", "grid": "beromir-toggleeditor-blateq-grid", "colorBox": "beromir-toggleeditor-blateq-colorBox", "content": "beromir-toggleeditor-blateq-content", "flex1": "beromir-toggleeditor-blateq-flex1", "allowEmpty": "beromir-toggleeditor-blateq-allowEmpty", "label": "beromir-toggleeditor-blateq-label", "allowEmptyRadio": "beromir-toggleeditor-blateq-allowEmptyRadio", "allowEmptyShow": "beromir-toggleeditor-blateq-allowEmptyShow", "buttonCurrent": "beromir-toggleeditor-blateq-buttonCurrent", "flex": "beromir-toggleeditor-blateq-flex", "imageSVG": "beromir-toggleeditor-blateq-imageSVG", "error": "beromir-toggleeditor-blateq-error", "radio": "beromir-toggleeditor-blateq-radio", "layered": "beromir-toggleeditor-blateq-layered", "list": "beromir-toggleeditor-blateq-list" };
+  var style_default = { "image": "beromir-toggleeditor-blateq-image", "allowEmptyShow": "beromir-toggleeditor-blateq-allowEmptyShow", "flex": "beromir-toggleeditor-blateq-flex", "label": "beromir-toggleeditor-blateq-label", "highlight": "beromir-toggleeditor-blateq-highlight", "allowEmptyRadio": "beromir-toggleeditor-blateq-allowEmptyRadio", "disabled": "beromir-toggleeditor-blateq-disabled", "colorTransparent": "beromir-toggleeditor-blateq-colorTransparent", "button": "beromir-toggleeditor-blateq-button", "wrapper": "beromir-toggleeditor-blateq-wrapper", "imageSVG": "beromir-toggleeditor-blateq-imageSVG", "colorButton": "beromir-toggleeditor-blateq-colorButton", "content": "beromir-toggleeditor-blateq-content", "radio": "beromir-toggleeditor-blateq-radio", "error": "beromir-toggleeditor-blateq-error", "flex1": "beromir-toggleeditor-blateq-flex1", "colorPreviewLast": "beromir-toggleeditor-blateq-colorPreviewLast", "listButton": "beromir-toggleeditor-blateq-listButton", "layered": "beromir-toggleeditor-blateq-layered", "flex-start": "beromir-toggleeditor-blateq-flex-start", "allowEmpty": "beromir-toggleeditor-blateq-allowEmpty", "colorPreview": "beromir-toggleeditor-blateq-colorPreview", "grid": "beromir-toggleeditor-blateq-grid", "color": "beromir-toggleeditor-blateq-color", "selected": "beromir-toggleeditor-blateq-selected", "transition": "beromir-toggleeditor-blateq-transition", "imageFull": "beromir-toggleeditor-blateq-imageFull", "colorBox": "beromir-toggleeditor-blateq-colorBox", "buttonCurrent": "beromir-toggleeditor-blateq-buttonCurrent", "list": "beromir-toggleeditor-blateq-list" };
 
   // node_modules/.pnpm/clsx@2.1.1/node_modules/clsx/dist/clsx.mjs
   function r(e) {
@@ -775,33 +775,12 @@
         const isCurrent = itemIsActive(item);
         const disabled2 = item.disabled;
         const state = isCurrent ? "active" : "default";
-        const labels = getItemVariants(
-          item,
-          "label",
-          true,
-          (value2) => {
-            if (value2 === "i18n") {
-              const sitePackage = props.focusedNodeType.split(":")[0];
-              const nodeType = props.focusedNodeType.split(":")[1];
-              const qualifier = sitePackage + ":NodeTypes." + nodeType + ":properties." + props.identifier + ".values." + item.key;
-              return i18nRegistry.translate(qualifier);
-            }
-            return i18nRegistry.translate(value2);
-          }
-        );
+        const labels = getItemVariants(item, "label", true, (value2) => i18nRegistry.translate(value2));
         const descriptions = getItemVariants(
           item,
           "description",
           true,
-          (value2) => {
-            if (value2 === "i18n") {
-              const sitePackage = props.focusedNodeType.split(":")[0];
-              const nodeType = props.focusedNodeType.split(":")[1];
-              const qualifier = sitePackage + ":NodeTypes." + nodeType + ":properties." + props.identifier + ".descriptions." + item.key;
-              return i18nRegistry.translate(qualifier);
-            }
-            return i18nRegistry.translate(value2);
-          }
+          (value2) => i18nRegistry.translate(value2)
         );
         const label2 = labels?.[state];
         const description = descriptions?.[state];
