@@ -317,10 +317,18 @@ properties:
               buttonCustomStyle:
                 borderRadius: 2
 
+              # Add custom styles to the button itself on active state
+              buttonCustomStyleActive:
+                backgroundColor: var(--colors-Error)
+
               # Set custom style for the label (not set on view 'color')
               labelCustomStyle:
                 fontSize: 25
                 lineHeight: "39px"
+
+              # Set custom style for the label on active state (not set on view 'color')
+              labelCustomStyleActive:
+                fontSize: 30
 
               # Show a label
               label: "Left"

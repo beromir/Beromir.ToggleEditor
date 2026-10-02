@@ -247,6 +247,8 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                 const disabled = item.disabled;
                 const state = isCurrent ? "active" : "default";
 
+                const itemButtonCustomStyles = getItemVariants(item, "buttonCustomStyle", true);
+                const itemLabelCustomStyles = getItemVariants(item, "labelCustomStyle", true);
                 const labels = getItemVariants(item, "label", true, (value) => i18nRegistry.translate(value));
                 const descriptions = getItemVariants(item, "description", true, (value) =>
                     i18nRegistry.translate(value),
@@ -254,6 +256,8 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
 
                 const label = labels?.[state];
                 const description = descriptions?.[state];
+                const itemButtonCustomStyle = itemButtonCustomStyles?.[state] || buttonCustomStyle || {};
+                const itemLabelCustomStyle = itemLabelCustomStyles?.[state] || labelCustomStyle || {};
 
                 const title = description || label;
                 const ariaLabel = isCurrent && allowEmpty ? resetLabel : title;
@@ -267,7 +271,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                     className={clsx(style.listButton, highlightStyle)}
                                     title={description}
                                     aria-label={ariaLabel}
-                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                    style={itemButtonCustomStyle}
                                     key={`list-multiple-${index}`}
                                 >
                                     <CheckBox
@@ -278,10 +282,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                     <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                     <PreviewImage item={item} isCurrent={isCurrent} />
                                     {label && (
-                                        <span
-                                            className={style.flex1}
-                                            style={item.labelCustomStyle || labelCustomStyle || {}}
-                                        >
+                                        <span className={style.flex1} style={itemLabelCustomStyle}>
                                             {label}
                                         </span>
                                     )}
@@ -297,7 +298,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
-                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                style={itemButtonCustomStyle}
                                 key={`list-single-${index}`}
                             >
                                 <span className={style.radio}>
@@ -306,10 +307,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                 <Icons item={item} isCurrent={isCurrent} size={iconSize} />
                                 <PreviewImage item={item} isCurrent={isCurrent} />
                                 {label && (
-                                    <span
-                                        className={style.flex1}
-                                        style={item.labelCustomStyle || labelCustomStyle || {}}
-                                    >
+                                    <span className={style.flex1} style={itemLabelCustomStyle}>
                                         {label}
                                     </span>
                                 )}
@@ -328,7 +326,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                     aria-label={ariaLabel}
                                     disabled={disabled}
                                     className={clsx(style.colorButton, isCurrent && style.selected, highlightStyle)}
-                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                    style={itemButtonCustomStyle}
                                 >
                                     {item.color.map((color, index) => (
                                         <span
@@ -357,7 +355,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.button, isCurrent && style.buttonCurrent, highlightStyle)}
-                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                style={itemButtonCustomStyle}
                                 key={`default-${index}`}
                                 type="button"
                             >
@@ -366,7 +364,7 @@ function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoa
                                 {label && (
                                     <span
                                         className={clsx(item.icon || item.preview ? style.label : null)}
-                                        style={item.labelCustomStyle || labelCustomStyle || {}}
+                                        style={itemLabelCustomStyle}
                                     >
                                         {label}
                                     </span>
