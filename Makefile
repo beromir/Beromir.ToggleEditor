@@ -1,6 +1,14 @@
-.PHONY: help install watch dev production build prettier
+.PHONY: help install watch dev production build prettier check-upgrades do-upgrades
 
 .DEFAULT_GOAL := production
+
+## Check for available upgrades
+check-upgrades:
+	@pnpm outdated
+
+## Upgrade packages
+do-upgrades:
+	@pnpm update
 
 ## Prettier files
 prettier:
