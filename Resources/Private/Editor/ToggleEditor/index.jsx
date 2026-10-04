@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {selectors} from "@neos-project/neos-ui-redux-store";
-import {neos} from "@neos-project/neos-ui-decorators";
+import { selectors } from "@neos-project/neos-ui-redux-store";
+import { neos } from "@neos-project/neos-ui-decorators";
 import positionalArraySorter from "@neos-project/positional-array-sorter";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import Loading from "carbon-neos-loadinganimation/LoadingWithStyles";
-import {Icon, CheckBox} from "@neos-project/react-ui-components";
-import {Icons, PreviewImage, Wrapper} from "./Components";
-import {flattenValues, processColorValues, getItemVariants} from "./utils";
+import { Icon, CheckBox } from "@neos-project/react-ui-components";
+import { Icons, PreviewImage, Wrapper } from "./Components";
+import { flattenValues, processColorValues, getItemVariants } from "./utils";
 import clsx from "clsx";
 import style from "./style.module.css";
 
@@ -18,7 +18,7 @@ const getDataLoaderOptionsForProps = (props) => {
         dataSourceUri: props.options.dataSourceUri,
         dataSourceAdditionalData: props.options.dataSourceAdditionalData,
         dataSourceDisableCaching: Boolean(props.options.dataSourceDisableCaching),
-    }
+    };
 };
 
 const defaultOptions = {
@@ -39,8 +39,8 @@ const defaultOptions = {
     wrapperCustomStyle: null,
 };
 
-function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon, ...props}) {
-    const mergedOptions = {...defaultOptions, ...props.options};
+function Editor({ value, commit, highlight, i18nRegistry, id, dataSourcesDataLoader, renderHelpIcon, ...props }) {
+    const mergedOptions = { ...defaultOptions, ...props.options };
     const {
         layout,
         values,
@@ -84,7 +84,7 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
     const [dataSourceOptionsAsJSON, setDataSourceOptionsAsJSON] = useState(null);
 
     useEffect(() => {
-        const dataAsJSON = JSON.stringify({dataSourceIdentifier, dataSourceUri, dataSourceAdditionalData});
+        const dataAsJSON = JSON.stringify({ dataSourceIdentifier, dataSourceUri, dataSourceAdditionalData });
         if (!hasDataSource || dataSourceOptionsAsJSON === dataAsJSON) {
             return;
         }
@@ -95,12 +95,12 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
         dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(props), value).then((values) => {
             setIsLoading(false);
             if (values.hidden) {
-                setOptions({hidden: true});
+                setOptions({ hidden: true });
                 return;
             }
 
             // Add key to values
-            values = values.map((item) => ({key: item.value == "" ? "__empty__" : item.value, ...item}));
+            values = values.map((item) => ({ key: item.value == "" ? "__empty__" : item.value, ...item }));
 
             if (layout === "color") {
                 setOptions(processColorValues(values));
@@ -113,7 +113,7 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
     if (isLoading) {
         return (
             <Wrapper id={id} label={label} renderHelpIcon={renderHelpIcon}>
-                <Loading isLoading={isLoading} title="Beromir.ToggleEditor:Main:loading"/>
+                <Loading isLoading={isLoading} title="Beromir.ToggleEditor:Main:loading" />
             </Wrapper>
         );
     }
@@ -223,14 +223,14 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
     const getColumns = () => {
         const evaluatedColumns = convertToColumns(columns, maximalColumns);
         const evaluatedMaximalColumns = convertToColumns(maximalColumns);
-        return {"--columns": Math.min(evaluatedColumns, evaluatedMaximalColumns)};
+        return { "--columns": Math.min(evaluatedColumns, evaluatedMaximalColumns) };
     };
 
     const resetLabel = i18nRegistry.translate("Beromir.ToggleEditor:Main:reset");
-    const AllowEmptyIcon = ({item, className = style.allowEmpty}) =>
+    const AllowEmptyIcon = ({ item, className = style.allowEmpty }) =>
         allowEmpty && !multiple ? (
             <span className={clsx(className, itemIsActive(item) && style.allowEmptyShow)}>
-                <Icon size="sm" icon="times"/>
+                <Icon size="sm" icon="times" />
             </span>
         ) : null;
 
@@ -239,7 +239,7 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
             id={id}
             label={label}
             className={[style[layout], disabled && style.disabled]}
-            style={{...(wrapperCustomStyle || {}), ...getColumns()}}
+            style={{ ...(wrapperCustomStyle || {}), ...getColumns() }}
             renderHelpIcon={renderHelpIcon}
         >
             {positionalArraySorter(options).map((item, index) => {
@@ -247,6 +247,8 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                 const disabled = item.disabled;
                 const state = isCurrent ? "active" : "default";
 
+                const itemButtonCustomStyles = getItemVariants(item, "buttonCustomStyle", true);
+                const itemLabelCustomStyles = getItemVariants(item, "labelCustomStyle", true);
                 const labels = getItemVariants(item, "label", true, (value) => i18nRegistry.translate(value));
                 const descriptions = getItemVariants(item, "description", true, (value) =>
                     i18nRegistry.translate(value),
@@ -254,6 +256,8 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
 
                 const label = labels?.[state];
                 const description = descriptions?.[state];
+                const itemButtonCustomStyle = itemButtonCustomStyles?.[state] || buttonCustomStyle || {};
+                const itemLabelCustomStyle = itemLabelCustomStyles?.[state] || labelCustomStyle || {};
 
                 const title = description || label;
                 const ariaLabel = isCurrent && allowEmpty ? resetLabel : title;
@@ -267,7 +271,7 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                                     className={clsx(style.listButton, highlightStyle)}
                                     title={description}
                                     aria-label={ariaLabel}
-                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                    style={itemButtonCustomStyle}
                                     key={`list-multiple-${index}`}
                                 >
                                     <CheckBox
@@ -275,13 +279,10 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                                         disabled={disabled}
                                         onChange={() => onChange(item)}
                                     />
-                                    <Icons item={item} isCurrent={isCurrent} size={iconSize}/>
-                                    <PreviewImage item={item} isCurrent={isCurrent}/>
+                                    <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                    <PreviewImage item={item} isCurrent={isCurrent} />
                                     {label && (
-                                        <span
-                                            className={style.flex1}
-                                            style={item.labelCustomStyle || labelCustomStyle || {}}
-                                        >
+                                        <span className={style.flex1} style={itemLabelCustomStyle}>
                                             {label}
                                         </span>
                                     )}
@@ -291,29 +292,26 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
 
                         return (
                             <button
-                                onClick={({currentTarget}) => onChange(item, currentTarget)}
+                                onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                 type="button"
                                 title={description}
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.listButton, isCurrent && style.selected, highlightStyle)}
-                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                style={itemButtonCustomStyle}
                                 key={`list-single-${index}`}
                             >
                                 <span className={style.radio}>
                                     <span></span>
                                 </span>
-                                <Icons item={item} isCurrent={isCurrent} size={iconSize}/>
-                                <PreviewImage item={item} isCurrent={isCurrent}/>
+                                <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                <PreviewImage item={item} isCurrent={isCurrent} />
                                 {label && (
-                                    <span
-                                        className={style.flex1}
-                                        style={item.labelCustomStyle || labelCustomStyle || {}}
-                                    >
+                                    <span className={style.flex1} style={itemLabelCustomStyle}>
                                         {label}
                                     </span>
                                 )}
-                                <AllowEmptyIcon item={item} className={style.allowEmptyRadio}/>
+                                <AllowEmptyIcon item={item} className={style.allowEmptyRadio} />
                             </button>
                         );
 
@@ -322,13 +320,13 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                         return (
                             <div className={style.colorBox} key={`color-${index}`}>
                                 <button
-                                    onClick={({currentTarget}) => onChange(item, currentTarget)}
+                                    onClick={({ currentTarget }) => onChange(item, currentTarget)}
                                     type="button"
                                     title={title}
                                     aria-label={ariaLabel}
                                     disabled={disabled}
                                     className={clsx(style.colorButton, isCurrent && style.selected, highlightStyle)}
-                                    style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                    style={itemButtonCustomStyle}
                                 >
                                     {item.color.map((color, index) => (
                                         <span
@@ -338,10 +336,10 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                                                 color === "transparent" && style.colorTransparent,
                                                 maxColorIndex === index && style.colorPreviewLast,
                                             )}
-                                            style={{backgroundColor: color}}
+                                            style={{ backgroundColor: color }}
                                         />
                                     ))}
-                                    <AllowEmptyIcon item={item}/>
+                                    <AllowEmptyIcon item={item} />
                                 </button>
                                 {label && (
                                     <span className={clsx(style.label, disabled && style.disabled)}>{label}</span>
@@ -357,21 +355,21 @@ function Editor({value, commit, highlight, i18nRegistry, id, dataSourcesDataLoad
                                 aria-label={ariaLabel}
                                 disabled={disabled}
                                 className={clsx(style.button, isCurrent && style.buttonCurrent, highlightStyle)}
-                                style={item.buttonCustomStyle || buttonCustomStyle || {}}
+                                style={itemButtonCustomStyle}
                                 key={`default-${index}`}
                                 type="button"
                             >
-                                <Icons item={item} isCurrent={isCurrent} size={iconSize}/>
-                                <PreviewImage item={item} isCurrent={isCurrent}/>
+                                <Icons item={item} isCurrent={isCurrent} size={iconSize} />
+                                <PreviewImage item={item} isCurrent={isCurrent} />
                                 {label && (
                                     <span
                                         className={clsx(item.icon || item.preview ? style.label : null)}
-                                        style={item.labelCustomStyle || labelCustomStyle || {}}
+                                        style={itemLabelCustomStyle}
                                     >
                                         {label}
                                     </span>
                                 )}
-                                <AllowEmptyIcon item={item}/>
+                                <AllowEmptyIcon item={item} />
                             </button>
                         );
                 }
@@ -426,6 +424,6 @@ const connector = connect((state) => {
     return {
         focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state),
         focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector(state),
-    }
+    };
 });
 export default neosifier(connector(Editor));
